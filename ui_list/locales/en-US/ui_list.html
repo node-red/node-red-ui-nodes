@@ -1,0 +1,39 @@
+<script type="text/x-red" data-help-name="ui_list">
+    <p>Node-RED widget node for displaying items list</p>
+
+    <h3>Inputs</h3>
+    <dl class="message-properties">
+        <dt>payload<span class="property-type">array</span></dt>
+        <dd>Array of objects containing following properties:
+            <ul>
+                <li><b>title</b> - title of the item,</li>
+                <li><b>description</b> - description of the item. optional if line type is <b>Single-line</b> or action type is <b>menu</b>,</li>
+                <li><b>menu</b> - list of menu items (optional),</li>
+                <li><b>icon</b> - URL of icon (optional),</li>
+                <li><b>icon_name</b> - font icon name (optional).</li>
+            </ul>
+        </dd>
+    </dl>
+    
+    <h3>Outputs</h3>
+    <dl class="message-properties">
+        <dt>payload<span class="property-type">object</span></dt>
+        <dd>When item or menu item is clicked or checked, corresponding object is send to output port.
+        </dd>
+    </dl>
+
+    <h3>Details</h3>
+    <p>This UI widget can be used to display an items array in Node-RED dashboard.</p>
+    <p>Items array is passed by <code>msg.payload</code>.  It consists of object containing <code>title</code>, <code>description</code>, <code>icon</code>, and <code>icon_name</code> properties.  <code>description</code>, <code>menu</code>, <code>icon</code> and <code>icon_name</code> properties are optional.</p>
+    <p>Type of item display can be selected by <code>List Type</code> selector.</p>
+    <p>An action to be taken for an item can be selected by <code>Action</code> selector:</p>
+    <ul>
+        <li><b>none</b> - No action is performed,</li>
+        <li><b>click to send an item</b> - sends an item to output port if clicked,</li>
+        <li><b>checkbox to send changed item</b> - sends an item to output port if checkbox is changed.  Checkbox state is included in <code>isChecked</code> flag of outputted payload object,</li>
+        <li><b>switch to send changed item</b> - sends an item to output port if switch is changed.  Switch state is included in <code>isChecked</code> flag of outputted payload object,</li>
+        <li><b>menu to send selected item</b> - sends an item to output port if item in menu is selected.  Selected item is included in <code>selected</code> property of outputted payload object.</li>
+    </ul>
+    <p>If <b>Allow HTML in displayed text</b> checkbox is selected, HTML tags can be used in <code>title</code> and <code>description</code>.</p>
+    <p>Icon can be specified by <code>icon</code> or <code>icon_name</code> propeety.  <code>icon</code> specifies URL of icon file.  If <code>icon</code> is <code>null</code>, blank icon is displayed. <code>icon_name</code> specifies icon name of font icons. <code>icon</code> has precedence over <code>icon_name</code>.</p>
+</script>
