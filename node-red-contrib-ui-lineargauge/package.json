@@ -1,0 +1,35 @@
+{
+  "name": "node-red-contrib-ui-lineargauge",
+  "version": "0.2.0",
+  "description": "A Node Red dashboard ui node to display a linear gauge",
+  "dependencies": {},
+  "author": "Seth350 (https://github.com/seth350)",
+  "contributors": [
+    "Bart Butenaers (https://github.com/bartbutenaers)"
+  ],
+  "license": "Apache-2.0",
+  "keywords": [
+    "node-red",
+    "gauge",
+    "dashboard",
+    "ui",
+    "linear"
+  ],
+  "bugs": {
+    "url": "https://github.com/seth350/node-red-contrib-ui-lineargauge/issues"
+  },
+  "homepage": "https://github.com/seth350/node-red-contrib-ui-lineargauge/",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/seth350/node-red-contrib-ui-lineargauge.git"
+  },
+  "node-red": {
+    "nodes": {
+      "linear-gauge": "linear_gauge.js"
+    }
+  },
+  "main": "linear_gauge.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}
