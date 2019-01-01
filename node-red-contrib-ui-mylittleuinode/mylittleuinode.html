@@ -35,7 +35,7 @@
 // This line is where you will register your node with a name and configuration.
 // Your name must be all lower-case letters and without spaces. 
 // Should you need a space, use a hypen ( - ) instead.
-    RED.nodes.registerType('mylittleuinode',{
+    RED.nodes.registerType('my-little-ui-node',{
 //*********************************************************************************
 
 //*********************************************************************************
@@ -61,14 +61,19 @@
 // The color value determines what color your node will be in the flow editor. 
 // Typically, all UI Nodes are rgb( 63, 173, 181), but you can freely edit this if
 // you prefer a different color. 
+// TODO what about the preferred colors (https://nodered.org/docs/creating-nodes/appearance#background-colour)?
 // Please use the rgb format only.
         color: 'rgb( 63, 173, 181)',
 //*********************************************************************************
 
 //*********************************************************************************
 //                        !!!!!!!!!NOTE!!!!!!!!!
-// The following lines will determine your node's default parameter values.
-// These default values are required in all ui nodes.
+// In the following lines all the node properties are defined.  For every property you
+// can (optionally) specify a default value and whether the value is required or not.
+// When the standard 'required' is not sufficient, a custom validator function can be added.
+// Only properties in this 'defaults' list will be remembered in time.
+//
+// The first 5 properties are required in all ui nodes.
 // 
 //*********************************************************************************
 // !!REQUIRED!!
@@ -144,20 +149,16 @@
 
 //*********************************************************************************
 //                        !!!!!!!!!NOTE!!!!!!!!!
-// We have covered the required default values every ui node must have,
-// and now we are at the section where you will enter your node's default values.
-// For instance, you may want to set a default text color, a default name, or
-// some other option.
-// We ask that you supply your node with as many defaults as needed to make setting
-// your node up as quick and easy as possible. 
-// A good rule of thumb is that if an option is usually checked True, or a value is 
-// typically set to a certain number, then make it a default value. 
-// Remember to place a comma at the end of each line of default values.
-// The very last default value does not need a comma.
-// E.G.,
-// line1Val: {value: True}, <--comma
-// line2Val: {value: 'black'}, <--comma
-// lastLineVal: {value: ('2B' || NOT('2B')) }  <--no comma
+// Until here we have covered the required default values every ui node must have,
+// and now we will start adding our own custom properties for our node.
+// For instance, you may want to set a default text color or some other custom property.
+// It is advised to specify a default value for as much properties as possible, to make sure
+// that users can setup your node up quick and easy. 
+// Remember to place a comma at the end of each line of default values, except after the last line!
+// For example:
+// property1: {value: True}, <--comma
+// property2: {value: 'black'}, <--comma
+// property2: {value: ('2B' || NOT('2B')) }  <--NO comma
 // },
 //
 //********************************************************************************* BEGIN USER DEFINED DEFAULT VALUES
@@ -232,11 +233,11 @@
 
 <!--
 ***********************************************************************************
-** The following section is going to be what creates your node editor within
-** the flow editor. Here is where things like the group dropdown, the size selector,
-** and name text box, will be defined here. Of course, along with your own 
-** options as well. This is also the part where we need to reference our 
-** User Defined Default Values we entered above.
+** The following section creates the content of your node's config screen (to visualise 
+** the node properties), which is displayed when you double click your node in the flow
+** editor.  The config screen contains both the required widgets (group dropdown, size 
+** selector, name text box) and widgets to visualise your own custom properties (see 
+** User Defined Default Values section above).
 ***********************************************************************************
 -->
 
@@ -244,11 +245,10 @@
 ***********************************************************************************
 ** This setion must begin with:
 ** <script type="text/x-red" data-template-name="yournodenamehere">
-** It is best that you use the same name that you are registering with Node-Red,
-** as you entered on Line #26.
+** It should be the same name that you are registering with Node-Red (see line #26).
 ***********************************************************************************
 -->
-<script type="text/x-red" data-template-name="mylittleuinode">
+<script type="text/x-red" data-template-name="my-little-ui-node">
     <!--***************************************************************************
     ** !!REQUIRED!!
     **
@@ -296,30 +296,23 @@
     </br>
 
     <!--***************************************************************************
-    ** !!REQUIRED!!
+    **                             !!!!!!!!!NOTE!!!!!!!!!
     **
-    ** User Defined Default Inputs
+    ** Html elements to visualise our own custom node properties.
     **
-    ** Here we have come to our first User Defined Default Input. Here is where we 
-    ** will reference our values we defined above at lines #152 & #153. 
+    ** Here we will reference visualise the properties in the 'default' list (see lines #152 & #153): 
     ** textColor & textLabel
-    ** If you notice in the next few lines of code there is this line,
-    ** <label for="node-input-textColor"> 
-    ** This line is defining the upcoming code as a label for our input. Our input
-    ** here will be textColor. Note that the variable we defined above in our 
-    ** default values list is also used here. Be sure the variable names match
-    ** EXACTLY.
+    ** The id's of the html elements must EXACTLY match the names in the 'default' list, to make 
+    ** sure that the html elements are automatically linked to the values of the properties in the 
+    ** 'default' list.  For example the html id 'node-input-textColor' is linked to property 'textColor'.
     **
-    ** The code immediately after will define what icon we would like to display in
-    ** our label, and what we would like our label to say.
+    ** A line like <label for="node-input-textColor"> simply defines a textual label for the html
+    ** input element with the correspoding id: <input type="text" id="node-input-textColor">
+    **
     ** You may use any of the FontAwesome v4 icons, here: https://fontawesome.com/v4.7.0/icons/
-    ** There must also be some code that defines what kind of input we need. In this case,
-    ** we want to be able to enter what color our text will be on the dashboard. 
-    ** <input type="color" id="node-input-textColor"/>
-    ** This is saying that our input for textColor is a color input type. 
-    ** This will also allow the editor to display a color picker for the user to selector
-    ** what color they would like.
-    ** The input type can be other types too. 
+    **
+    ** The input 'type' specifies which kind of data is allowed in the input element.
+    ** For example type="color" means that the user can only enter color values (via a color picker).
     ** Check here for a full list: https://www.w3schools.com/tags/att_input_type.asp
     ******************************************************************************** BEGIN USER DEFINED DEFAULT INPUTS -->
     
@@ -361,10 +354,13 @@
 ** with your node and know how to interface with it.
 ** HTML code must be used.
 ** The data-help-name must be the same name as you have registered this node with.
+**
+** This setion must begin with:
+** <script type="text/x-red" data-template-name="yournodenamehere">
+** It should be the same name that you are registering with Node-Red (see line #26).
 ************************************************************************************
 -->
-
-<script type="text/x-red" data-help-name="mylittleuinode">
+<script type="text/x-red" data-help-name="my-little-ui-node">
     <p>A Node Red dashboard ui node to display text with a defined color on the dashboard.</p>
     <p>Use this node as a template for building your own ui node.</p>
 </script>
