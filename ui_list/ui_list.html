@@ -1,0 +1,120 @@
+<!--
+  Copyright JS Foundation and other contributors, http://js.foundation
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+
+<script type="text/x-red" data-template-name="ui_list">
+    <!-- common input elements for dashboard widget -->
+    <div class="form-row" id="template-row-group">
+        <label for="node-input-group"><i class="fa fa-table"></i> <span data-i18n="ui_list.label.group"></span></label>
+        <input type="text" id="node-input-group">
+    </div>
+    <div class="form-row" id="template-row-size">
+        <label><i class="fa fa-object-group"></i> <span data-i18n="ui_list.label.size"></span></label>
+        <input type="hidden" id="node-input-width">
+        <input type="hidden" id="node-input-height">
+        <button class="editor-button" id="node-input-size"></button>
+    </div>
+
+    <!-- widget specific input elements for ui_list widget -->
+    <div class="form-row">
+        <label for="type-select"><i class="fa fa-bars"></i> <span data-i18n="ui_list.label.list"></span></label>
+        <select id="type-select">
+            <option value="one" data-i18n="ui_list.type.one"></option>
+            <option value="two" data-i18n="ui_list.type.two"></option>
+            <option value="three" data-i18n="ui_list.type.three"></option>
+        </select>
+        <input type="hidden" id="node-input-lineType">
+    </div>
+    <div class="form-row">
+        <label for="action-select"><i class="fa fa-hand-pointer-o"></i> <span data-i18n="ui_list.label.action"></span></label>
+        <select id="action-select">
+            <option value="none" data-i18n="ui_list.action.none"></option>
+            <option value="click" data-i18n="ui_list.action.click"></option>
+            <option value="check" data-i18n="ui_list.action.check"></option>
+            <option value="switch" data-i18n="ui_list.action.switch"></option>
+            <option value="menu" data-i18n="ui_list.action.menu"></option>
+        </select>
+        <input type="hidden" id="node-input-actionType">
+    </div>
+    <div class="form-row">
+        <label>&nbsp;</label>
+        <input type="checkbox" id="node-input-allowHTML" style="display: inline-block; width: auto; vertical-align: top;">
+        <label for="node-input-allowHTML" style="width: 70%;"><span data-i18n="ui_list.label.html"></span></label>
+    </div>
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> <span data-i18n="ui_list.label.name"></span></label>
+        <input type="text" id="node-input-name">
+    </div>
+</script>
+
+<script type="text/javascript">
+    RED.nodes.registerType("ui_list", {
+        category: 'dashboard',
+        color: 'rgb( 63, 173, 181)',
+        defaults: {
+            // belonging dashboard group
+            group: {type: 'ui_group', required:true},
+            name: {value: ''},
+            order: {value: 0},
+            // width and height of widget
+            width: {
+                value: 0,
+                validate: function(v) {
+                    var valid = true
+                    var width = v||0;
+                    var currentGroup = $('#node-input-group').val()|| this.group;
+                    var groupNode = RED.nodes.node(currentGroup);
+                    valid = !groupNode || +width <= +groupNode.width;
+                    $("#node-input-size").toggleClass("input-error",!valid);
+                    return valid;
+                }},
+            height: {value: 0},
+            lineType: {value: "two" },
+            actionType: {value: "none" },
+            allowHTML: {value: false}
+        },
+        inputs:1,
+        outputs:1,
+        icon: "icon.png",
+        paletteLabel: "list",
+        label: function() { return this.name || "list"; },
+        oneditprepare: function() {
+            // use elementSizer to input common widget parameters
+            $("#node-input-size").elementSizer({
+                width: "#node-input-width",
+                height: "#node-input-height",
+                group: "#node-input-group"
+            });
+
+            $("#type-select").change(function() {
+                var val = $("#type-select").val();
+                $("#node-input-lineType").val(val);
+            });
+            $("#type-select").val(this.lineType);
+            $("#type-select").change();
+
+            $("#action-select").change(function() {
+                var val = $("#action-select").val();
+                $("#node-input-actionType").val(val);
+            });
+            $("#action-select").val(this.actionType);
+            $("#action-select").change();
+        },
+        oneditsave: function() {
+        },
+        oneditresize: function(size) {
+        }
+    });
+</script>

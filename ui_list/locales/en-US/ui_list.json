@@ -1,0 +1,27 @@
+{
+    "ui_list" : {
+        "label" : {
+            "group" : "Group",
+            "size" : "Size",
+            "name" : "Name",
+            "list" : "List Type",
+            "action" : "Action",
+            "html" : "Allow HTML in displayed text"
+        },
+        "type" : {
+            "one" : "Single-line",
+            "two" : "Multi-line - narrow",
+            "three" : "Multi-line - wide"
+        },
+        "action" : {
+            "none" : "no action",
+            "click" : "click to send item",
+            "check" : "checkbox to send changed item",
+            "switch" : "switch to send changed item",
+            "menu" : "menu to send selected item"
+        },
+        "error": {
+            "no-group": "group not configured"
+        }
+    }
+}
