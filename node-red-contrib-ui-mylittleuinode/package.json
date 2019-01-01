@@ -1,0 +1,32 @@
+{
+  "name": "node-red-contrib-ui-mylittleuinode",
+  "version": "0.0.1",
+  "description": "A Node Red dashboard ui node to help you create your own ui node.",
+  "dependencies": {},
+  "author": "Seth350 (https://github.com/seth350)",
+  "contributors": [
+  ],
+  "license": "Apache-2.0",
+  "keywords": [
+    "node-red",
+    "dashboard",
+    "ui"
+  ],
+  "bugs": {
+    "url":""
+  },
+  "homepage":"",
+  "repository": {
+    "type": "",
+    "url": ""
+  },
+  "node-red": {
+    "nodes": {
+      "linear-gauge": "mylittleuinode.js"
+    }
+  },
+  "main": "mylittleuinode.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}
