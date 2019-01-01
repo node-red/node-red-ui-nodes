@@ -1,0 +1,370 @@
+<!--
+  Copyright 2018, Seth350
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+  http://www.apache.org/licenses/LICENSE-2.0
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+
+<!--
+***********************************************************************************
+** My Little UI Node
+** This is a template to help you create your very own ui node. This is meant as
+** a quickstart template that will show you what code is required and what code
+** and sections are free for you to change or make additions to.
+**  
+***********************************************************************************
+-->
+
+
+<!--
+***********************************************************************************
+** !!REQUIRED!!
+** The .html file must ALWAYS begin with
+**  <script type="text/javascript">
+***********************************************************************************
+-->
+<script type="text/javascript">
+//*********************************************************************************
+// !!REQUIRED!!
+// This line is where you will register your node with a name and configuration.
+// Your name must be all lower-case letters and without spaces. 
+// Should you need a space, use a hypen ( - ) instead.
+    RED.nodes.registerType('mylittleuinode',{
+//*********************************************************************************
+
+//*********************************************************************************
+//                        !!!!!!!!!NOTE!!!!!!!!!
+// The following lines will determine your node's configuration and parameters.
+// 
+//*********************************************************************************
+
+//*********************************************************************************
+// !!REQUIRED!!
+//
+// Node Category
+//
+// The category value should be left as 'dashboard', it does not need to be changed.
+        category: 'dashboard',
+//*********************************************************************************
+
+//*********************************************************************************
+// !!REQUIRED!!
+//
+// Node Color
+//
+// The color value determines what color your node will be in the flow editor. 
+// Typically, all UI Nodes are rgb( 63, 173, 181), but you can freely edit this if
+// you prefer a different color. 
+// Please use the rgb format only.
+        color: 'rgb( 63, 173, 181)',
+//*********************************************************************************
+
+//*********************************************************************************
+//                        !!!!!!!!!NOTE!!!!!!!!!
+// The following lines will determine your node's default parameter values.
+// These default values are required in all ui nodes.
+// 
+//*********************************************************************************
+// !!REQUIRED!!
+//
+// Node Default Settings
+//
+        defaults: {
+//*********************************************************************************
+
+//*********************************************************************************
+// !!REQUIRED!!
+//
+// Node Group
+//
+// The group value should be left as {type: 'ui_group', required:true}
+// There is no need to edit this line.
+            group: {type: 'ui_group', required:true},
+//*********************************************************************************
+
+//*********************************************************************************
+// !!REQUIRED!!
+//
+// Node Order 
+//
+// The order value should be left as {value: 0}
+// There is no need to edit this line.
+            order: {value: 0},
+//*********************************************************************************  
+
+//*********************************************************************************
+// !!REQUIRED!!
+//
+// Node Width
+//
+// Sets the default width of your node and how wide it will appear on the dashboard.
+// This setting is set from the Size setting in the node editor, within in the flow editor.
+// There is no need to edit these lines.
+            width: {
+                value: 0,
+                validate: function(v) {
+                    var valid = true
+                    var width = v||0;
+                    var currentGroup = $('#node-input-group').val()|| this.group;
+                    var groupNode = RED.nodes.node(currentGroup);
+                    valid = !groupNode || +width <= +groupNode.width;
+                    $("#node-input-size").toggleClass("input-error",!valid);
+                    return valid;
+                }},
+//*********************************************************************************   
+
+//*********************************************************************************
+// !!REQUIRED!!
+//
+// Node Height
+//
+// Sets the default height of your node and how tall it will appear on the dashboard.
+// This setting is set from the Size setting in the node editor, within the flow editor.
+// There is no need to edit this line.
+            height: {value: 0},
+//*********************************************************************************
+
+//*********************************************************************************
+// !!REQUIRED!!
+//
+// Node Name
+//
+// Sets the default name of the node in the node editor. 
+// Typically, this is left as {value:''}, and gives the user the option to enter
+// a name if they choose to do so.
+// There is no need to edit this line.
+            name: {value: ''},
+//*********************************************************************************
+
+//*********************************************************************************
+//                        !!!!!!!!!NOTE!!!!!!!!!
+// We have covered the required default values every ui node must have,
+// and now we are at the section where you will enter your node's default values.
+// For instance, you may want to set a default text color, a default name, or
+// some other option.
+// We ask that you supply your node with as many defaults as needed to make setting
+// your node up as quick and easy as possible. 
+// A good rule of thumb is that if an option is usually checked True, or a value is 
+// typically set to a certain number, then make it a default value. 
+// Remember to place a comma at the end of each line of default values.
+// The very last default value does not need a comma.
+// E.G.,
+// line1Val: {value: True}, <--comma
+// line2Val: {value: 'black'}, <--comma
+// lastLineVal: {value: ('2B' || NOT('2B')) }  <--no comma
+// },
+//
+//********************************************************************************* BEGIN USER DEFINED DEFAULT VALUES
+            textLabel: {value:'My Little UI Node'},
+            textColor: {value:'#ffffff'}
+        },
+//********************************************************************************* END USER DEFINED DEFAULT VALUES
+
+//*********************************************************************************
+// !!REQUIRED!!
+//
+// Inputs & Outputs
+//
+// The default inputs and outputs are set here. Typically, you can leave both set to 1.
+// There is no need to edit these lines.
+        inputs:1,
+        outputs:1,
+//*********************************************************************************
+
+//*********************************************************************************
+// !!REQUIRED!!
+//
+// Node Icon
+//
+// The default icon to display on your node in the flow editor. You may use any of 
+// the icons found here: (TODO: Verify path to icon files with team.)
+        icon: "cog.png",
+//*********************************************************************************
+
+//*********************************************************************************
+// !!REQUIRED!!
+//
+// Node Label
+//
+// The default label that will be displayed on your node in the flow editor. 
+// Typically, set this to the same name of your node.
+// Upper & Lower case is permitted here, spaces are also permitted.
+        label: function() {
+            return this.name||"My Little UI Node";
+        },
+//*********************************************************************************
+
+//*********************************************************************************
+// !!REQUIRED!!
+//
+// Node Edit Preparation
+// 
+// While editing your node in the node editor within the flow editor, you may need 
+// to perform some functions to verify the proper settings and syntax have been set.
+//
+// TODO: Verify with team on what this actually does.
+// Typically, you will not need to edit the oneditprepare.
+// You must atleast have your oneditprepare as such:
+//    oneditprepare: function() {
+//            $("#node-input-size").elementSizer({
+//               width: "#node-input-width",
+//                height: "#node-input-height",
+//                group: "#node-input-group"
+//            });
+//        }
+//
+        oneditprepare: function() {
+            $("#node-input-size").elementSizer({
+                width: "#node-input-width",
+                height: "#node-input-height",
+                group: "#node-input-group"
+            });
+        }
+    });
+</script>
+
+
+<!--
+***********************************************************************************
+** The following section is going to be what creates your node editor within
+** the flow editor. Here is where things like the group dropdown, the size selector,
+** and name text box, will be defined here. Of course, along with your own 
+** options as well. This is also the part where we need to reference our 
+** User Defined Default Values we entered above.
+***********************************************************************************
+-->
+
+<!--
+***********************************************************************************
+** This setion must begin with:
+** <script type="text/x-red" data-template-name="yournodenamehere">
+** It is best that you use the same name that you are registering with Node-Red,
+** as you entered on Line #26.
+***********************************************************************************
+-->
+<script type="text/x-red" data-template-name="mylittleuinode">
+    <!--***************************************************************************
+    ** !!REQUIRED!!
+    **
+    ** Group Dropdown
+    **
+    ** These lines of HTML code will define how the Group dropdown selector looks.
+    ** It is best that this stays as it is so that it is the same across all of the
+    ** nodes.
+    ** There is no need to edit these lines.
+    *******************************************************************************-->
+
+    <div class="form-row" id="template-row-group">
+        <label for="node-input-group"><i class="fa fa-table"></i> Group</span></label>
+        <input type="text" id="node-input-group">
+    </div>
+
+    <!--***************************************************************************-->
+
+    <!--***************************************************************************
+    ** !!REQUIRED!!
+    **
+    ** Size Selector 
+    **
+    ** The following lines will define how the Size Selector looks.
+    ** It is best that this stays as it is so that it is the same across all of the
+    ** nodes.
+    ** There is no need to edit these lines.
+    *******************************************************************************-->
+    
+    <div class="form-row" id="template-row-size">
+        <label><i class="fa fa-object-group"></i> Size</span></label>
+        <input type="hidden" id="node-input-width">
+        <input type="hidden" id="node-input-height">
+        <button class="editor-button" id="node-input-size"></button>
+    </div>
+
+    <!--***************************************************************************
+    **                              !!!!!NOTE!!!!!
+    ** The </br> tag will skip a line leaving a horizontal space. Use this to space
+    ** out your confiuration inputs into groups. Still, it is totally your preference.
+    ** The following </br> will seperate the Group dropdown and Size Selector from the
+    ** rest of our configuration.
+    *******************************************************************************-->
+    
+    </br>
+
+    <!--***************************************************************************
+    ** !!REQUIRED!!
+    **
+    ** User Defined Default Inputs
+    **
+    ** Here we have come to our first User Defined Default Input. Here is where we 
+    ** will reference our values we defined above at lines #152 & #153. 
+    ** textColor & textLabel
+    ** If you notice in the next few lines of code there is this line,
+    ** <label for="node-input-textColor"> 
+    ** This line is defining the upcoming code as a label for our input. Our input
+    ** here will be textColor. Note that the variable we defined above in our 
+    ** default values list is also used here. Be sure the variable names match
+    ** EXACTLY.
+    **
+    ** The code immediately after will define what icon we would like to display in
+    ** our label, and what we would like our label to say.
+    ** You may use any of the FontAwesome v4 icons, here: https://fontawesome.com/v4.7.0/icons/
+    ** There must also be some code that defines what kind of input we need. In this case,
+    ** we want to be able to enter what color our text will be on the dashboard. 
+    ** <input type="color" id="node-input-textColor"/>
+    ** This is saying that our input for textColor is a color input type. 
+    ** This will also allow the editor to display a color picker for the user to selector
+    ** what color they would like.
+    ** The input type can be other types too. 
+    ** Check here for a full list: https://www.w3schools.com/tags/att_input_type.asp
+    ******************************************************************************** BEGIN USER DEFINED DEFAULT INPUTS -->
+    
+    <div class="form-row">
+        <label for="node-input-textColor"><i class="fa fa-paint-brush"></i> Text Color</span></label>
+        <input type="color" id="node-input-textColor"/>
+    </div>
+
+    <div class="form-row">
+        <label for="node-input-textLabel"><i class="fa fa-i-cursor"></i> Text Label</span></label>
+        <input type="text" id="node-input-textLabel"/> 
+    </div>
+
+    <!--**************************************************************************** END USER DEFINED DEFAULT INPUTS -->
+
+</br>
+
+<!--********************************************************************************
+** !!REQUIRED!!
+** 
+** Node Name Input
+**
+** This is where the user can enter a name for the node.
+** There is no need to edit these lines.
+************************************************************************************-->
+    <div class="form-row">
+        <label for="node-input-name"><i class="icon-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+</script>
+
+
+<!--
+************************************************************************************
+** This next section is where you can write a little info on how your node operates.
+** This info will be available in the right side bar when the user clicks on the node,
+** and clicks on the info tab.
+** We ask that you always enter something here to help other users become familiar
+** with your node and know how to interface with it.
+** HTML code must be used.
+** The data-help-name must be the same name as you have registered this node with.
+************************************************************************************
+-->
+
+<script type="text/x-red" data-help-name="mylittleuinode">
+    <p>A Node Red dashboard ui node to display text with a defined color on the dashboard.</p>
+    <p>Use this node as a template for building your own ui node.</p>
+</script>
