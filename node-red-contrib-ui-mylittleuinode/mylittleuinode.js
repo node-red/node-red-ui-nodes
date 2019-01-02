@@ -120,6 +120,7 @@
 * !!REQUIRED!!
 * 
 * Convert Back Function
+* Callback to convert sent message.
 * 
 * TODO: Need help explaining this one.
 */
@@ -134,6 +135,7 @@
 * !!REQUIRED!!
 * 
 * Before Emit Function
+* Callback to prepare message
 * 
 * TODO: Need help explaining this one. 
 */
@@ -148,6 +150,7 @@
 * !!REQUIRED!!
 * 
 * Before Send Function
+* Callback to prepare message.
 * 
 * TODO: Need help explaining this one.
 */
@@ -162,7 +165,8 @@
 /********************************************************************
 * !!REQUIRED!!
 * 
-* Init Controller 
+* Init Controller
+* Callback to initialize in controller.
 *
 * The initController is where most of the magic happens, to let the dashboard communicate with
 * the Node-RED flow.
