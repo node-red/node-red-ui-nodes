@@ -1,10 +1,11 @@
 {
-  "name": "node-red-contrib-ui-mylittleuinode",
+  "name": "node-red-node-ui-mylittleuinode",
   "version": "0.0.1",
   "description": "A Node Red dashboard ui node to help you create your own ui node.",
   "dependencies": {},
-  "author": "Seth350 (https://github.com/seth350)",
+  "author": "Seth Johnson (https://github.com/seth350)",
   "contributors": [
+    "Bart Butenaers (https://github.com/bartbutenaers)"
   ],
   "license": "Apache-2.0",
   "keywords": [
