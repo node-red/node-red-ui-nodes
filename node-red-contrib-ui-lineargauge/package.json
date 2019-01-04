@@ -3,7 +3,7 @@
   "version": "0.3.0",
   "description": "A Node Red dashboard ui node to display a linear gauge",
   "dependencies": {},
-  "author": "Seth350 (https://github.com/seth350)",
+  "author": "Seth Johnson (https://github.com/seth350)",
   "contributors": [
     "Bart Butenaers (https://github.com/bartbutenaers)"
   ],
