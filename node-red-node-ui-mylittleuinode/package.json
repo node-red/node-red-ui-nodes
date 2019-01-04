@@ -1,7 +1,7 @@
 {
   "name": "node-red-node-ui-mylittleuinode",
   "version": "0.0.1",
-  "description": "A Node Red dashboard ui node to help you create your own ui node.",
+  "description": "A Node-Red dashboard ui node to help you create your own ui node.",
   "dependencies": {},
   "author": "Seth Johnson (https://github.com/seth350)",
   "contributors": [
