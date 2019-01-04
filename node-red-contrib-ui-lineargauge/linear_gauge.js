@@ -83,7 +83,24 @@
         return html;
     };
 
-    var ui = undefined // instantiate a ui variable to link to the dashboard
+
+        /**
+	 * REQUIRED
+     * A ui-node must always contain the following function.
+     * This function will verify that the configuration is valid
+     * by making sure the node is part of a group. If it is not,
+     * it will throw a "no-group" error.
+     * You must enter your node name that you are registering here. 
+     */
+     function checkConfig(node, conf) {
+        if (!conf || !conf.hasOwnProperty("group")) {
+            node.error(RED._("ui_lineargauge.error.no-group"));
+            return false;
+        }
+        return true;
+    }
+
+    var ui = undefined; // instantiate a ui variable to link to the dashboard
     
 
     /**
@@ -104,10 +121,13 @@
 
             // placing a "debugger;" in the code will cause the code to pause its execution in the web browser
             // this allows the user to inspect the variable values and see how the code is executing
-            //debugger;                             
+            //debugger;
+            
+            var done = null;
 
+    if (checkConfig(node, config)) {            
             var html = HTML(config);                    // *REQUIRED* get the HTML for this node using the function from above
-            var done = ui.addWidget({                   // *REQUIRED* add our widget to the ui dashboard using the following configuration
+                done = ui.addWidget({                       // *REQUIRED* add our widget to the ui dashboard using the following configuration
                 node: node,                             // *REQUIRED*
                 group: config.group,                    // *REQUIRED*
                 width: config.width,                    // *REQUIRED*
@@ -138,6 +158,11 @@
                  
                     $scope.flag = true;                                         // not sure if this is needed?
                     $scope.$watch('msg', function(msg) {
+
+                        if (!msg) {
+                            // Ignore undefined msg
+                            return;
+                        }
 
                         var payload = msg.payload
                         var highLimit = msg.highlimit
@@ -233,6 +258,7 @@
                 }
             });
         }
+    }
         catch (e) {
             console.log(e);		// catch any errors that may occur and display them in the web browsers console
 		}
@@ -253,5 +279,5 @@
 	 *  REQUIRED
 	 * Registers the node with a name, and a configuration.
 	 */
-    RED.nodes.registerType("linear-gauge", LinearGaugeNode);
-}
+    RED.nodes.registerType("ui_lineargauge", LinearGaugeNode);
+};
