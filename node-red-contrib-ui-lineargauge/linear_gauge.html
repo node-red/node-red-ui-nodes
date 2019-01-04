@@ -11,7 +11,7 @@
   limitations under the License.
 -->
 <script type="text/javascript">
-    RED.nodes.registerType('linear-gauge',{
+    RED.nodes.registerType('ui_lineargauge',{
         category: 'dashboard',
         color: 'rgb( 63, 173, 181)',
         defaults: {
@@ -52,7 +52,7 @@
     });
 </script>
 
-<script type="text/x-red" data-template-name="linear-gauge">
+<script type="text/x-red" data-template-name="ui_lineargauge">
     <div class="form-row" id="template-row-group">
         <label for="node-input-group"><i class="fa fa-table"></i> Group</span></label>
         <input type="text" id="node-input-group">
@@ -87,7 +87,7 @@
     </div>
 </script>
 
-<script type="text/x-red" data-help-name="linear-gauge">
+<script type="text/x-red" data-help-name="ui_lineargauge">
     <p>A Node Red dashboard ui node to display a linear gauge with high & low limit areas.</p>
     <p>Takes the <code>msg.payload</code> and displays the value at the top of the gauge and slides the pointer up/down the gauge.</p>
     <p>The node's <code>Name</code> is displayed at the bottom of the gauge for indication of what the gauge is for. I.E., "Tank #1 Temperature"</p>
