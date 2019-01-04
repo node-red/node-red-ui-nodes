@@ -46,17 +46,39 @@
  *  -> ng-model is used to make sure the data is (two way) synchronized between the scope and the html element.
  *          (the 'textContent' variable on the AngularJs $scope is called the 'model' of this html element.
  *  -> ng-change is used to do something (e.g. send a message to the Node-RED flow, as soon as the data in the model changes.
+ *  -> ng-keydown is used to do something when the user presses a key. (e.g., type a value into a textbox, then press enter)
  **********************************************************************/
     
      function HTML(config) { 
         // The configuration is a Javascript object, which needs to be converted to a JSON string
         var configAsJson = JSON.stringify(config);
-     
+
+        // var html = String.raw`
+        // <input type='text' style='color:` + config.textColor + `;' ng-init='init(` + configAsJson + `)' ng-model='textContent' ng-change='change()'>
+        // `;
+        // return html;
+
         var html = String.raw`
-        <input type='text' style='color:` + config.textColor + `;' ng-init='init(` + configAsJson + `)' ng-model='textContent' ng-change='change()'>
+        <input type='text' style='color:` + config.textColor + `;' ng-init='init(` + configAsJson + `)' ng-model='textContent' ng-keydown='enterkey($event)'>
         `;
         return html;
     };
+
+/********************************************************************
+* REQUIRED
+* A ui-node must always contain the following function.
+* This function will verify that the configuration is valid
+* by making sure the node is part of a group. If it is not,
+* it will throw a "no-group" error.
+* You must enter your node name that you are registering here. 
+*/
+    function checkConfig(node, conf) {
+        if (!conf || !conf.hasOwnProperty("group")) {
+            node.error(RED._("ui_my-little-ui-node.error.no-group"));
+            return false;
+        }
+        return true;
+    }
 
 /********************************************************************
 *********************************************************************
@@ -68,7 +90,7 @@
 * There is no need to edit this line.
 */
 
-    var ui = undefined 
+    var ui = undefined;
     
 /******************************************************************** */
 
@@ -93,8 +115,9 @@
             // placing a "debugger;" in the code will cause the code to pause its execution in the web browser
             // this allows the user to inspect the variable values and see how the code is executing.
             // Remove those statements when you publish your node on NPM!!!
-            //debugger;                             
+            //debugger;
 
+        if (checkConfig(node, config)) { 
             var html = HTML(config);                    // *REQUIRED* !!DO NOT EDIT!!
             var done = ui.addWidget({                   // *REQUIRED* !!DO NOT EDIT!!
                 node: node,                             // *REQUIRED* !!DO NOT EDIT!!
@@ -172,7 +195,7 @@
 * STORE THE CONFIGURATION FROM NODE-RED FLOW INTO THE DASHBOARD
 * The configuration (from the node's config screen in the flow editor) should be saved in the $scope.
 * This 'init' function should be called from a single html element (via ng-init) in the HTML function,
-* since the configuration will there be available.
+* since the configuration will be available there.
 * 
 */                    
                     $scope.init = function (config) {
@@ -216,8 +239,23 @@
                         $scope.send({payload: $scope.textContent});
                     };
 /*******************************************************************/
+/*******************************************************************
+*
+* SEND MESSAGE FROM DASHBOARD TO NODE-RED FLOW
+* While an input has focus, the user can press the enter key to send the updated data to the Node-Red flow.
+*
+*/
+                    $scope.enterkey = function(keyEvent){
+                        if (keyEvent.which === 13) {
+                            $scope.send({payload: $scope.textContent});
+                        }
+                    };
+/*******************************************************************/
+
+
                 }
             });
+        }
         }
         catch (e) {
             console.log(e);		// catch any errors that may occur and display them in the web browsers console
@@ -242,6 +280,7 @@
 * Registers the node with a name, and a configuration.
 * You must enter the SAME name of your node you registered (in the html file) and enter the name
 * of the function (see line #87) that will return your nodes's configuration.
+* Note: the name must begin with "ui_".
 */
-    RED.nodes.registerType("my-little-ui-node", MyLittleUiNode);
+    RED.nodes.registerType("ui_my-little-ui-node", MyLittleUiNode);
 }

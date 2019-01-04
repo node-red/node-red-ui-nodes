@@ -33,9 +33,11 @@
 //*********************************************************************************
 // !!REQUIRED!!
 // This line is where you will register your node with a name and configuration.
-// Your name must be all lower-case letters and without spaces. 
+// Your name must be all lower-case letters and without spaces.
+// Your name must also begin with "ui_", otherwise it will not show up in the 
+// dashboard tab under it's assigned group.
 // Should you need a space, use a hypen ( - ) instead.
-    RED.nodes.registerType('my-little-ui-node',{
+    RED.nodes.registerType('ui_my-little-ui-node',{
 //*********************************************************************************
 //*********************************************************************************
 //                        !!!!!!!!!NOTE!!!!!!!!!
@@ -153,7 +155,7 @@
 //
 //********************************************************************************* BEGIN USER DEFINED DEFAULT VALUES
             textLabel: {value:'My Little UI Node'},
-            textColor: {value:'#ffffff'}
+            textColor: {value:'#000000'}
         },
 //********************************************************************************* END USER DEFINED DEFAULT VALUES
 //*********************************************************************************
@@ -178,11 +180,22 @@
 //*********************************************************************************
 // !!REQUIRED!!
 //
+// Node Name
+//
+// The name of your node as it would appear in the node selection side bar.
+// Lowercase & spaces are only permitted here.
+
+        paletteLabel:"my little ui node",
+
+
+//*********************************************************************************
+// !!REQUIRED!!
+//
 // Node Label
 //
 // The default label that will be displayed on your node in the flow editor. 
 // Typically, set this to the same name of your node.
-// Upper & Lower case is permitted here, spaces are also permitted.
+// Upper & Lowercase is permitted here, spaces are also permitted.
         label: function() {
             return this.name||"My Little UI Node";
         },
@@ -230,11 +243,11 @@
 <!--
 ***********************************************************************************
 ** This setion must begin with:
-** <script type="text/x-red" data-template-name="yournodenamehere">
+** <script type="text/x-red" data-template-name="ui_yournodenamehere">
 ** It should be the same name that you are registering with Node-Red (see line #26).
 ***********************************************************************************
 -->
-<script type="text/x-red" data-template-name="my-little-ui-node">
+<script type="text/x-red" data-template-name="ui_my-little-ui-node">
     <!--***************************************************************************
     ** !!REQUIRED!!
     **
@@ -331,11 +344,11 @@
 ** The data-help-name must be the same name as you have registered this node with.
 **
 ** This setion must begin with:
-** <script type="text/x-red" data-template-name="yournodenamehere">
+** <script type="text/x-red" data-template-name="ui_yournodenamehere">
 ** It should be the same name that you are registering with Node-Red (see line #26).
 ************************************************************************************
 -->
-<script type="text/x-red" data-help-name="my-little-ui-node">
+<script type="text/x-red" data-help-name="ui_my-little-ui-node">
     <p>A Node Red dashboard ui node to display text with a defined color on the dashboard.</p>
     <p>Use this node as a template for building your own ui node.</p>
 </script>

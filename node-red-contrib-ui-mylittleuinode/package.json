@@ -22,7 +22,7 @@
   },
   "node-red": {
     "nodes": {
-      "linear-gauge": "mylittleuinode.js"
+      "ui_my-little-ui-node": "mylittleuinode.js"
     }
   },
   "main": "mylittleuinode.js",
