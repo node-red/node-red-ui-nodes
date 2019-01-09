@@ -1,5 +1,5 @@
 {
-  "name": "node-red-node-ui-mylittleuinode",
+  "name": "node-red-ui-node-mylittleuinode",
   "version": "0.0.1",
   "description": "A Node-Red dashboard ui node to help you create your own ui node.",
   "dependencies": {},
@@ -14,12 +14,12 @@
     "ui"
   ],
   "bugs": {
-    "url":""
+    "url":"https://github.com/node-red/node-red-ui-nodes/issues"
   },
-  "homepage":"",
+  "homepage":"https://github.com/node-red/node-red-ui-nodes/node-red-ui-node-mylittleuinode",
   "repository": {
-    "type": "",
-    "url": ""
+    "type": "git",
+    "url": "git+https://github.com/node-red/node-red-ui-nodes.git"
   },
   "node-red": {
     "nodes": {

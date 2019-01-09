@@ -1,4 +1,4 @@
-# node-red-contrib-ui-lineargauge
+# node-red-ui-node-lineargauge
 A Node-Red ui node that creates a linear gauge with high/low limits and animated sliding pointer.
 
 This is very useful for quickly checking many different kinds of processes and how they are performing.
@@ -13,7 +13,7 @@ Low Limit: `msg.lowlimit`
 
 Using `msg.payload` as the value to display and position the pointer.
 
-![LinearGaugeImg](https://github.com/seth350/node-red-contrib-ui-lineargauge/blob/master/linearGauges.PNG?raw=true)
+![LinearGaugeImg](https://github.com/node-red/node-red-ui-nodes/node-red-ui-node-lineargauge/imgs/linearGauges.PNG?raw=true)
 
 # Requirements
 Node-Red v19.4 or greater
@@ -23,7 +23,7 @@ Node-Red-dashboard v2.13.0 or greater
 <p>Run the following command in your Node-RED user directory - typically <code>~/.node-red</code></p>
 <pre>
 <code>
-    npm i node-red-contrib-ui-lineargauge
+    npm i node-red-ui-node-lineargauge
 </code>
 </pre>
 
