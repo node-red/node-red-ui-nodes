@@ -1,0 +1,33 @@
+{
+  "name": "node-red-ui-node-mylittleuinode",
+  "version": "0.0.1",
+  "description": "A Node-Red dashboard ui node to help you create your own ui node.",
+  "dependencies": {},
+  "author": "Seth Johnson (https://github.com/seth350)",
+  "contributors": [
+    "Bart Butenaers (https://github.com/bartbutenaers)"
+  ],
+  "license": "Apache-2.0",
+  "keywords": [
+    "node-red",
+    "dashboard",
+    "ui"
+  ],
+  "bugs": {
+    "url":"https://github.com/node-red/node-red-ui-nodes/issues"
+  },
+  "homepage":"https://github.com/node-red/node-red-ui-nodes/node-red-ui-node-mylittleuinode",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/node-red/node-red-ui-nodes.git"
+  },
+  "node-red": {
+    "nodes": {
+      "ui_my-little-ui-node": "mylittleuinode.js"
+    }
+  },
+  "main": "mylittleuinode.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}
