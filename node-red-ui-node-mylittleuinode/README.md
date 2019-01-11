@@ -1,4 +1,4 @@
-# node-red-node-ui-mylittleuinode
+# node-red-ui-node-mylittleuinode
 
 A Node-Red dashboard ui node to help you create your own ui node.
 
