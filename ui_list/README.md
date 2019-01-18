@@ -1,25 +1,26 @@
-node-red-contrib-ui_list
-========================
+node-red-node-ui_list
+=====================
 
-Node-RED widget node for showing items list.
+A Node-RED widget node for showing a list of items.
 
 ![Example](figs/sample00.png)
 
 Install
 -------
 
-Run the following command in your Node-RED user directory - typically `~/.node-red`
+Either use the Menu - Manage Palette option to install the node, or run the following command
+in your Node-RED user directory - typically `~/.node-red`
 
-        npm install node-red-contrib-ui_list
+        npm i node-red-node-ui_list
 
-*This node uses APIs that are supported from Node-RED 0.19 & Node-RED Dashboard 2.10.*
+**Note**: This node uses APIs that are supported from Node-RED 0.19 and Node-RED Dashboard 2.10.
 
 Usage
 -----
 
-`ui_list` node is a UI widget that can be used to display list of items in Node-RED dashboard. 
+`ui_list` node is a UI widget that can be used to display a list of items in the Node-RED dashboard.
 
-Items array is passed by `msg.payload`.  It consists of objects containing following properties.
+An array of Items is passed in by `msg.payload`.  It consists of objects containing the following properties.
 
 - `title` - title of the item,
 - `description` - description of the item. optional if line type is `Single-line ` or action type is `menu`,
@@ -27,19 +28,19 @@ Items array is passed by `msg.payload`.  It consists of objects containing follo
 - `icon` - URL of icon (optional),
 - `icon_name` - font icon name (optional).
 
-Type of item display can be selected by `List Type` selector of node settings UI.
+The type of item display can be selected by `List Type` selector in the node configuration panel.
 
-An action to be taken for a displayed item can be selected by `Action` selector:
+An action to be taken for a displayed item can be selected by the `Action` selector:
 
 - `none` - No action is performed,
 - `click to send an item` - sends the selected item to output port if clicked,
-- `checkbox to send changed item` - sends an item to output port if checkbox is changed.  Checkbox state is included in `isChecked` flag of outputted `payload` object,
-- `switch to send changed item` - sends an item to output port if switch is changed.  Switch state is included in `isChecked` flag of outputted `payload` object,
-- `menu to send selected item` - sends an item to output port is item in menu is selected.  Selected item is included in `selected` property of outputted payload object.
+- `checkbox to send changed item` - sends an item to output port if checkbox is changed.  The checkbox state is included in the `isChecked` flag of the output `payload` object,
+- `switch to send changed item` - sends an item to output port if switch is changed.  The switch state is included in the `isChecked` flag of the output `payload` object,
+- `menu to send selected item` - sends an item to output port is item in menu is selected.  The selected item is included in the `selected` property of the output payload object.
 
 If `Allow HTML in displayed text` checkbox is selected, HTML tags can be used in `title` and `description`.
 
-Icon can be specified by `icon` or `icon_name` property.  `icon` specifies URL of icon image.  If `icon` is `null`, blank icon is displeyed. `icon_name` specifies icon name of font icons (e.g. `fa-home`). `icon` has precedence over `icon_name`.
+Icon can be specified by `icon` or `icon_name` property.  `icon` specifies URL of icon image.  If `icon` is `null`, blank icon is displayed. `icon_name` specifies an icon name of font icons (e.g. `fa-home`). `icon` has precedence over `icon_name`.
 
 Example
 -------
@@ -342,4 +343,3 @@ Example
     }
 ]
 ```
-
