@@ -117,13 +117,12 @@ ${(allowMenu ? md_menu : "")}
     function ListNode(config) {
         try {
             var node = this;
-            if(ui === undefined) {
+            if (ui === undefined) {
                 // #1: Load node-red-dashboard module.
                 // Should use RED.require API to cope with loading different
                 // module.  And it should also be executed at node
                 // initialization time to be loaded after initialization of
                 // node-red-dashboard module.
-                // 
                 ui = RED.require("node-red-dashboard")(RED);
             }
             // Initialize node
@@ -135,12 +134,13 @@ ${(allowMenu ? md_menu : "")}
                 // Initialize Node-RED Dashboard widget
                 // see details: https://github.com/node-red/node-red-ui-nodes/blob/master/docs/api.md
                 done = ui.addWidget({
-                    node: node,			// controlling node
-                    width: config.width,	// width of widget
-                    height: config.height,	// height of widget
-                    format: html,		// HTML/Angular code
+                    node: node,             // controlling node
+                    order: config.order,    // placeholder for position in page
+                    group: config.group,    // belonging Dashboard group
+                    width: config.width,    // width of widget
+                    height: config.height,  // height of widget
+                    format: html,           // HTML/Angular code
                     templateScope: "local",	// scope of HTML/Angular(local/global)*
-                    group: config.group,	// belonging Dashboard group
                     emitOnlyNewValues: false,
                     forwardInputMessages: false,
                     storeFrontEndInputAsState: false,
