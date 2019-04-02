@@ -27,7 +27,7 @@
 
 //*************************************************************************/
     // TODO: Is this needed????
-    var settings = RED.settings;  // not sure if this is needed? 
+    var settings = RED.settings;  // not sure if this is needed?
 
 
 /**********************************************************************
@@ -38,7 +38,7 @@
  * This function will generate the HTML (as a text string) which will be showed in the browser
  * on the dashboard.
  *
- * The 'config' input contains all the node properties, which can be changed by the user on 
+ * The 'config' input contains all the node properties, which can be changed by the user on
  * the node's config screen (in the flow editor).
  *
  * In this function 3 AngularJs directives are being demonstrated:
@@ -48,8 +48,8 @@
  *  -> ng-change is used to do something (e.g. send a message to the Node-RED flow, as soon as the data in the model changes.
  *  -> ng-keydown is used to do something when the user presses a key. (e.g., type a value into a textbox, then press enter)
  **********************************************************************/
-    
-     function HTML(config) { 
+
+     function HTML(config) {
         // The configuration is a Javascript object, which needs to be converted to a JSON string
         var configAsJson = JSON.stringify(config);
 
@@ -70,7 +70,7 @@
 * This function will verify that the configuration is valid
 * by making sure the node is part of a group. If it is not,
 * it will throw a "no-group" error.
-* You must enter your node name that you are registering here. 
+* You must enter your node name that you are registering here.
 */
     function checkConfig(node, conf) {
         if (!conf || !conf.hasOwnProperty("group")) {
@@ -83,15 +83,15 @@
 /********************************************************************
 *********************************************************************
 * !!REQUIRED!!
-* 
+*
 * UI Variable Define
-* 
+*
 * Define a variable to reference the ui.
 * There is no need to edit this line.
 */
 
     var ui = undefined;
-    
+
 /******************************************************************** */
 
 
@@ -99,10 +99,10 @@
 * !!REQUIRED!!
 +
 * A ui-node must always contain a YourNodeNameHere(config) function, which will be executed in the Node-RED flow.
-* This function will add the widget to the dashboard, based on the 'required' node properties.  On the other hand 
+* This function will add the widget to the dashboard, based on the 'required' node properties.  On the other hand
 * our own custom node properties will most probably not be used here, but only in the above HTML function (where
 * all properties are available in the config variable).
-* 
+*
 */
     function MyLittleUiNode(config) {
          try {
@@ -117,27 +117,28 @@
             // Remove those statements when you publish your node on NPM!!!
             //debugger;
 
-        if (checkConfig(node, config)) { 
+        if (checkConfig(node, config)) {
             var html = HTML(config);                    // *REQUIRED* !!DO NOT EDIT!!
             var done = ui.addWidget({                   // *REQUIRED* !!DO NOT EDIT!!
                 node: node,                             // *REQUIRED* !!DO NOT EDIT!!
+                order: config.order,                    // *REQUIRED* !!DO NOT EDIT!!
                 group: config.group,                    // *REQUIRED* !!DO NOT EDIT!!
                 width: config.width,                    // *REQUIRED* !!DO NOT EDIT!!
                 height: config.height,                  // *REQUIRED* !!DO NOT EDIT!!
                 format: html,                           // *REQUIRED* !!DO NOT EDIT!!
                 templateScope: "local",                 // *REQUIRED* !!DO NOT EDIT!!
-                emitOnlyNewValues: false,               // *REQUIRED* Edit this if you would like your node to only emit new values. 
+                emitOnlyNewValues: false,               // *REQUIRED* Edit this if you would like your node to only emit new values.
                 forwardInputMessages: false,            // *REQUIRED* Edit this if you would like your node to forward the input message to it's ouput.
                 storeFrontEndInputAsState: false,       // *REQUIRED* TODO: Not sure what this is for????
 
 /********************************************************************
-                
+
 /********************************************************************
 * !!REQUIRED!!
-* 
+*
 * Convert Back Function
 * Callback to convert sent message.
-* 
+*
 * TODO: Need help explaining this one.
 */
 
@@ -148,11 +149,11 @@
 /********************************************************************
 /********************************************************************
 * !!REQUIRED!!
-* 
+*
 * Before Emit Function
 * Callback to prepare message
-* 
-* TODO: Need help explaining this one. 
+*
+* TODO: Need help explaining this one.
 */
 
                 beforeEmit: function(msg, value) {
@@ -162,10 +163,10 @@
 /********************************************************************
 /********************************************************************
 * !!REQUIRED!!
-* 
+*
 * Before Send Function
 * Callback to prepare message.
-* 
+*
 * TODO: Need help explaining this one.
 */
                 beforeSend: function (msg, orig) {
@@ -177,7 +178,7 @@
 /********************************************************************
 /********************************************************************
 * !!REQUIRED!!
-* 
+*
 * Init Controller
 * Callback to initialize in controller.
 *
@@ -186,21 +187,21 @@
 */
                 initController: function($scope, events) {
                     debugger;
-                 
+
                     $scope.flag = true;   // not sure if this is needed?
 
 /*******************************************************************
 /*******************************************************************
-* 
+*
 * STORE THE CONFIGURATION FROM NODE-RED FLOW INTO THE DASHBOARD
 * The configuration (from the node's config screen in the flow editor) should be saved in the $scope.
 * This 'init' function should be called from a single html element (via ng-init) in the HTML function,
 * since the configuration will be available there.
-* 
-*/                    
+*
+*/
                     $scope.init = function (config) {
                         $scope.config = config;
-                        
+
                         // The configuration contains the default text, which needs to be stored in the scope
                         // (to make sure it will be displayed via the model).
                         $scope.textContent = config.textLabel;
@@ -208,32 +209,32 @@
 
 /*******************************************************************
 /*******************************************************************
-* 
+*
 * HANDLE MESSAGE FROM NODE-RED FLOW TO DASHBOARD
 * Use $scope.$watch 'msg' to manipulate your user interface when a message from the Node-RED flow arrives.
 * As soon as the message arrives in the dashboard, the callback function will be executed.
-* Inside the callback function, you can manipulate your node's HTML attributes and elements.  That way you 
-* can update the dashboard based on data from the input message.  
+* Inside the callback function, you can manipulate your node's HTML attributes and elements.  That way you
+* can update the dashboard based on data from the input message.
 * E.g. change the text color based on the value of msg.color.
-* 
+*
 */
                     $scope.$watch('msg', function(msg) {
                         if (!msg) {
                             // Ignore undefined msg
                             return;
                         }
-                        
+
                         // The payload contains the new text, which we will store on the scope (in the model)
                         $scope.textContent = msg.payload;
                     });
 
 /*******************************************************************
 /*******************************************************************
-* 
+*
 * SEND MESSAGE FROM DASHBOARD TO NODE-RED FLOW
 * When the user has changed something in the dashboard, you can send the updated data to the Node-RED flow.
-* 
-*/                    
+*
+*/
                     $scope.change = function() {
                         // The data will be stored in the model on the scope
                         $scope.send({payload: $scope.textContent});
@@ -260,10 +261,10 @@
         catch (e) {
             console.log(e);		// catch any errors that may occur and display them in the web browsers console
         }
-		
+
 /*******************************************************************
 * !!REQUIRED!!
-* TODO: Get with team on purpose of this node. 
+* TODO: Get with team on purpose of this node.
 * There is no need to edit these lines.
 */
         node.on("close", function() {
