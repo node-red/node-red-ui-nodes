@@ -279,6 +279,7 @@
 	/**
 	 *  REQUIRED
 	 * Registers the node with a name, and a configuration.
+     * Type MUST start with ui_
 	 */
     RED.nodes.registerType("ui_lineargauge", LinearGaugeNode);
 };

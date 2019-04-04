@@ -180,5 +180,6 @@ ${(allowMenu ? md_menu : "")}
         });
     }
     // register ui_list node
+    // type MUST start with ui_
     RED.nodes.registerType('ui_list', ListNode);
 };

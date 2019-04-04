@@ -29,18 +29,18 @@ To support new widgets, the following runtime API is exported from the Node-RED 
   | :--- | :------------------------- | :----------------------------------------------------------- |
   | 1    | node*                      | controlling node.<br/>optional if scope is "global".                                             |
   | 2    | format                     | HTML code of widget.<br />Accepts HTML same as one for Template Dashboard widget node. |
-  | 3    | group*                     | group node object to which widget belongs                    |
+  | 3    | group                      | group node object to which widget belongs                    |
   | 4    | width*                     | width of widget                                              |
   | 5    | height*                    | height of widget                                             |
-  | 6    | templateScope              | scope of widget ("global" or "local")                        |
-  | 7    | emitOnlyNewValues*         | send message if changed                                      |
-  | 8    | forwardInputMessages*      | forward input messages to output                             |
-  | 9    | storeFrontEndInputAsState* | store received message                                       |
-  | 10   | convert*                   | callback to convert value to front-end                       |
-  | 11   | beforeEmit*                | callback to prepare message                                  |
-  | 12   | convertBack*               | callback to convert sent message                             |
-  | 13   | beforeSend*                | callback to prepare message                                  |
-  | 14   | order                      | order in group                                               |
+  | 6    | order                      | order in group                                               |
+  | 7    | templateScope              | scope of widget ("global" or "local")                        |
+  | 8    | emitOnlyNewValues*         | send message if changed                                      |
+  | 9    | forwardInputMessages*      | forward input messages to output                             |
+  | 10   | storeFrontEndInputAsState* | store received message                                       |
+  | 11   | convert*                   | callback to convert value to front-end                       |
+  | 12   | beforeEmit*                | callback to prepare message                                  |
+  | 13   | convertBack*               | callback to convert sent message                             |
+  | 14   | beforeSend*                | callback to prepare message                                  |
   | 15   | initController*            | callback to initialize in controller                         |
 
   `addWidget` returns a callback that should be called on close of controlling node.
@@ -142,7 +142,7 @@ To support new widgets, the following runtime API is exported from the Node-RED 
             return conf;
         };
 
-        RED.nodes.registerType('ui_cal', mk_conf('cal'));
+        RED.nodes.registerType('ui_cal', mk_conf('cal')); // NOTE: The type MUST start with "ui_"
     </script>
     ```
     Use `ui_group` for configuring belonging group, and `elementSizer` for configuring widget size.
@@ -205,6 +205,6 @@ To support new widgets, the following runtime API is exported from the Node-RED 
           }
           node.on("close", done);
       }
-      RED.nodes.registerType('ui_cal', CalNode);
+      RED.nodes.registerType('ui_cal', CalNode); // NOTE: The type MUST start with "ui_"
   };
   ```

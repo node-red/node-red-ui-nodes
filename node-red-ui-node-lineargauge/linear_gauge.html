@@ -11,7 +11,7 @@
   limitations under the License.
 -->
 <script type="text/javascript">
-    RED.nodes.registerType('ui_lineargauge',{
+    RED.nodes.registerType('ui_lineargauge',{    // type MUST start with ui_
         category: 'dashboard',
         color: 'rgb( 63, 173, 181)',
         defaults: {
@@ -76,7 +76,7 @@
     <div class="form-row">
         <label for="node-input-colorLowArea"><i class="fa fa-paint-brush"></i> Low Area Color</span></label>
         <input type="color" id="node-input-colorLowArea"/>
-    </div>    
+    </div>
     <div class="form-row">
         <label for="node-input-unit"><i class="fa fa-asterisk" aria-hidden="true"></i> Unit</span></label>
         <input type="text" id="node-input-unit"/>
@@ -102,4 +102,3 @@
     <p>Actual Value: <code>msg.payload</code></p>
 
 </script>
-
