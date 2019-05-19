@@ -13,7 +13,7 @@ in your Node-RED user directory - typically `~/.node-red`
 
         npm i node-red-node-ui_list
 
-**Note**: This node uses APIs that are supported from Node-RED 0.19 and Node-RED Dashboard 2.10.
+**Note**: This node uses APIs that require at least Node-RED 0.19 and Node-RED Dashboard 2.10.
 
 Usage
 -----
@@ -24,9 +24,11 @@ An array of Items is passed in by `msg.payload`.  It consists of objects contain
 
 - `title` - title of the item,
 - `description` - description of the item. optional if line type is `Single-line ` or action type is `menu`,
-- `menu` - list of menu items (optional),
 - `icon` - URL of icon (optional),
-- `icon_name` - font icon name (optional).
+- `icon_name` - Font Awesome 4.7 icon name (optional),
+- `menu` - list of menu items (optional).
+
+If you just need a simple text list then `msg.payload` can be a simple array of strings, e.g. `["Item1","Item2","Item3"]`
 
 The type of item display can be selected by `List Type` selector in the node configuration panel.
 
@@ -40,7 +42,7 @@ An action to be taken for a displayed item can be selected by the `Action` selec
 
 If `Allow HTML in displayed text` checkbox is selected, HTML tags can be used in `title` and `description`.
 
-Icon can be specified by `icon` or `icon_name` property.  `icon` specifies URL of icon image.  If `icon` is `null`, blank icon is displayed. `icon_name` specifies an icon name of font icons (e.g. `fa-home`). `icon` has precedence over `icon_name`.
+Icon can be specified by `icon` or `icon_name` property.  `icon` specifies URL of icon image.  If `icon` is `null`, blank icon is displayed. `icon_name` specifies an icon name of Font Awesome 4.7 icons (e.g. `fa-home`). `icon` has precedence over `icon_name`.
 
 Example
 -------

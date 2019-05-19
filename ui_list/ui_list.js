@@ -149,21 +149,25 @@ ${(allowMenu ? md_menu : "")}
                     },
                     beforeEmit: function(msg, value) {
                         // make msg.payload accessible as msg.items in widget
+                        // and map simple text array to object title
+                        if (Array.isArray(value)) {
+                            value = value.map(function(i) {
+                                if (typeof i === "string") { i = {title:i} };
+                                return i;
+                            });
+                        }
                         return { msg: { items: value } };
                     },
                     beforeSend: function (msg, orig) {
-                        if (orig) {
-                            return orig.msg;
-                        }
+                        if (orig) { return orig.msg; }
                     },
                     initController: function($scope, events) {
                         // initialize $scope.click to send clicked widget item
                         // used as ng-click="click(item, selected)"
                         $scope.click = function(item, selected) {
-                            if (selected) {
-                                item.selected = selected;
-                            }
-                            $scope.send({payload: item});
+                            if (selected) { item.selected = selected; }
+                            if (item.hasOwnProperty("$$hashKey")) { delete item.$$hashKey; }
+                            $scope.send({payload:item});
                         };
                     }
                 });

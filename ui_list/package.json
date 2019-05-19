@@ -1,9 +1,9 @@
 {
     "name": "node-red-node-ui_list",
-    "version": "0.1.4",
+    "version": "0.1.5",
     "description": "Node-RED Dashboard UI widget node for simple list",
     "author" : "Hiroyasu Nishiyama",
-    "license": "Apache",
+    "license": "Apache-2.0",
     "main": "ui_list.js",
     "node-red": {
         "nodes": {
@@ -17,6 +17,7 @@
     "keywords": [
         "node-red",
         "node-red-dashboard",
-        "list"
+        "list",
+        "dashboard"
     ]
 }
