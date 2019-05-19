@@ -2,7 +2,10 @@
     "name": "node-red-node-ui_list",
     "version": "0.1.5",
     "description": "Node-RED Dashboard UI widget node for simple list",
-    "author" : "Hiroyasu Nishiyama",
+    "author": "Hiroyasu Nishiyama",
+    "contributors": [
+        "Dave Conway-Jones"
+    ],
     "license": "Apache-2.0",
     "main": "ui_list.js",
     "node-red": {
@@ -10,9 +13,10 @@
             "ui_list": "ui_list.js"
         }
     },
-    "repository" : {
-        "type" : "git",
-        "url": "https://github.com/node-red/node-red-ui-nodes/ui_list"
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/node-red/node-red-ui-nodes.git",
+        "path": "/tree/master/ui_list"
     },
     "keywords": [
         "node-red",
