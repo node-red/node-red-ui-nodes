@@ -1,0 +1,183 @@
+<!--
+  Copyright JS Foundation and other contributors, http://js.foundation
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+
+<script type='text/x-red' data-template-name='ui_table'>
+    <div class='form-row' id='template-row-group'>
+        <label for='node-input-group'>
+            <i class='fa fa-table'></i> <span data-i18n='table.label.group'></span>
+        </label>
+        <input type='text' id='node-input-group'>
+    </div>
+    <div class='form-row' id='template-row-size'>
+        <label>
+            <i class='fa fa-object-group'></i> <span data-i18n='table.label.size'></span>
+        </label>
+        <input type='hidden' id='node-input-width'>
+        <input type='hidden' id='node-input-height'>
+        <button class='editor-button' id='node-input-size'></button>
+    </div>
+    <div class="form-row node-input-column-container-row">
+        <label for="node-input-width" style="vertical-align:top"><i class="fa fa-list-alt"></i> Columns</label>
+        <ol id="node-input-column-container"></ol>
+    </div>
+    <div class='form-row'>
+        <label for='node-input-name'>
+            <i class='fa fa-tag'></i> <span data-i18n='node-red:common.label.name'></span>
+        </label>
+        <input type='text' id='node-input-name' data-i18n='[placeholder]node-red:common.label.name'>
+    </div>
+    <div class="form-tips">To use this node, you need to install node-red-dashboard module.</div>
+</script>
+
+<script type='text/javascript'>
+    RED.nodes.registerType('ui_table', {
+        category: 'dashboard',
+        color: 'rgb(63, 173, 181)',
+        defaults: {
+            group: {
+                type: 'ui_group',
+                required: true
+            },
+            name: { value: '' },
+            order: { value: 0 },
+            width: {
+                value: 0,
+                validate: function (v) {
+                    var valid = true;
+                    var width = v || 0;
+                    var currentGroup = $('#node-input-group').val() || this.group;
+                    var groupNode = RED.nodes.node(currentGroup);
+                    valid = !groupNode || +width <= +groupNode.width;
+                    $('#node-input-size').toggleClass('input-error', !valid);
+                    return valid;
+                }
+            },
+            height: { value: 0 },
+            columns: { value: [] }
+        },
+        inputs: 1,
+        outputs: 0,
+        icon: 'font-awesome/fa-table',
+        align: 'right',
+        paletteLabel: 'table',
+        label: function () {
+            return this.name || 'table';
+        },
+        oneditprepare: function () {
+            if(RED.nodes.getType('ui_group')) {
+                $('.form-tips').hide();
+            } else {
+                $('.form-row').hide();
+            }
+            $('#node-input-size').elementSizer({
+                width: '#node-input-width',
+                height: '#node-input-height',
+                group: '#node-input-group'
+            });
+            $('#node-input-column-container')
+            .css('min-height','250px').css('min-width','450px')
+            .editableList({
+                sortable: true,
+                removable: true,
+                addButton: true,
+                addItem: function(row, index, data) {
+                    $('<div><span>Field</span></div>')
+                    .css('display','inline-block').css('width','50px').appendTo(row);
+                    var field = $('<input/>', {
+                        class: 'node-input-column-field',
+                        type: 'text',
+                        style: "margin-left: 5px;"
+                    }).appendTo(row);
+                    if (data.field) {
+                        field.val(data.field);
+                    }
+                    $('<br>').appendTo(row);
+                    $('<div><span>Title</span></div>')
+                    .css('display','inline-block').css('width','50px').appendTo(row);
+                    var title = $('<input/>', {
+                        class: 'node-input-column-title',
+                        type: 'text',
+                        style: "margin-left: 5px;"
+                    }).appendTo(row);
+                    if (data.title) {
+                        title.val(data.title);
+                    }
+                    $('<br>').appendTo(row);
+                    $('<div><span>Width</span></div>')
+                    .css('display','inline-block').css('width','50px').appendTo(row);
+                    var title = $('<input/>', {
+                        class: 'node-input-column-width',
+                        type: 'text',
+                        style: "margin-left: 5px;"
+                    }).appendTo(row);
+                    if (data.width) {
+                        title.val(data.width);
+                    }
+                    $('<br>').appendTo(row);
+                    $('<div><span>Align</span></div>')
+                    .css('display','inline-block').css('width','50px').appendTo(row);
+                    var align = $('<select/>', {
+                        class: 'node-input-column-align',
+                        style: "margin-left: 5px;"
+                    }).appendTo(row);
+                    align.append($('<option></option>').val('left').text('left'));
+                    align.append($('<option></option>').val('center').text('center'));
+                    align.append($('<option></option>').val('right').text('right'));
+                    if (data.align) {
+                        align.val(data.align);
+                    }
+                    $('<br>').appendTo(row);
+                    $('<div><span>Format</span></div>')
+                    .css('display','inline-block').css('width','50px').appendTo(row);
+                    var align = $('<select/>', {
+                        class: 'node-input-column-formatter',
+                        style: "margin-left: 5px;"
+                    }).appendTo(row);
+                    align.append($('<option></option>').val('plaintext').text('Plain text'));
+                    align.append($('<option></option>').val('datetime').text('Date time'));
+                    align.append($('<option></option>').val('link').text('Link'));
+                    align.append($('<option></option>').val('image').text('Image'));
+                    align.append($('<option></option>').val('html').text('HTML'));
+                    align.append($('<option></option>').val('progress').text('Progress'));
+                    align.append($('<option></option>').val('traffic').text('Traffic'));
+                    align.append($('<option></option>').val('color').text('Color'));
+                    align.append($('<option></option>').val('tickCross').text('Tick cross'));
+                    align.append($('<option></option>').val('star').text('Star'));
+                    align.append($('<option></option>').val('rownum').text('Row number'));
+                    if (data.formatter) {
+                        align.val(data.formatter);
+                    }
+                }
+            });
+            $("#node-input-column-container").editableList('addItems', this.columns);
+        },
+        oneditsave: function() {
+            var columns = $("#node-input-column-container").editableList('items');
+            var node = this;
+            node.columns = [];
+            columns.each(function (i) {
+                var colum = $(this);
+                var c = {};
+                c.field = colum.find(".node-input-column-field").val();
+                c.title = colum.find(".node-input-column-title").val();
+                c.width = colum.find(".node-input-column-width").val();
+                c.align = colum.find(".node-input-column-align").val();
+                c.formatter = colum.find(".node-input-column-formatter").val();
+                node.columns.push(c);
+            });
+        }
+    });
+</script>
