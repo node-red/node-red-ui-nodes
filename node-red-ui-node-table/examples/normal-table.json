@@ -1,0 +1,64 @@
+[
+    {
+        "id": "bc380b4b.e2d668",
+        "type": "inject",
+        "z": "9663b812.93cc28",
+        "name": "",
+        "topic": "",
+        "payload": "[{\"Name\":\"Kazuhito Yokoi\",\"Age\":\"35\",\"Favourite Color\":\"red\",\"Date Of Birth\":\"12/09/1983\"},{\"Name\":\"Oli Bob\",\"Age\":\"12\",\"Favourite Color\":\"red\",\"Date Of Birth\":\"12/08/2017\"}]",
+        "payloadType": "json",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "x": 150,
+        "y": 220,
+        "wires": [
+            [
+                "2460c057.cfbc4"
+            ]
+        ]
+    },
+    {
+        "id": "2460c057.cfbc4",
+        "type": "ui_table",
+        "z": "9663b812.93cc28",
+        "group": "625872f.40b1e8c",
+        "name": "",
+        "width": 0,
+        "height": 4,
+        "columns": [],
+        "x": 350,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "9e33f566.8c9098",
+        "type": "comment",
+        "z": "9663b812.93cc28",
+        "name": "Normal table",
+        "info": "",
+        "x": 150,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "625872f.40b1e8c",
+        "type": "ui_group",
+        "z": "",
+        "name": "Default",
+        "tab": "58c2aa06.ef46e4",
+        "disp": true,
+        "width": "6",
+        "collapse": false
+    },
+    {
+        "id": "58c2aa06.ef46e4",
+        "type": "ui_tab",
+        "z": "",
+        "name": "Home",
+        "icon": "dashboard",
+        "disabled": false,
+        "hidden": false
+    }
+]

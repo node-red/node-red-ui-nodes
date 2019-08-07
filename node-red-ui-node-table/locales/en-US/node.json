@@ -1,0 +1,11 @@
+{
+    "table" : {
+        "label" : {
+            "group" : "Group",
+            "size" : "Size"
+        },
+        "error": {
+            "no-group": "group not configured"
+        }
+    }
+}

@@ -1,0 +1,21 @@
+{
+  "name": "node-red-ui-node-table",
+  "version": "0.0.1",
+  "description": "Table UI widget node for Node-RED Dashboard",
+  "author": "Kazuhito Yokoi",
+  "license": "Apache-2.0",
+  "node-red": {
+    "nodes": {
+      "ui_table": "node.js"
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/node-red/node-red-ui-nodes.git"
+  },
+  "keywords": [
+    "node-red",
+    "node-red-dashboard",
+    "table"
+  ]
+}
