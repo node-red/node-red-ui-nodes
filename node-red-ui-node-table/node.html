@@ -90,51 +90,39 @@
                 group: '#node-input-group'
             });
             $('#node-input-column-container')
-            .css('min-height','250px').css('min-width','450px')
+            .css('min-height','250px').css('min-width','432px')
             .editableList({
                 sortable: true,
                 removable: true,
                 addButton: true,
                 addItem: function(row, index, data) {
                     $('<div><span>Property</span></div>')
-                    .css('display','inline-block').css('width','50px').appendTo(row);
+                    .css('display','inline-block').css('width','55px').appendTo(row);
                     var field = $('<input/>', {
                         class: 'node-input-column-field',
                         type: 'text',
-                        style: "margin-left: 5px;"
+                        style: "margin-left:5px; width:82%;"
                     }).appendTo(row);
                     if (data.field) {
                         field.val(data.field);
                     }
                     $('<br>').appendTo(row);
                     $('<div><span>Title</span></div>')
-                    .css('display','inline-block').css('width','50px').appendTo(row);
+                    .css('display','inline-block').css('width','55px').appendTo(row);
                     var title = $('<input/>', {
                         class: 'node-input-column-title',
                         type: 'text',
-                        style: "margin-left: 5px;"
+                        style: "margin-left:5px; width:82%;"
                     }).appendTo(row);
                     if (data.title) {
                         title.val(data.title);
                     }
                     $('<br>').appendTo(row);
-                    $('<div><span>Width</span></div>')
-                    .css('display','inline-block').css('width','50px').appendTo(row);
-                    var title = $('<input/>', {
-                        class: 'node-input-column-width',
-                        type: 'text',
-                        style: "margin-left: 5px;",
-                        placeholder: "px, %, or blank"
-                    }).appendTo(row);
-                    if (data.width) {
-                        title.val(data.width);
-                    }
-                    $('<br>').appendTo(row);
                     $('<div><span>Align</span></div>')
-                    .css('display','inline-block').css('width','50px').appendTo(row);
+                    .css('display','inline-block').css('width','55px').appendTo(row);
                     var align = $('<select/>', {
                         class: 'node-input-column-align',
-                        style: "margin-left: 5px;"
+                        style: "margin-left:5px; width:25%;"
                     }).appendTo(row);
                     align.append($('<option></option>').val('left').text('left'));
                     align.append($('<option></option>').val('center').text('center'));
@@ -142,12 +130,24 @@
                     if (data.align) {
                         align.val(data.align);
                     }
+                    // $('<br>').appendTo(row);
+                    $('<div><span>Width</span></div>')
+                    .css('display','inline-block').css('width','35px').css('padding-left','19%').appendTo(row);
+                    var title = $('<input/>', {
+                        class: 'node-input-column-width',
+                        type: 'text',
+                        style: "margin-left:5px; width:28%;",
+                        placeholder: "px, %, or blank"
+                    }).appendTo(row);
+                    if (data.width) {
+                        title.val(data.width);
+                    }
                     $('<br>').appendTo(row);
                     $('<div><span>Format</span></div>')
-                    .css('display','inline-block').css('width','50px').appendTo(row);
+                    .css('display','inline-block').css('width','55px').appendTo(row);
                     var align = $('<select/>', {
                         class: 'node-input-column-formatter',
-                        style: "margin-left: 5px;"
+                        style: "margin-left:5px; width:50%"
                     }).appendTo(row);
                     align.append($('<option></option>').val('plaintext').text('Plain text'));
                     align.append($('<option></option>').val('html').text('HTML'));

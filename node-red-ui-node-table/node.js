@@ -68,7 +68,8 @@ module.exports = function (RED) {
                                 data: tabledata,
                                 layout:'fitColumns',
                                 columns: columndata,
-                                autoColumns: columndata.length == 0
+                                autoColumns: columndata.length == 0,
+                                movableColumns:true
                             });
                         });
                     }
