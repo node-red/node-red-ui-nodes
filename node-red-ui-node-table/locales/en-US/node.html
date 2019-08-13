@@ -1,5 +1,5 @@
 <script type="text/x-red" data-help-name="ui_table">
-    <p>Node-RED widget node which shows table.</p>
+    <p>A Node-RED-Dashboard UI widget node that displays a table of data.</p>
 
     <h3>Inputs</h3>
     <dl class="message-properties">
@@ -8,7 +8,23 @@
         </dd>
     </dl>
 
-    <p>Each row object data should have the same set of keys because keys in an object are used as the column name.</p>
+    <p>Each data row object should have the same set of keys because the keys in the object are used as the column names.</p>
+    <p>With no configuration the node will try to create a table with equally spaced columns of simple text for each row provided, using the keys as column titles.</p>
+    <p>If manual configuration is used each column can be configured with a Title, Width, Alignment and Format.</p>
+    <p>Width can be in pixels, or %, or left blank for automatic.</p>
+    <p>Format can be:<ul>
+        <li>Plain Text - Simple text values.</li>
+        <li>HTML - Rich html to allow text Formatting - <i>NOTE</i>: this is raw un-sanitised HTML.</li>
+        <li>Link - URL link to a web page.</li>
+        <li>Image - Source (src) URL of an image to display.</li>
+        <li>Progress - a progress bar from 0 to 100.</li>
+        <li>Traffic - Red/Amber/Green indicator light set by numbers in the range 0-33-67-100.</li>
+        <li>Color - HTML color name, or hex value (#rrggbb) to fill the cell.</li>
+        <li>Tick/Cross - Tick or Cross symbol, boolean true/false, numeric 1/0 or text "1"/"0".</li>
+        <li>Stars - Number of stars - numeric 0 to 5.</li>
+        <li>Date/Time</li>
+        <li>Row Number - Current row number.</li>
+    </ul></p>
 
     <h3>Example data</h3>
     <pre><code>[
@@ -16,13 +32,15 @@
         "Name": "Kazuhito Yokoi",
         "Age": "35",
         "Favourite Color": "red",
-        "Date Of Birth": "12/09/1983"
+        "Date Of Birth": "12/09/1983",
+        "Rating": 5
     },
     {
         "Name": "Oli Bob",
         "Age": "12",
         "Favourite Color": "red",
-        "Date Of Birth": "12/08/2017"
+        "Date Of Birth": "12/08/2017",
+        "Rating": 2
     }
 ]</code></pre>
 </script>

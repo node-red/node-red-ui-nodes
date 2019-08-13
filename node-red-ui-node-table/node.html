@@ -29,17 +29,16 @@
         <input type='hidden' id='node-input-height'>
         <button class='editor-button' id='node-input-size'></button>
     </div>
-    <div class="form-row node-input-column-container-row">
-        <label for="node-input-width" style="vertical-align:top"><i class="fa fa-list-alt"></i> Columns</label>
-        <ol id="node-input-column-container"></ol>
-    </div>
     <div class='form-row'>
         <label for='node-input-name'>
             <i class='fa fa-tag'></i> <span data-i18n='node-red:common.label.name'></span>
         </label>
         <input type='text' id='node-input-name' data-i18n='[placeholder]node-red:common.label.name'>
     </div>
-    <div class="form-tips">To use this node, you need to install node-red-dashboard module.</div>
+    <div class="form-row node-input-column-container-row">
+        <label for="node-input-width" style="vertical-align:top"><i class="fa fa-list-alt"></i> Columns</label>
+        <ol id="node-input-column-container"></ol>
+    </div>
 </script>
 
 <script type='text/javascript'>
@@ -76,6 +75,9 @@
         label: function () {
             return this.name || 'table';
         },
+        labelStyle: function() {
+            return this.name?"node_label_italic":"";
+        },
         oneditprepare: function () {
             if(RED.nodes.getType('ui_group')) {
                 $('.form-tips').hide();
@@ -94,7 +96,7 @@
                 removable: true,
                 addButton: true,
                 addItem: function(row, index, data) {
-                    $('<div><span>Field</span></div>')
+                    $('<div><span>Property</span></div>')
                     .css('display','inline-block').css('width','50px').appendTo(row);
                     var field = $('<input/>', {
                         class: 'node-input-column-field',
@@ -121,7 +123,8 @@
                     var title = $('<input/>', {
                         class: 'node-input-column-width',
                         type: 'text',
-                        style: "margin-left: 5px;"
+                        style: "margin-left: 5px;",
+                        placeholder: "px, %, or blank"
                     }).appendTo(row);
                     if (data.width) {
                         title.val(data.width);
@@ -147,15 +150,15 @@
                         style: "margin-left: 5px;"
                     }).appendTo(row);
                     align.append($('<option></option>').val('plaintext').text('Plain text'));
-                    align.append($('<option></option>').val('datetime').text('Date time'));
-                    align.append($('<option></option>').val('link').text('Link'));
-                    align.append($('<option></option>').val('image').text('Image'));
                     align.append($('<option></option>').val('html').text('HTML'));
-                    align.append($('<option></option>').val('progress').text('Progress'));
-                    align.append($('<option></option>').val('traffic').text('Traffic'));
-                    align.append($('<option></option>').val('color').text('Color'));
-                    align.append($('<option></option>').val('tickCross').text('Tick cross'));
-                    align.append($('<option></option>').val('star').text('Star'));
+                    align.append($('<option></option>').val('link').text('Link (http://..)'));
+                    align.append($('<option></option>').val('image').text('Image (src url)'));
+                    align.append($('<option></option>').val('progress').text('Progress (0-100)'));
+                    align.append($('<option></option>').val('traffic').text('Traffic (0-33-67-100)'));
+                    align.append($('<option></option>').val('color').text('Color (html,#rrggbb)'));
+                    align.append($('<option></option>').val('tickCross').text('Tick / Cross (boolean,1/0)'));
+                    align.append($('<option></option>').val('star').text('Stars (0-5)'));
+                    align.append($('<option></option>').val('datetime').text('Date time'));
                     align.append($('<option></option>').val('rownum').text('Row number'));
                     if (data.formatter) {
                         align.val(data.formatter);
@@ -178,6 +181,17 @@
                 c.formatter = colum.find(".node-input-column-formatter").val();
                 node.columns.push(c);
             });
+        },
+        oneditresize: function(size) {
+            var rows = $("#dialog-form>div:not(.node-input-column-container-row)");
+            var height = size.height;
+            for (var i=0; i<rows.length; i++) {
+                height -= $(rows[i]).outerHeight(true);
+            }
+            var editorRow = $("#dialog-form>div.node-input-column-container-row");
+            height -= (parseInt(editorRow.css("marginTop"))+parseInt(editorRow.css("marginBottom")));
+
+            $("#node-input-column-container").editableList('height',height);
         }
     });
 </script>
