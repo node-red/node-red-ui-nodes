@@ -158,7 +158,7 @@
                     align.append($('<option></option>').val('color').text('Color (html,#rrggbb)'));
                     align.append($('<option></option>').val('tickCross').text('Tick / Cross (boolean,1/0)'));
                     align.append($('<option></option>').val('star').text('Stars (0-5)'));
-                    align.append($('<option></option>').val('datetime').text('Date time'));
+                    // align.append($('<option></option>').val('datetime').text('Date time'));
                     align.append($('<option></option>').val('rownum').text('Row number'));
                     if (data.formatter) {
                         align.val(data.formatter);
@@ -179,6 +179,7 @@
                 c.width = colum.find(".node-input-column-width").val();
                 c.align = colum.find(".node-input-column-align").val();
                 c.formatter = colum.find(".node-input-column-formatter").val();
+                c.formatterParams = { target:"_blank" };
                 node.columns.push(c);
             });
         },

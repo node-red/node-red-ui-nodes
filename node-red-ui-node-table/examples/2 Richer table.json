@@ -1,61 +1,11 @@
 [
     {
-        "id": "89c6c6ff.3b8c08",
-        "type": "ui_table",
-        "z": "bb6af731.9866a8",
-        "group": "571a38b1.5e3638",
-        "name": "People",
-        "order": 1,
-        "width": 0,
-        "height": 0,
-        "columns": [
-            {
-                "field": "Name",
-                "title": "Who",
-                "width": "",
-                "align": "left",
-                "formatter": "html"
-            },
-            {
-                "field": "Age",
-                "title": "Age",
-                "width": "75",
-                "align": "center",
-                "formatter": "plaintext"
-            },
-            {
-                "field": "Color",
-                "title": "",
-                "width": "5%",
-                "align": "left",
-                "formatter": "color"
-            },
-            {
-                "field": "Prog",
-                "title": "%",
-                "width": "100",
-                "align": "left",
-                "formatter": "star"
-            },
-            {
-                "field": "Pass",
-                "title": "",
-                "width": "5%",
-                "align": "center",
-                "formatter": "tickCross"
-            }
-        ],
-        "x": 420,
-        "y": 580,
-        "wires": []
-    },
-    {
         "id": "b7dff285.69049",
         "type": "inject",
         "z": "bb6af731.9866a8",
         "name": "",
         "topic": "",
-        "payload": "[{\"Name\":\"<b>Yokoi</b>\",\"Age\":\"30\",\"Color\":\"lime\",\"Prog\":\"3\",\"Pass\":true},{\"Name\":\"<i>DCJ</i>\",\"Age\":\"50\",\"Color\":\"dodgerblue\",\"Prog\":\"2\",\"Pass\":false},{\"Name\":\"Nick\",\"Age\":\"40\",\"Color\":\"darkred\",\"Prog\":\"5\",\"Pass\":true}]",
+        "payload": "[{\"Name\":\"<b>Yokoi</b>\",\"Age\":\"30\",\"Color\":\"lime\",\"Prog\":70,\"Star\":\"3\"},{\"Name\":\"<i>DCJ</i>\",\"Age\":\"50\",\"Color\":\"dodgerblue\",\"Prog\":\"45\",\"Star\":2,\"Pass\":false,\"web\":\"\"},{\"Name\":\"Nick\",\"Age\":\"40\",\"Color\":\"darkred\",\"Prog\":95,\"Star\":\"5\",\"Pass\":true,\"web\":\"http://nodered.org\"},{\"Name\":\"Oli\"}]",
         "payloadType": "json",
         "repeat": "",
         "crontab": "",
@@ -65,9 +15,114 @@
         "y": 580,
         "wires": [
             [
-                "89c6c6ff.3b8c08"
+                "7d48e13.90ee22"
             ]
         ]
+    },
+    {
+        "id": "cb53cb76.5fd0d8",
+        "type": "inject",
+        "z": "bb6af731.9866a8",
+        "name": "",
+        "topic": "",
+        "payload": "[{\"Name\":\"<b>Yokoi</b>\",\"Age\":\"30\",\"Color\":\"lime\",\"Prog\":20,\"Star\":\"1\"},{\"Name\":\"<i>DCJ</i>\",\"Age\":\"50\",\"Color\":\"dodgerblue\",\"Prog\":\"80\",\"Star\":4,\"Pass\":true,\"web\":\"\"},{\"Name\":\"Nick\",\"Age\":\"40\",\"Color\":\"red\",\"Prog\":90,\"Star\":\"5\",\"Pass\":true,\"web\":\"http://nodered.org\"},{\"Name\":\"Oli\"}]",
+        "payloadType": "json",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "x": 210,
+        "y": 620,
+        "wires": [
+            [
+                "7d48e13.90ee22"
+            ]
+        ]
+    },
+    {
+        "id": "7d48e13.90ee22",
+        "type": "ui_table",
+        "z": "bb6af731.9866a8",
+        "group": "571a38b1.5e3638",
+        "name": "People",
+        "order": 1,
+        "width": "8",
+        "height": "3",
+        "columns": [
+            {
+                "field": "Name",
+                "title": "Who",
+                "width": "",
+                "align": "left",
+                "formatter": "html",
+                "formatterParams": {
+                    "target": "_blank"
+                }
+            },
+            {
+                "field": "Age",
+                "title": "Age",
+                "width": "40",
+                "align": "center",
+                "formatter": "plaintext",
+                "formatterParams": {
+                    "target": "_blank"
+                }
+            },
+            {
+                "field": "Color",
+                "title": "",
+                "width": "5%",
+                "align": "left",
+                "formatter": "color",
+                "formatterParams": {
+                    "target": "_blank"
+                }
+            },
+            {
+                "field": "Star",
+                "title": "%",
+                "width": "100",
+                "align": "left",
+                "formatter": "star",
+                "formatterParams": {
+                    "target": "_blank"
+                }
+            },
+            {
+                "field": "Pass",
+                "title": "",
+                "width": "5%",
+                "align": "center",
+                "formatter": "tickCross",
+                "formatterParams": {
+                    "target": "_blank"
+                }
+            },
+            {
+                "field": "Prog",
+                "title": "",
+                "width": "80",
+                "align": "left",
+                "formatter": "progress",
+                "formatterParams": {
+                    "target": "_blank"
+                }
+            },
+            {
+                "field": "web",
+                "title": "URL",
+                "width": "",
+                "align": "left",
+                "formatter": "link",
+                "formatterParams": {
+                    "target": "_blank"
+                }
+            }
+        ],
+        "x": 420,
+        "y": 580,
+        "wires": []
     },
     {
         "id": "571a38b1.5e3638",

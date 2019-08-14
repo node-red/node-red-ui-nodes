@@ -28,7 +28,7 @@ module.exports = function (RED) {
         var configAsJson = JSON.stringify(config);
         var html = String.raw`
             <link href='table/css/tabulator.min.css' rel='stylesheet'>
-            <script type='text/javascript' src='table/js/tabulator.min.js'></script>
+            <script type='text/javascript' src='table/js/tabulator.js'></script>
             <div id='ui_table-{{$id}}'></div>
             <input type='hidden' ng-init='init(` + configAsJson + `)'>
         `;
@@ -66,10 +66,11 @@ module.exports = function (RED) {
                             var columndata = $scope.config.columns;
                             var table = new Tabulator('#ui_table-' + $scope.$eval('$id'), {
                                 data: tabledata,
-                                layout:'fitColumns',
+                                layout: 'fitColumns',
                                 columns: columndata,
                                 autoColumns: columndata.length == 0,
-                                movableColumns:true
+                                movableColumns: true
+                                // rowClick:function(e, row) { console.log("CLICK",row._row.data) }
                             });
                         });
                     }

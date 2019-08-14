@@ -41,7 +41,6 @@ The columns can be configured manually. If so then only the `msg.payload` proper
    - **Color** - HTML color name, or hex value (#rrggbb) to fill the cell.
    - **Tick/Cross** - Tick or Cross symbol, boolean true/false, numeric 1/0 or text "1"/"0".
    - **Stars** - Number of stars - numeric 0 to 5.
-   - **Date/Time**
    - **Row Number** - Current row number.
 
 
