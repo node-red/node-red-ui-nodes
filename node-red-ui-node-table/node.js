@@ -96,6 +96,7 @@ module.exports = function (RED) {
                                 return
                             }                            
                             if (msg && msg.payload) {
+                                var tablediv = '#ui_table-' + $scope.$eval('$id')
                                 createTable(tablediv,msg.payload,$scope.config.columns)                               
                             }                            
                         });                        
