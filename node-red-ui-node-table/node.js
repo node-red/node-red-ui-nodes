@@ -65,24 +65,40 @@ module.exports = function (RED) {
                         return { msg: { payload: value } };
                     },
                     initController: function ($scope, events) {
-                        $scope.init = function (config) {
-                            $scope.config = config;
-                        };
-                        $scope.$watch('msg', function (msg) {
-                            var tabledata;
-                            if (msg && msg.payload) {
-                                tabledata = msg.payload;
-                            }
-                            var columndata = $scope.config.columns;
-                            var table = new Tabulator('#ui_table-' + $scope.$eval('$id'), {
-                                data: tabledata,
+                        $scope.inited = false;
+                        $scope.tabledata = null;
+                        var createTable = function(basediv, tabledata, columndata) {
+                            var table = new Tabulator(basediv, {
+                                data:tabledata,
                                 layout: 'fitColumns',
                                 columns: columndata,
                                 autoColumns: columndata.length == 0,
-                                movableColumns: true
-                                // rowClick:function(e, row) { console.log("CLICK",row._row.data) }
+                                movableColumns: true                              
                             });
-                        });
+                        };
+                        $scope.init = function (config) {
+                            $scope.config = config;
+                            var tablediv = '#ui_table-' + $scope.$eval('$id')
+                            var stateCheck = setInterval(() => {
+                                if (document.querySelector(tablediv) && $scope.tabledata) {
+                                    clearInterval(stateCheck);
+                                    $scope.inited = true
+                                    createTable(tablediv,$scope.tabledata,$scope.config.columns)                                   
+                                    $scope.tabledata = null//or delete?
+                                }
+                            }, 40);
+                        };
+                        $scope.$watch('msg', function (msg) {
+                            if($scope.inited == false){
+                                if (msg && msg.payload) {
+                                    $scope.tabledata = msg.payload;
+                                }                                
+                                return
+                            }                            
+                            if (msg && msg.payload) {
+                                createTable(tablediv,msg.payload,$scope.config.columns)                               
+                            }                            
+                        });                        
                     }
                 });
             }
