@@ -69,11 +69,11 @@ module.exports = function (RED) {
                         $scope.tabledata = null;
                         var createTable = function(basediv, tabledata, columndata) {
                             var table = new Tabulator(basediv, {
-                                data:tabledata,
+                                data: tabledata,
                                 layout: 'fitColumns',
                                 columns: columndata,
                                 autoColumns: columndata.length == 0,
-                                movableColumns: true                              
+                                movableColumns: true
                             });
                         };
                         $scope.init = function (config) {
@@ -82,23 +82,23 @@ module.exports = function (RED) {
                             var stateCheck = setInterval(() => {
                                 if (document.querySelector(tablediv) && $scope.tabledata) {
                                     clearInterval(stateCheck);
-                                    $scope.inited = true
-                                    createTable(tablediv,$scope.tabledata,$scope.config.columns)                                   
-                                    $scope.tabledata = null//or delete?
+                                    $scope.inited = true;
+                                    createTable(tablediv,$scope.tabledata,$scope.config.columns);
+                                    $scope.tabledata = null; //or delete?
                                 }
                             }, 40);
                         };
                         $scope.$watch('msg', function (msg) {
-                            if($scope.inited == false){
+                            if ($scope.inited == false) {
                                 if (msg && msg.payload) {
                                     $scope.tabledata = msg.payload;
-                                }                                
-                                return
-                            }                            
+                                }
+                                return;
+                            }
                             if (msg && msg.payload) {
-                                createTable(tablediv,msg.payload,$scope.config.columns)                               
-                            }                            
-                        });                        
+                                createTable(tablediv,msg.payload,$scope.config.columns);
+                            }
+                        });
                     }
                 });
             }
