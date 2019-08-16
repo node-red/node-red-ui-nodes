@@ -67,6 +67,7 @@ module.exports = function (RED) {
                     initController: function ($scope, events) {
                         $scope.inited = false;
                         $scope.tabledata = null;
+                        var tablediv;
                         var createTable = function(basediv, tabledata, columndata) {
                             var table = new Tabulator(basediv, {
                                 data: tabledata,
@@ -78,7 +79,7 @@ module.exports = function (RED) {
                         };
                         $scope.init = function (config) {
                             $scope.config = config;
-                            var tablediv = '#ui_table-' + $scope.$eval('$id')
+                            tablediv = '#ui_table-' + $scope.$eval('$id')
                             var stateCheck = setInterval(() => {
                                 if (document.querySelector(tablediv) && $scope.tabledata) {
                                     clearInterval(stateCheck);
