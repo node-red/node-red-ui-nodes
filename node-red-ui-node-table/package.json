@@ -14,6 +14,7 @@
     "type": "git",
     "url": "git+https://github.com/node-red/node-red-ui-nodes.git"
   },
+  "homepage": "https://github.com/node-red/node-red-ui-nodes/tree/master/node-red-ui-node-table#README.md",
   "keywords": [
     "node-red",
     "node-red-dashboard",

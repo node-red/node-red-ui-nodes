@@ -19,7 +19,8 @@ module.exports = function (RED) {
         if (!conf || !conf.hasOwnProperty('group')) {
             node.error(RED._('table.error.no-group'));
             return false;
-        } else {
+        }
+        else {
             return true;
         }
     }
@@ -33,7 +34,8 @@ module.exports = function (RED) {
                 <div id='ui_table-{{$id}}'></div>
                 <input type='hidden' ng-init='init(` + configAsJson + `)'>
             `;
-        } else { html = String.raw`
+        }
+        else { html = String.raw`
                 <link href='table/css/tabulator.min.css' rel='stylesheet'>
                 <script type='text/javascript' src='table/js/tabulator.js'></script>
                 <div id='ui_table-{{$id}}'></div>
@@ -61,8 +63,16 @@ module.exports = function (RED) {
                     templateScope: 'local',
                     order: config.order,
                     group: config.group,
+                    forwardInputMessages: false,
                     beforeEmit: function (msg, value) {
                         return { msg: { payload: value } };
+                    },
+                    beforeSend: function (msg, orig) {
+                        if (orig) {
+                            orig.payload = orig.msg;
+                            delete orig.msg;
+                            return orig;
+                        }
                     },
                     initController: function ($scope, events) {
                         $scope.inited = false;
@@ -103,24 +113,19 @@ module.exports = function (RED) {
                     }
                 });
             }
-        } catch (e) {
-            console.log(e);
         }
+        catch (e) { console.log(e); }
+
         node.on('close', function () {
-            if (done) {
-                done();
-            }
+            if (done) { done(); }
         });
     }
 
     RED.nodes.registerType('ui_table', TableNode);
 
     var path;
-    if (RED.settings.ui) {
-        path = RED.settings.ui.path;
-    } else {
-        path = 'ui';
-    }
+    if (RED.settings.ui) { path = RED.settings.ui.path; }
+    else { path = 'ui'; }
 
     RED.httpNode.get('/' + path + '/table/*', function (req, res) {
         var options = {
