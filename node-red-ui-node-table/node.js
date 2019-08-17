@@ -68,11 +68,7 @@ module.exports = function (RED) {
                         return { msg: { payload: value } };
                     },
                     beforeSend: function (msg, orig) {
-                        if (orig) {
-                            orig.payload = orig.msg;
-                            delete orig.msg;
-                            return orig;
-                        }
+                        if (orig) { return orig.msg; }
                     },
                     initController: function ($scope, events) {
                         $scope.inited = false;
