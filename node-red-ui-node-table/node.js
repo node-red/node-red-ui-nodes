@@ -52,9 +52,13 @@ module.exports = function (RED) {
             RED.nodes.createNode(this, config);
             if (checkConfig(node, config)) {
                 var ui = RED.require('node-red-dashboard')(RED);
-                var rgb = parseInt(ui.getTheme()["page-sidebar-backgroundColor"].value.substring(1), 16);   // convert rrggbb to decimal
-                var luma = 0.2126 * ((rgb >> 16) & 0xff) + 0.7152 * ((rgb >>  8) & 0xff) + 0.0722 * ((rgb >>  0) & 0xff); // per ITU-R BT.709
+                var luma = 255;
+                if (ui.getTheme() !== undefined) {
+                    var rgb = parseInt(ui.getTheme()["page-sidebar-backgroundColor"].value.substring(1), 16);   // convert rrggbb to decimal
+                    luma = 0.2126 * ((rgb >> 16) & 0xff) + 0.7152 * ((rgb >>  8) & 0xff) + 0.0722 * ((rgb >>  0) & 0xff); // per ITU-R BT.709
+                }
                 var html = HTML(config,(luma < 128));
+
                 done = ui.addWidget({
                     node: node,
                     width: config.width,

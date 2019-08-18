@@ -1,6 +1,6 @@
 {
   "name": "node-red-ui-node-table",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "Table UI widget node for Node-RED Dashboard",
   "author": "Kazuhito Yokoi",
   "contributors": ["Dave Conway-Jones","@hotNipi"],
