@@ -37,6 +37,7 @@
     </div>
     <div class="form-row node-input-column-container-row">
         <label for="node-input-width" style="vertical-align:top"><i class="fa fa-list-alt"></i> Columns</label>
+        <span style="float:right"><span data-i18n='table.label.send'>&nbsp;</span><input type="checkbox" id="node-input-cts" style="display:inline-block; width:auto; vertical-align:top;"></span>
         <ol id="node-input-column-container"></ol>
     </div>
 </script>
@@ -46,10 +47,7 @@
         category: 'dashboard',
         color: 'rgb(63, 173, 181)',
         defaults: {
-            group: {
-                type: 'ui_group',
-                required: true
-            },
+            group: { type: 'ui_group', required: true },
             name: { value: '' },
             order: { value: 0 },
             width: {
@@ -65,7 +63,9 @@
                 }
             },
             height: { value: 0 },
-            columns: { value: [] }
+            columns: { value: [] },
+            outputs: { value: 0 },
+            cts: { value: false }
         },
         inputs: 1,
         outputs: 0,
@@ -181,6 +181,9 @@
                 c.formatterParams = { target:"_blank" };
                 node.columns.push(c);
             });
+            var that = this;
+            if ($("#node-input-cts").is(":checked")) { that.outputs = 1; }
+            else { that.outputs = 0; }
         },
         oneditresize: function(size) {
             var rows = $("#dialog-form>div:not(.node-input-column-container-row)");

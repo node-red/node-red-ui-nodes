@@ -2,7 +2,8 @@
     "table" : {
         "label" : {
             "group" : "Group",
-            "size" : "Size"
+            "size" : "Size",
+            "send" : "Send data on click "
         },
         "error": {
             "no-group": "group not configured"
