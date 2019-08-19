@@ -29,14 +29,14 @@ module.exports = function (RED) {
         var configAsJson = JSON.stringify(config);
         var html;
         if (dark) { html = String.raw`
-                <link href='table/css/tabulator_midnight.min.css' rel='stylesheet'>
+                <link href='table/css/tabulator_midnight.min.css' rel='stylesheet' type='text/css'>
                 <script type='text/javascript' src='table/js/tabulator.js'></script>
                 <div id='ui_table-{{$id}}'></div>
                 <input type='hidden' ng-init='init(` + configAsJson + `)'>
             `;
         }
         else { html = String.raw`
-                <link href='table/css/tabulator.min.css' rel='stylesheet'>
+                <link href='table/css/tabulator.min.css' rel='stylesheet' type='text/css'>
                 <script type='text/javascript' src='table/js/tabulator.js'></script>
                 <div id='ui_table-{{$id}}'></div>
                 <input type='hidden' ng-init='init(` + configAsJson + `)'>
@@ -53,7 +53,7 @@ module.exports = function (RED) {
             if (checkConfig(node, config)) {
                 var ui = RED.require('node-red-dashboard')(RED);
                 var luma = 255;
-                if (ui.getTheme() !== undefined) {
+                if (ui.hasOwnProperty("getTheme") && (ui.getTheme() !== undefined)) {
                     var rgb = parseInt(ui.getTheme()["page-sidebar-backgroundColor"].value.substring(1), 16);   // convert rrggbb to decimal
                     luma = 0.2126 * ((rgb >> 16) & 0xff) + 0.7152 * ((rgb >>  8) & 0xff) + 0.0722 * ((rgb >>  0) & 0xff); // per ITU-R BT.709
                 }
