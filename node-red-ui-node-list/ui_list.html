@@ -83,7 +83,8 @@
             height: {value: 0},
             lineType: {value: "two" },
             actionType: {value: "none" },
-            allowHTML: {value: false}
+            allowHTML: {value: false},
+            outputs: {value: 1}
         },
         inputs:1,
         outputs:1,
@@ -113,6 +114,9 @@
             $("#action-select").change();
         },
         oneditsave: function() {
+            var that = this;
+            if ($("#node-input-actionType").val() === "none") { that.outputs = 0; }
+            else { that.outputs = 1; }
         },
         oneditresize: function(size) {
         }
