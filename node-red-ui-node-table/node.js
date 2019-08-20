@@ -57,6 +57,7 @@ module.exports = function (RED) {
                     var rgb = parseInt(ui.getTheme()["page-sidebar-backgroundColor"].value.substring(1), 16);   // convert rrggbb to decimal
                     luma = 0.2126 * ((rgb >> 16) & 0xff) + 0.7152 * ((rgb >>  8) & 0xff) + 0.0722 * ((rgb >>  0) & 0xff); // per ITU-R BT.709
                 }
+                if (config.height == 0) { config.height = 2; }
                 var html = HTML(config,(luma < 128));
 
                 done = ui.addWidget({
@@ -79,23 +80,25 @@ module.exports = function (RED) {
                         $scope.tabledata = null;
                         var tablediv;
                         var createTable = function(basediv, tabledata, columndata) {
+                            var y = (columndata.length === 0) ? 25 : 32;
                             var table = new Tabulator(basediv, {
                                 data: tabledata,
                                 layout: 'fitColumns',
                                 columns: columndata,
                                 autoColumns: columndata.length == 0,
-                                movableColumns: true
+                                movableColumns: true,
+                                height: tabledata.length * y + 25
                             });
                         };
                         $scope.init = function (config) {
                             $scope.config = config;
                             tablediv = '#ui_table-' + $scope.$eval('$id')
-                            var stateCheck = setInterval(() => {
+                            var stateCheck = setInterval(function() {
                                 if (document.querySelector(tablediv) && $scope.tabledata) {
                                     clearInterval(stateCheck);
                                     $scope.inited = true;
                                     createTable(tablediv,$scope.tabledata,$scope.config.columns);
-                                    $scope.tabledata = null; //or delete?
+                                    $scope.tabledata = null;
                                 }
                             }, 40);
                         };
