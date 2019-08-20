@@ -87,7 +87,8 @@ module.exports = function (RED) {
                                 columns: columndata,
                                 autoColumns: columndata.length == 0,
                                 movableColumns: true,
-                                height: tabledata.length * y + 25
+                                height: tabledata.length * y + 25,
+                                cellClick:function(e, cell) { $scope.send({topic:cell.getField(),payload:cell.getData()}); }
                             });
                         };
                         $scope.init = function (config) {
