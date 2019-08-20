@@ -27,21 +27,13 @@ module.exports = function (RED) {
 
     function HTML(config,dark) {
         var configAsJson = JSON.stringify(config);
-        var html;
-        if (dark) { html = String.raw`
-                <link href='table/css/tabulator_midnight.min.css' rel='stylesheet' type='text/css'>
+        var mid = (dark) ? "_midnight" : "";
+        var html = String.raw`
+                <link href='table/css/tabulator`+mid+`.min.css' rel='stylesheet' type='text/css'>
                 <script type='text/javascript' src='table/js/tabulator.js'></script>
                 <div id='ui_table-{{$id}}'></div>
                 <input type='hidden' ng-init='init(` + configAsJson + `)'>
             `;
-        }
-        else { html = String.raw`
-                <link href='table/css/tabulator.min.css' rel='stylesheet' type='text/css'>
-                <script type='text/javascript' src='table/js/tabulator.js'></script>
-                <div id='ui_table-{{$id}}'></div>
-                <input type='hidden' ng-init='init(` + configAsJson + `)'>
-            `;
-        }
         return html;
     };
 
@@ -57,7 +49,7 @@ module.exports = function (RED) {
                     var rgb = parseInt(ui.getTheme()["page-sidebar-backgroundColor"].value.substring(1), 16);   // convert rrggbb to decimal
                     luma = 0.2126 * ((rgb >> 16) & 0xff) + 0.7152 * ((rgb >>  8) & 0xff) + 0.0722 * ((rgb >>  0) & 0xff); // per ITU-R BT.709
                 }
-                if (config.height == 0) { config.height = 2; }
+                if (config.height == 0) { config.height = 2; } // min height to 2 so auto will show something
                 var html = HTML(config,(luma < 128));
 
                 done = ui.addWidget({
@@ -77,19 +69,24 @@ module.exports = function (RED) {
                     },
                     initController: function ($scope, events) {
                         $scope.inited = false;
-                        $scope.tabledata = null;
+                        $scope.tabledata = [];
                         var tablediv;
-                        var createTable = function(basediv, tabledata, columndata) {
+                        var createTable = function(basediv, tabledata, columndata, outputs) {
                             var y = (columndata.length === 0) ? 25 : 32;
-                            var table = new Tabulator(basediv, {
+                            var opts = {
                                 data: tabledata,
                                 layout: 'fitColumns',
                                 columns: columndata,
                                 autoColumns: columndata.length == 0,
                                 movableColumns: true,
-                                height: tabledata.length * y + 25,
-                                cellClick:function(e, cell) { $scope.send({topic:cell.getField(),payload:cell.getData()}); }
-                            });
+                                height: tabledata.length * y + 25
+                            }
+                            if (outputs > 0) {
+                                opts.cellClick = function(e, cell) {
+                                    $scope.send({topic:cell.getField(),payload:cell.getData()});
+                                };
+                            }
+                            var table = new Tabulator(basediv, opts);
                         };
                         $scope.init = function (config) {
                             $scope.config = config;
@@ -98,20 +95,18 @@ module.exports = function (RED) {
                                 if (document.querySelector(tablediv) && $scope.tabledata) {
                                     clearInterval(stateCheck);
                                     $scope.inited = true;
-                                    createTable(tablediv,$scope.tabledata,$scope.config.columns);
-                                    $scope.tabledata = null;
+                                    createTable(tablediv,$scope.tabledata,$scope.config.columns,$scope.config.outputs);
+                                    $scope.tabledata = [];
                                 }
                             }, 40);
                         };
                         $scope.$watch('msg', function (msg) {
-                            if ($scope.inited == false) {
-                                if (msg && msg.payload) {
+                            if (msg && msg.hasOwnProperty("payload") && Array.isArray(msg.payload)) {
+                                if ($scope.inited == false) {
                                     $scope.tabledata = msg.payload;
+                                    return;
                                 }
-                                return;
-                            }
-                            if (msg && msg.payload) {
-                                createTable(tablediv,msg.payload,$scope.config.columns);
+                                createTable(tablediv,msg.payload,$scope.config.columns,$scope.config.outputs);
                             }
                         });
                     }

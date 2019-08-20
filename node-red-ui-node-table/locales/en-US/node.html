@@ -4,8 +4,15 @@
     <h3>Inputs</h3>
     <dl class="message-properties">
         <dt>payload<span class="property-type">array</span></dt>
-        <dd>An array of objects which contains row data.
-        </dd>
+        <dd>An array of objects which contains row data.</dd>
+    </dl>
+
+    <h3>Outputs (optional)</h3>
+    <dl class="message-properties">
+        <dt>payload<span class="property-type">object</span></dt>
+        <dd>An object that contains the data from the row that was selected.</dd>
+        <dt>topic<span class="property-type">string</span></dt>
+        <dd>A string that contains the property name of selected cell.</dd>
     </dl>
 
     <p>Each data row object should have the same set of keys because the keys in the object are used as the column names.</p>
