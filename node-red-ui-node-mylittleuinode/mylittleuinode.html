@@ -17,7 +17,7 @@
 ** This is a template to help you create your very own ui node. This is meant as
 ** a quickstart template that will show you what code is required and what code
 ** and sections are free for you to change or make additions to.
-**  
+**
 ***********************************************************************************
 -->
 
@@ -34,7 +34,7 @@
 // !!REQUIRED!!
 // This line is where you will register your node with a name and configuration.
 // Your name must be all lower-case letters and without spaces.
-// Your name must also begin with "ui_", otherwise it will not show up in the 
+// Your name must also begin with "ui_", otherwise it will not show up in the
 // dashboard tab under it's assigned group.
 // Should you need a space, use a hypen ( - ) instead.
     RED.nodes.registerType('ui_my-little-ui-node',{
@@ -42,7 +42,7 @@
 //*********************************************************************************
 //                        !!!!!!!!!NOTE!!!!!!!!!
 // The following lines will determine your node's configuration and parameters.
-// 
+//
 //*********************************************************************************
 //*********************************************************************************
 // !!REQUIRED!!
@@ -57,9 +57,9 @@
 //
 // Node Color
 //
-// The color value determines what color your node will be in the flow editor. 
+// The color value determines what color your node will be in the flow editor.
 // Typically, all UI Nodes are rgb( 63, 173, 181), but you can freely edit this if
-// you prefer a different color. 
+// you prefer a different color.
 // TODO what about the preferred colors (https://nodered.org/docs/creating-nodes/appearance#background-colour)?
 // Please use the rgb format only.
         color: 'rgb( 63, 173, 181)',
@@ -72,7 +72,7 @@
 // Only properties in this 'defaults' list will be remembered in time.
 //
 // The first 5 properties are required in all ui nodes.
-// 
+//
 //*********************************************************************************
 // !!REQUIRED!!
 //
@@ -92,12 +92,12 @@
 //*********************************************************************************
 // !!REQUIRED!!
 //
-// Node Order 
+// Node Order
 //
 // The order value should be left as {value: 0}
 // There is no need to edit this line.
             order: {value: 0},
-//*********************************************************************************  
+//*********************************************************************************
 //*********************************************************************************
 // !!REQUIRED!!
 //
@@ -117,7 +117,7 @@
                     $("#node-input-size").toggleClass("input-error",!valid);
                     return valid;
                 }},
-//*********************************************************************************   
+//*********************************************************************************
 //*********************************************************************************
 // !!REQUIRED!!
 //
@@ -133,7 +133,7 @@
 //
 // Node Name
 //
-// Sets the default name of the node in the node editor. 
+// Sets the default name of the node in the node editor.
 // Typically, this is left as {value:''}, and gives the user the option to enter
 // a name if they choose to do so.
 // There is no need to edit this line.
@@ -145,7 +145,7 @@
 // and now we will start adding our own custom properties for our node.
 // For instance, you may want to set a default text color or some other custom property.
 // It is advised to specify a default value for as much properties as possible, to make sure
-// that users can setup your node up quick and easy. 
+// that users can setup your node up quick and easy.
 // Remember to place a comma at the end of each line of default values, except after the last line!
 // For example:
 // property1: {value: True}, <--comma
@@ -163,8 +163,7 @@
 //
 // Inputs & Outputs
 //
-// The default inputs and outputs are set here. Typically, you can leave both set to 1.
-// There is no need to edit these lines.
+// The default number of inputs (0or1) and outputs (0-n) are set here.
         inputs:1,
         outputs:1,
 //*********************************************************************************
@@ -173,7 +172,7 @@
 //
 // Node Icon
 //
-// The default icon to display on your node in the flow editor. You may use any of 
+// The default icon to display on your node in the flow editor. You may use any of
 // the icons found here: (TODO: Verify path to icon files with team.)
         icon: "cog.png",
 //*********************************************************************************
@@ -187,25 +186,24 @@
 
         paletteLabel:"my little ui node",
 
-
 //*********************************************************************************
 // !!REQUIRED!!
 //
 // Node Label
 //
-// The default label that will be displayed on your node in the flow editor. 
+// The default label that will be displayed on your node in the flow editor.
 // Typically, set this to the same name of your node.
-// Upper & Lowercase is permitted here, spaces are also permitted.
+// Spaces are permitted.
         label: function() {
-            return this.name||"My Little UI Node";
+            return this.name||"my little UI node";
         },
 //*********************************************************************************
 //*********************************************************************************
 // !!REQUIRED!!
 //
 // Node Edit Preparation
-// 
-// While editing your node in the node editor within the flow editor, you may need 
+//
+// While editing your node in the node editor within the flow editor, you may need
 // to perform some functions to verify the proper settings and syntax have been set.
 //
 // TODO: Verify with team on what this actually does.
@@ -232,10 +230,10 @@
 
 <!--
 ***********************************************************************************
-** The following section creates the content of your node's config screen (to visualise 
+** The following section creates the content of your node's config screen (to visualise
 ** the node properties), which is displayed when you double click your node in the flow
-** editor.  The config screen contains both the required widgets (group dropdown, size 
-** selector, name text box) and widgets to visualise your own custom properties (see 
+** editor.  The config screen contains both the required widgets (group dropdown, size
+** selector, name text box) and widgets to visualise your own custom properties (see
 ** User Defined Default Values section above).
 ***********************************************************************************
 -->
@@ -266,14 +264,14 @@
     <!--***************************************************************************
     ** !!REQUIRED!!
     **
-    ** Size Selector 
+    ** Size Selector
     **
     ** The following lines will define how the Size Selector looks.
     ** It is best that this stays as it is so that it is the same across all of the
     ** nodes.
     ** There is no need to edit these lines.
     *******************************************************************************-->
-    
+
     <div class="form-row" id="template-row-size">
         <label><i class="fa fa-object-group"></i> Size</span></label>
         <input type="hidden" id="node-input-width">
@@ -287,17 +285,17 @@
     ** The following </br> will seperate the Group dropdown and Size Selector from the
     ** rest of our configuration.
     *******************************************************************************-->
-    
+
     </br>
     <!--***************************************************************************
     **                             !!!!!!!!!NOTE!!!!!!!!!
     **
     ** Html elements to visualise our own custom node properties.
     **
-    ** Here we will reference visualise the properties in the 'default' list (see lines #152 & #153): 
+    ** Here we will reference visualise the properties in the 'default' list (see lines #152 & #153):
     ** textColor & textLabel
-    ** The id's of the html elements must EXACTLY match the names in the 'default' list, to make 
-    ** sure that the html elements are automatically linked to the values of the properties in the 
+    ** The id's of the html elements must EXACTLY match the names in the 'default' list, to make
+    ** sure that the html elements are automatically linked to the values of the properties in the
     ** 'default' list.  For example the html id 'node-input-textColor' is linked to property 'textColor'.
     **
     ** A line like <label for="node-input-textColor"> simply defines a textual label for the html
@@ -309,20 +307,20 @@
     ** For example type="color" means that the user can only enter color values (via a color picker).
     ** Check here for a full list: https://www.w3schools.com/tags/att_input_type.asp
     ******************************************************************************** BEGIN USER DEFINED DEFAULT INPUTS -->
-    
+
     <div class="form-row">
         <label for="node-input-textColor"><i class="fa fa-paint-brush"></i> Text Color</span></label>
         <input type="color" id="node-input-textColor"/>
     </div>
     <div class="form-row">
         <label for="node-input-textLabel"><i class="fa fa-i-cursor"></i> Text Label</span></label>
-        <input type="text" id="node-input-textLabel"/> 
+        <input type="text" id="node-input-textLabel"/>
     </div>
     <!--**************************************************************************** END USER DEFINED DEFAULT INPUTS -->
 </br>
 <!--********************************************************************************
 ** !!REQUIRED!!
-** 
+**
 ** Node Name Input
 **
 ** This is where the user can enter a name for the node.

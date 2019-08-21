@@ -9,9 +9,9 @@
   ],
   "license": "Apache-2.0",
   "keywords": [
-    "node-red",
     "dashboard",
-    "ui"
+    "ui",
+    "example"
   ],
   "bugs": {
     "url":"https://github.com/node-red/node-red-ui-nodes/issues"

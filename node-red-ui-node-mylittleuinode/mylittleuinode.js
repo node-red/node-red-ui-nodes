@@ -129,7 +129,7 @@
                 templateScope: "local",                 // *REQUIRED* !!DO NOT EDIT!!
                 emitOnlyNewValues: false,               // *REQUIRED* Edit this if you would like your node to only emit new values.
                 forwardInputMessages: false,            // *REQUIRED* Edit this if you would like your node to forward the input message to it's ouput.
-                storeFrontEndInputAsState: false,       // *REQUIRED* TODO: Not sure what this is for????
+                storeFrontEndInputAsState: false,       // *REQUIRED* If the widgect accepts user input - should it update the backend stored state ?
 
 /********************************************************************
 
@@ -151,9 +151,8 @@
 * !!REQUIRED!!
 *
 * Before Emit Function
-* Callback to prepare message
+* Callback to prepare message that is sent from the backend TO the widget
 *
-* TODO: Need help explaining this one.
 */
 
                 beforeEmit: function(msg, value) {
@@ -165,9 +164,8 @@
 * !!REQUIRED!!
 *
 * Before Send Function
-* Callback to prepare message.
+* Callback to prepare message FROM the UI before it is sent to next node
 *
-* TODO: Need help explaining this one.
 */
                 beforeSend: function (msg, orig) {
                     if (orig) {
@@ -219,10 +217,7 @@
 *
 */
                     $scope.$watch('msg', function(msg) {
-                        if (!msg) {
-                            // Ignore undefined msg
-                            return;
-                        }
+                        if (!msg) { return; } // Ignore undefined msg
 
                         // The payload contains the new text, which we will store on the scope (in the model)
                         $scope.textContent = msg.payload;
