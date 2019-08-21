@@ -10,6 +10,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 -->
+
 <script type="text/javascript">
     RED.nodes.registerType('ui_lineargauge',{    // type MUST start with ui_
         category: 'dashboard',
@@ -34,14 +35,16 @@
             colorMidArea: {value: '#99ff99'},
             colorHighArea: {value: '#ff8080'},
             unit: {value:'units'}
-
         },
         inputs:1,
-        outputs:1,
-        icon: "gauge.png",
+        outputs:0,
+        icon: "debug.png",
         paletteLabel: "linear gauge",
         label: function() {
-            return this.name||"Linear Gauge";
+            return this.name||"linear gauge";
+        },
+        labelStyle: function() {
+            return this.name?"node_label_italic":"";
         },
         oneditprepare: function() {
             $("#node-input-size").elementSizer({
@@ -90,15 +93,20 @@
 
 <script type="text/x-red" data-help-name="ui_lineargauge">
     <p>A Node Red dashboard ui node to display a linear gauge with high & low limit areas.</p>
+    <h3>Inputs</h3>
+    <dl class="message-properties">
+        <dt>payload<span class="property-type">number</span></dt>
+        <dd>The value to display.</dd>
+        <dt>highlimit<span class="property-type">number</span></dt>
+        <dd>The high limit - default 80.</dd>
+        <dt>lowlimit<span class="property-type">number</span></dt>
+        <dd>The low limit - default 20</dd>
+        <dt>setpoint<span class="property-type">number</span></dt>
+        <dd>A setpoint value - default 50. Only visible in hover tooltip.</dd>
+    </dl>
     <p>Takes the <code>msg.payload</code> and displays the value at the top of the gauge and slides the pointer up/down the gauge.</p>
     <p>The node's <code>Name</code> is displayed at the bottom of the gauge for indication of what the gauge is for. I.E., "Tank #1 Temperature"</p>
     <p>The node's <code>Unit</code> will be displayed at the trailing end of the current value. A unit can be anything, for example: <code>lbs psi F°</code></p>
     <p>The area's color is also customizable within the configuration but cannot be set with a msg.</p>
     <p>There is also a tooltip provided that will display the High Limit, Low Limit, and Setpoint value.</p>
-    <p>You can pass the following in from a msg.</p>
-    <p>High Limit: <code>msg.highlimit</code></p>
-    <p>Setpoint: <code>msg.setpoint</code></p>
-    <p>Low Limit: <code>msg.lowlimit</code></p>
-    <p>Actual Value: <code>msg.payload</code></p>
-
 </script>
