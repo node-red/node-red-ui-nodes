@@ -6,7 +6,7 @@
             "name" : "Name",
             "list" : "List Type",
             "action" : "Action",
-            "html" : "Allow HTML in displayed text"
+            "html" : "allow HTML in displayed text"
         },
         "type" : {
             "one" : "Single-line",

@@ -27,6 +27,7 @@ At a minimum, please include:
 
  - Version of Node-RED - either release number if you downloaded a zip, or the first few lines of `git log` if you are cloning the repository directly.
  - Version of node.js - what does `node -v` say?
+ - Version of the node you are reporting an issue against - Is it the latest ?
 
 ## Feature requests
 

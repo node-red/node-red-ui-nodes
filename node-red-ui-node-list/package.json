@@ -1,6 +1,6 @@
 {
-    "name": "node-red-node-ui_list",
-    "version": "0.1.6",
+    "name": "node-red-node-ui-list",
+    "version": "0.2.0",
     "description": "Node-RED Dashboard UI widget node for simple list",
     "author": "Hiroyasu Nishiyama",
     "contributors": [
