@@ -1,4 +1,4 @@
-node-red-ui-node-table
+node-red-node-ui-table
 ======================
 
 A Node-RED UI widget node which displays data as a table.
@@ -7,7 +7,7 @@ A Node-RED UI widget node which displays data as a table.
 
 Either use the Editor - Menu - Manage Palette - Install option, or run the following command in your Node-RED user directory (typically `~/.node-red`) after installing Node-RED-dashboard.
 
-        npm i node-red-ui-node-table
+        npm i node-red-node-ui-table
 
 ## Usage
 

@@ -1,6 +1,6 @@
 {
   "name": "node-red-node-ui-lineargauge",
-  "version": "0.3.3",
+  "version": "0.3.4",
   "description": "A Node Red ui node to display a linear gauge on the dashboard.",
   "dependencies": {},
   "author": "Seth Johnson (https://github.com/seth350)",
@@ -10,15 +10,14 @@
   "license": "Apache-2.0",
   "keywords": [
     "node-red",
-    "gauge",
     "node-red-dashboard",
-    "ui",
+    "gauge",
     "linear"
   ],
   "bugs": {
     "url": "https://github.com/node-red/node-red-ui-nodes/issues"
   },
-  "homepage": "https://github.com/node-red/node-red-ui-nodes/node-red-ui-node-lineargauge",
+  "homepage": "https://github.com/node-red/node-red-ui-nodes/node-red-node-ui-lineargauge#README.md",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/node-red/node-red-ui-nodes.git"

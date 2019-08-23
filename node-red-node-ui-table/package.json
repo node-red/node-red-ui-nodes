@@ -1,6 +1,6 @@
 {
   "name": "node-red-node-ui-table",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Table UI widget node for Node-RED Dashboard",
   "author": "Kazuhito Yokoi",
   "contributors": ["Dave Conway-Jones","@hotNipi"],
@@ -14,7 +14,10 @@
     "type": "git",
     "url": "git+https://github.com/node-red/node-red-ui-nodes.git"
   },
-  "homepage": "https://github.com/node-red/node-red-ui-nodes/tree/master/node-red-ui-node-table#README.md",
+  "bugs": {
+    "url":"https://github.com/node-red/node-red-ui-nodes/issues"
+  },
+  "homepage": "https://github.com/node-red/node-red-ui-nodes/tree/master/node-red-node-ui-table#README.md",
   "keywords": [
     "node-red",
     "node-red-dashboard",

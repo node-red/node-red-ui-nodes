@@ -1,4 +1,4 @@
-node-red-ui-node-mylittleuinode
+node-red-node-ui-mylittleuinode
 ===============================
 
 A Node-Red dashboard ui node to help you create your own ui node.
@@ -12,7 +12,7 @@ developers to use to create their own UI widgets.
 
 Either use the Editor - Menu - Manage Palette - Install option, or run the following command in your Node-RED user directory (typically `~/.node-red`) after installing Node-RED-dashboard.
 
-    npm i node-red-ui-node-mylittleuinode
+    npm i node-red-node-ui-mylittleuinode
 
 ## Inputs
 Send `msg.payload` to this node to change the text displayed in the textbox.
