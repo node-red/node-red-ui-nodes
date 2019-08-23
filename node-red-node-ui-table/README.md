@@ -20,13 +20,13 @@ Both examples can be imported from the Node-RED Editor - Menu - Import - Example
 
 With no configuration the node will try to create a table with equally spaced columns of simple text for each row provided, using the keys as column titles.
 
-![screenshot](screenshot.png)
+![screenshot](https://raw.githubusercontent.com/node-red/node-red-ui-nodes/master/node-red-node-ui-table/screenshot.png)
 
 ### Richer Table
 
 The columns can be configured manually. If so then only the `msg.payload` properties defined will be displayed. You can then also define the Title, Width, Alignment and Format of the column.
 
-![screenshot2](screenshot2.png)
+![screenshot2](https://raw.githubusercontent.com/node-red/node-red-ui-nodes/master/node-red-node-ui-table/screenshot2.png)
 
  - **Title**: Text for the column title (or blank).
  - **Width**: Either a number of pixels or percentage of the overall table width. e.g. 150 or 20%. Leave blank for automatic, equally spaced to fill the available space.

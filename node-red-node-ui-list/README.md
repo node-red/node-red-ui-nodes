@@ -3,7 +3,7 @@ node-red-node-ui-list
 
 A Node-RED widget node for showing a list of items.
 
-![Example](figs/sample00.png)
+![Example](https://raw.githubusercontent.com/node-red/node-red-ui-nodes/master/node-red-node-ui-list/figs/sample00.png)
 
 Install
 -------

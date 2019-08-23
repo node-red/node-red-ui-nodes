@@ -238,7 +238,7 @@
 /*******************************************************************
 *
 * SEND MESSAGE FROM DASHBOARD TO NODE-RED FLOW
-* While an input has focus, the user can press the enter key to send the updated data to the Node-Red flow.
+* While an input has focus, the user can press the enter key to send the updated data to the Node-RED flow.
 *
 */
                     $scope.enterkey = function(keyEvent){

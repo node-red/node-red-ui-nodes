@@ -1,7 +1,7 @@
 node-red-node-ui-mylittleuinode
 ===============================
 
-A Node-Red dashboard ui node to help you create your own ui node.
+A Node-RED dashboard ui node to help you create your own ui node.
 
 The intention of this node is to show the user the how/where/what of creating a custom ui node.
 All of the code in the `.html` and `.js` files are commented extensively and places the key sections of code into blocks to be edited.
@@ -22,8 +22,8 @@ Node will send the textbox value as `msg.payload` when the textbox has focus, an
 
 
 ## Requirements
-Node-Red v19.4 or greater
-Node-Red-dashboard v2.13.0 or greater
+Node-RED v19.4 or greater
+Node-RED-dashboard v2.13.0 or greater
 
 ## Example
 ```json

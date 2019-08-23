@@ -20,7 +20,7 @@
     "bugs": {
       "url": "https://github.com/node-red/node-red-ui-nodes/issues"
     },
-    "homepage": "https://github.com/node-red/node-red-ui-nodes/tree/master/node-red-node-ui-list#README.md",
+    "homepage": "https://github.com/node-red/node-red-ui-nodes/blob/master/node-red-node-ui-list/README.md",
     "keywords": [
         "node-red",
         "node-red-dashboard",
