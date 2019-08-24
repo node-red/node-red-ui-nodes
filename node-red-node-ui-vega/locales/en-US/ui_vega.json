@@ -1,0 +1,13 @@
+{
+    "vega" : {
+        "label" : {
+            "group" : "Group",
+            "size" : "Size",
+            "name" : "Name",
+            "vega" : "Vega Specification"
+        },
+        "error": {
+            "no-group": "group not configured"
+        }
+    }
+}

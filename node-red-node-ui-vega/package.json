@@ -1,0 +1,29 @@
+{
+    "name": "node-red-ui-node-vega",
+    "version": "0.1.0",
+    "description": "Node-RED UI widget node for Vega visualization grammar",
+    "author" : "Hiroyasu Nishiyama",
+    "contributors": [
+    ],
+    "license": "Apache-2.0",
+    "main": "ui_vega.js",
+    "node-red": {
+        "nodes": {
+            "ui_vega": "ui_vega.js"
+        }
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/node-red/node-red-ui-nodes.git"
+    },
+    "bugs": {
+      "url": "https://github.com/node-red/node-red-ui-nodes/issues"
+    },
+    "homepage": "https://github.com/node-red/node-red-ui-nodes/blob/master/node-red-node-ui-vega/README.md",
+    "keywords": [
+        "node-red",
+        "node-red-dashboard",
+        "dashboard",
+        "vega"
+    ]
+}
