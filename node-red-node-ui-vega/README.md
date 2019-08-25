@@ -1,16 +1,16 @@
-node-red-ui-node-vega
+node-red-node-ui-vega
 =====================
 
 Node-RED Dashboard widget node for declarative data visualization using [Vega visualization grammar](https://vega.github.io/vega/).
 
-![Vega Node Examples](vega-example.png)
+![Vega Node Examples](https://raw.githubusercontent.com/node-red/node-red-ui-nodes/master/node-red-node-ui-vega/vega-example.png)
 
 Install
 -------
 
 Run the following command in your Node-RED user directory - typically `~/.node-red`
 
-        npm install node-red-ui-node-vega
+        npm install node-red-node-ui-vega
 
 **Note**: This node uses APIs that require at least Node-RED 0.19 and Node-RED Dashboard 2.10.
 

@@ -1,5 +1,5 @@
 {
-    "name": "node-red-ui-node-vega",
+    "name": "node-red-node-ui-vega",
     "version": "0.1.0",
     "description": "Node-RED UI widget node for Vega visualization grammar",
     "author" : "Hiroyasu Nishiyama",
