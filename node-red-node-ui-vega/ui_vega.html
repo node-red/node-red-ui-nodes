@@ -1,0 +1,137 @@
+<!--
+  Copyright JS Foundation and other contributors, http://js.foundation
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+
+<script type="text/x-red" data-template-name="ui_vega">
+    <div class="form-row" id="template-row-group">
+        <label for="node-input-group"><i class="fa fa-table"></i> <span data-i18n="vega.label.group"></span></label>
+        <input type="text" id="node-input-group">
+    </div>
+    <div class="form-row" id="template-row-size">
+        <label><i class="fa fa-object-group"></i> <span data-i18n="vega.label.size"></span></label>
+        <input type="hidden" id="node-input-width">
+        <input type="hidden" id="node-input-height">
+        <button class="editor-button" id="node-input-size"></button>
+    </div>
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> <span data-i18n="vega.label.name"></span></label>
+        <input type="text" id="node-input-name">
+    </div>
+    <div class="form-row" style="margin-bottom: 0px;">
+        <label for="node-input-vega" style="width: 80%;"><i class="fa fa-wrench"></i> <span data-i18n="vega.label.vega"></span></label>
+        <input type="hidden" id="node-input-vega" autofocus="autofocus">
+        <input type="hidden" id="node-input-noerr">
+    </div>
+    <div class="form-row node-text-editor-row" style="position:relative">
+        <div style="position: absolute; right:0; bottom:calc(100% + 3px);"><button id="node-vega-expand-js" class="red-ui-button red-ui-button-small"><i class="fa fa-expand"></i></button></div>
+        <div style="height: 250px; min-height:150px;" class="node-text-editor" id="node-input-vega-editor" ></div>
+    </div>
+    
+</script>
+
+<script type="text/javascript">
+    RED.nodes.registerType("ui_vega", {
+        category: 'dashboard',
+        color: 'rgb(176, 223, 227)',
+        defaults: {
+            group: {type: 'ui_group', required:true},
+            name: {value: ''},
+            order: {value: 0},
+            width: {
+                value: 0,
+                validate: function(v) {
+                    var valid = true
+                    var width = v||0;
+                    var currentGroup = $('#node-input-group').val()|| this.group;
+                    var groupNode = RED.nodes.node(currentGroup);
+                    valid = !groupNode || +width <= +groupNode.width;
+                    $("#node-input-size").toggleClass("input-error",!valid);
+                    return valid;
+                }},
+            height: {value: 5},
+            vega: {value: null}
+        },
+        inputs: 1,
+        outputs: 0,
+        icon: "icon.png",
+        align: "right",
+        paletteLabel: "vega",
+        label: function() { return this.name || "vega"; },
+        oneditprepare: function() {
+            var that = this;
+            $("#node-input-size").elementSizer({
+                width: "#node-input-width",
+                height: "#node-input-height",
+                group: "#node-input-group"
+            });
+            this.editor = RED.editor.createEditor({
+                id: 'node-input-vega-editor',
+                mode: 'ace/mode/json',
+                value: $("#node-input-vega").val()
+            });
+            this.editor.focus();
+
+            RED.popover.tooltip($("#node-vega-expand-js"), RED._("node-red:common.label.expand"));
+
+            $("#node-vega-expand-js").on("click", function(e) {
+                e.preventDefault();
+                var value = that.editor.getValue();
+                RED.editor.editJavaScript({
+                    value: value,
+                    width: "Infinity",
+                    cursor: that.editor.getCursorPosition(),
+                    mode: "ace/mode/json",
+                    complete: function(v,cursor) {
+                        that.editor.setValue(v, -1);
+                        that.editor.gotoLine(cursor.row+1,cursor.column,false);
+                        setTimeout(function() {
+                            that.editor.focus();
+                        },300);
+                    }
+                })
+            });
+            
+        },
+        oneditsave: function() {
+            var annot = this.editor.getSession().getAnnotations();
+            this.noerr = 0;
+            $("#node-input-noerr").val(0);
+            for (var k=0; k < annot.length; k++) {
+                if (annot[k].type === "error") {
+                    $("#node-input-noerr").val(annot.length);
+                    this.noerr = annot.length;
+                }
+            }
+            $("#node-input-vega").val(this.editor.getValue());
+            this.editor.destroy();
+            delete this.editor;
+        },
+        oneditcancel: function() {
+            this.editor.destroy();
+            delete this.editor;
+        },
+        oneditresize: function(size) {
+            var rows = $("#dialog-form>div:not(.node-text-editor-row)");
+            var height = $("#dialog-form").height();
+            for (var i=0; i<rows.length; i++) {
+                height -= $(rows[i]).outerHeight(true);
+            }
+            var editorRow = $("#dialog-form>div.node-text-editor-row");
+            height -= (parseInt(editorRow.css("marginTop"))+parseInt(editorRow.css("marginBottom")));
+            $(".node-text-editor").css("height",height+"px");
+            this.editor.resize();
+        }
+    });
+</script>

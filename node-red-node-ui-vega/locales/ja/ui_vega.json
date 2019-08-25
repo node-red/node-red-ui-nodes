@@ -1,0 +1,13 @@
+{
+    "ui_vega" : {
+        "label" : {
+            "group" : "グループ",
+            "size" : "サイズ",
+            "name" : "名前",
+            "vega" : "Vega定義"
+        },
+        "error": {
+            "no-group": "グループが設定されていません"
+        }
+    }
+}
