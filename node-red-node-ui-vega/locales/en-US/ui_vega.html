@@ -1,14 +1,16 @@
 <script type="text/x-red" data-help-name="ui_vega">
-    <p>Node-RED widget node for visualizing data using <a href="https://vega.github.io/vega/">Vega visualization grammar</a>.</p>
+    <p>A Node-RED-Dashboard widget node for visualizing data using <a href="https://vega.github.io/vega/">Vega visualization grammar</a>.</p>
 
     <h3>Inputs</h3>
     <dl class="message-properties">
         <dt>payload<span class="property-type">object</span></dt>
-        <dd>vega specification</dt>
+        <dd>vega specification (json)</dt>
     </dl>
 
     <h3>Details</h3>
-    <p>This UI widget can be used to visualize data using <a href="https://vega.github.io/vega/">Vega visualization grammar</a>.</p>
-    <p>Vega specification can be specified by <b>Vega Specification</b> propertie in settings panel or <code>payload</code> property of input message.  If both properties are set input message takes precedence.</p>
-    <p>The node accepts <a href="https://vega.github.io/vega/">Vega</a> and <a href="https://vega.github.io/vega-lite/">Vega-Lite</a> specification.</p>
+    <p>This UI widget can be used to visualize data using the <a href="https://vega.github.io/vega/">Vega visualization grammar</a>.</p>
+    <p>Vega specification can be set either by the <b>Vega Specification</b> property in settings panel, or by the <code>payload</code> property of the input message.
+        If both properties are set the input message takes precedence.</p>
+    <p>The node accepts both <a href="https://vega.github.io/vega/">Vega</a> and <a href="https://vega.github.io/vega-lite/">Vega-Lite</a> specification.</p>
+    <p><b>Note</b>: This node requires a live internet connection in order to load the required libraries.</p>
 </script>
