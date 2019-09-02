@@ -15,7 +15,7 @@ Low Limit: `msg.lowlimit`
 
 Using `msg.payload` as the value to display and position the pointer.
 
-![LinearGaugeImg](https://github.com/node-red/node-red-ui-nodes/node-red-node-ui-lineargauge/imgs/linearGauges.PNG?raw=true)
+![LinearGaugeImg](https://raw.githubusercontent.com/node-red/node-red-ui-nodes/master/node-red-node-ui-lineargauge/imgs/linearGauges.PNG)
 
 ## Requirements
 Node-RED v19.4 or greater
