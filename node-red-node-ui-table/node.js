@@ -14,6 +14,8 @@
  * limitations under the License.
  **/
 
+var path = require('path');
+
 module.exports = function (RED) {
     function checkConfig(node, conf) {
         if (!conf || !conf.hasOwnProperty('group')) {
@@ -29,8 +31,8 @@ module.exports = function (RED) {
         var configAsJson = JSON.stringify(config);
         var mid = (dark) ? "_midnight" : "";
         var html = String.raw`
-                <link href='table/css/tabulator`+mid+`.min.css' rel='stylesheet' type='text/css'>
-                <script type='text/javascript' src='table/js/tabulator.js'></script>
+                <link href='ui-table/css/tabulator`+mid+`.min.css' rel='stylesheet' type='text/css'>
+                <script type='text/javascript' src='ui-table/js/tabulator.js'></script>
                 <div id='ui_table-{{$id}}'></div>
                 <input type='hidden' ng-init='init(` + configAsJson + `)'>
             `;
@@ -122,11 +124,10 @@ module.exports = function (RED) {
 
     RED.nodes.registerType('ui_table', TableNode);
 
-    var path;
-    if (RED.settings.ui) { path = RED.settings.ui.path; }
-    else { path = 'ui'; }
-
-    RED.httpNode.get('/' + path + '/table/*', function (req, res) {
+    var uipath = 'ui';
+    if (RED.settings.ui) { uipath = RED.settings.ui.path; }
+    var fullPath = path.normalize(path.join(RED.settings.httpNodeRoot, uipath, '/ui-table/*'));
+    RED.httpNode.get(fullPath, function (req, res) {
         var options = {
             root: __dirname + '/lib/',
             dotfiles: 'deny'

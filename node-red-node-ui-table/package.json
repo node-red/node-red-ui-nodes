@@ -1,6 +1,6 @@
 {
   "name": "node-red-node-ui-table",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "Table UI widget node for Node-RED Dashboard",
   "author": "Kazuhito Yokoi",
   "contributors": ["Dave Conway-Jones","@hotNipi"],
@@ -9,6 +9,9 @@
     "nodes": {
       "ui_table": "node.js"
     }
+  },
+  "peerDependencies": {
+    "node-red-dashboard": ">2.15.0"
   },
   "repository": {
     "type": "git",
