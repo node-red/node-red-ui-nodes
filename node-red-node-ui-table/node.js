@@ -81,7 +81,7 @@ module.exports = function (RED) {
                                 columns: columndata,
                                 autoColumns: columndata.length == 0,
                                 movableColumns: true,
-                                height: tabledata.length * y + 25
+                                height: tabledata.length * y + 26
                             }
                             if (outputs > 0) {
                                 opts.cellClick = function(e, cell) {
@@ -126,7 +126,7 @@ module.exports = function (RED) {
 
     var uipath = 'ui';
     if (RED.settings.ui) { uipath = RED.settings.ui.path; }
-    var fullPath = path.normalize(path.join(RED.settings.httpNodeRoot, uipath, '/ui-table/*'));
+    var fullPath = path.join(RED.settings.httpNodeRoot, uipath, '/ui-table/*').replace(/\\/g, '/');;
     RED.httpNode.get(fullPath, function (req, res) {
         var options = {
             root: __dirname + '/lib/',
