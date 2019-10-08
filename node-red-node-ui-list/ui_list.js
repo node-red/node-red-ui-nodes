@@ -159,7 +159,10 @@ ${(allowMenu ? md_menu : "")}
                         return { msg: { items: value } };
                     },
                     beforeSend: function (msg, orig) {
-                        if (orig) { return orig.msg; }
+                        if (orig) { 
+                            orig.msg.topic = config.topic;
+                            return orig.msg; 
+                        }
                     },
                     initController: function($scope, events) {
                         // initialize $scope.click to send clicked widget item
