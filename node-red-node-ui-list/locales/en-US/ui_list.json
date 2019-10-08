@@ -4,7 +4,6 @@
             "group" : "Group",
             "size" : "Size",
             "name" : "Name",
-            "topic" : "Topic",
             "list" : "List Type",
             "action" : "Action",
             "html" : "allow HTML in displayed text"

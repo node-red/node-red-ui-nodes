@@ -139,7 +139,6 @@ ${(allowMenu ? md_menu : "")}
                     group: config.group,    // belonging Dashboard group
                     width: config.width,    // width of widget
                     height: config.height,  // height of widget
-                    topic: config.topic,    // topic to include in msg
                     format: html,           // HTML/Angular code
                     templateScope: "local",	// scope of HTML/Angular(local/global)*
                     emitOnlyNewValues: false,
@@ -160,10 +159,7 @@ ${(allowMenu ? md_menu : "")}
                         return { msg: { items: value } };
                     },
                     beforeSend: function (msg, orig) {
-                        if (orig) { 
-                            orig.msg.topic = config.topic;
-                            return orig.msg; 
-                        }
+                        if (orig) { return orig.msg; }
                     },
                     initController: function($scope, events) {
                         // initialize $scope.click to send clicked widget item
