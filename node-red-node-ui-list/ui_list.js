@@ -139,7 +139,6 @@ ${(allowMenu ? md_menu : "")}
                     group: config.group,    // belonging Dashboard group
                     width: config.width,    // width of widget
                     height: config.height,  // height of widget
-                    topic: config.topic,    // topic to include in msg
                     format: html,           // HTML/Angular code
                     templateScope: "local",	// scope of HTML/Angular(local/global)*
                     emitOnlyNewValues: false,
