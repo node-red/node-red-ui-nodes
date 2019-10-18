@@ -15,19 +15,17 @@
  **/
 
 
+/*************************************************************************
+ * !!REQUIRED!!
+ * A ui-node must always begin with the following function.
+ * module.exports = function(RED) {your code here}
+ * There is no need to edit this line.
+ */
 
- /*************************************************************************
-  * !!REQUIRED!!
-  * A ui-node must always begin with the following function.
-  * module.exports = function(RED) {your code here}
-  * There is no need to edit this line.
-  */
+module.exports = function(RED) {
 
- module.exports = function(RED) {
-
-//*************************************************************************/
-    // TODO: Is this needed????
-    var settings = RED.settings;  // not sure if this is needed?
+//*************************************************************************
+    // var settings = RED.settings;  // optional - only needed if required later
 
 
 /**********************************************************************
@@ -49,7 +47,7 @@
  *  -> ng-keydown is used to do something when the user presses a key. (e.g., type a value into a textbox, then press enter)
  **********************************************************************/
 
-     function HTML(config) {
+    function HTML(config) {
         // The configuration is a Javascript object, which needs to be converted to a JSON string
         var configAsJson = JSON.stringify(config);
 
@@ -105,8 +103,8 @@
 *
 */
     function MyLittleUiNode(config) {
-         try {
-             var node = this;
+        try {
+            var node = this;
             if(ui === undefined) {
                 ui = RED.require("node-red-dashboard")(RED);
             }
@@ -117,19 +115,19 @@
             // Remove those statements when you publish your node on NPM!!!
             //debugger;
 
-        if (checkConfig(node, config)) {
-            var html = HTML(config);                    // *REQUIRED* !!DO NOT EDIT!!
-            var done = ui.addWidget({                   // *REQUIRED* !!DO NOT EDIT!!
-                node: node,                             // *REQUIRED* !!DO NOT EDIT!!
-                order: config.order,                    // *REQUIRED* !!DO NOT EDIT!!
-                group: config.group,                    // *REQUIRED* !!DO NOT EDIT!!
-                width: config.width,                    // *REQUIRED* !!DO NOT EDIT!!
-                height: config.height,                  // *REQUIRED* !!DO NOT EDIT!!
-                format: html,                           // *REQUIRED* !!DO NOT EDIT!!
-                templateScope: "local",                 // *REQUIRED* !!DO NOT EDIT!!
-                emitOnlyNewValues: false,               // *REQUIRED* Edit this if you would like your node to only emit new values.
-                forwardInputMessages: false,            // *REQUIRED* Edit this if you would like your node to forward the input message to it's ouput.
-                storeFrontEndInputAsState: false,       // *REQUIRED* If the widgect accepts user input - should it update the backend stored state ?
+            if (checkConfig(node, config)) {
+                var html = HTML(config);                    // *REQUIRED* !!DO NOT EDIT!!
+                var done = ui.addWidget({                   // *REQUIRED* !!DO NOT EDIT!!
+                    node: node,                             // *REQUIRED* !!DO NOT EDIT!!
+                    order: config.order,                    // *REQUIRED* !!DO NOT EDIT!!
+                    group: config.group,                    // *REQUIRED* !!DO NOT EDIT!!
+                    width: config.width,                    // *REQUIRED* !!DO NOT EDIT!!
+                    height: config.height,                  // *REQUIRED* !!DO NOT EDIT!!
+                    format: html,                           // *REQUIRED* !!DO NOT EDIT!!
+                    templateScope: "local",                 // *REQUIRED* !!DO NOT EDIT!!
+                    emitOnlyNewValues: false,               // *REQUIRED* Edit this if you would like your node to only emit new values.
+                    forwardInputMessages: false,            // *REQUIRED* Edit this if you would like your node to forward the input message to it's ouput.
+                    storeFrontEndInputAsState: false,       // *REQUIRED* If the widgect accepts user input - should it update the backend stored state ?
 
 /********************************************************************
 
@@ -142,9 +140,9 @@
 * TODO: Need help explaining this one.
 */
 
-                convertBack: function (value) {
-                    return value;
-                },
+                    convertBack: function (value) {
+                        return value;
+                    },
 
 /********************************************************************
 /********************************************************************
@@ -155,9 +153,9 @@
 *
 */
 
-                beforeEmit: function(msg, value) {
-                    return { msg: msg };
-                },
+                    beforeEmit: function(msg, value) {
+                        return { msg: msg };
+                    },
 
 /********************************************************************
 /********************************************************************
@@ -167,11 +165,11 @@
 * Callback to prepare message FROM the UI before it is sent to next node
 *
 */
-                beforeSend: function (msg, orig) {
-                    if (orig) {
-                        return orig.msg;
-                    }
-                },
+                    beforeSend: function (msg, orig) {
+                        if (orig) {
+                            return orig.msg;
+                        }
+                    },
 
 /********************************************************************
 /********************************************************************
@@ -183,10 +181,10 @@
 * The initController is where most of the magic happens, to let the dashboard communicate with
 * the Node-RED flow.
 */
-                initController: function($scope, events) {
-                    debugger;
+                    initController: function($scope, events) {
+                        debugger;
 
-                    $scope.flag = true;   // not sure if this is needed?
+                        $scope.flag = true;   // not sure if this is needed?
 
 /*******************************************************************
 /*******************************************************************
@@ -197,13 +195,13 @@
 * since the configuration will be available there.
 *
 */
-                    $scope.init = function (config) {
-                        $scope.config = config;
+                        $scope.init = function (config) {
+                            $scope.config = config;
 
-                        // The configuration contains the default text, which needs to be stored in the scope
-                        // (to make sure it will be displayed via the model).
-                        $scope.textContent = config.textLabel;
-                    };
+                            // The configuration contains the default text, which needs to be stored in the scope
+                            // (to make sure it will be displayed via the model).
+                            $scope.textContent = config.textLabel;
+                        };
 
 /*******************************************************************
 /*******************************************************************
@@ -216,12 +214,12 @@
 * E.g. change the text color based on the value of msg.color.
 *
 */
-                    $scope.$watch('msg', function(msg) {
-                        if (!msg) { return; } // Ignore undefined msg
+                        $scope.$watch('msg', function(msg) {
+                            if (!msg) { return; } // Ignore undefined msg
 
-                        // The payload contains the new text, which we will store on the scope (in the model)
-                        $scope.textContent = msg.payload;
-                    });
+                            // The payload contains the new text, which we will store on the scope (in the model)
+                            $scope.textContent = msg.payload;
+                        });
 
 /*******************************************************************
 /*******************************************************************
@@ -230,10 +228,10 @@
 * When the user has changed something in the dashboard, you can send the updated data to the Node-RED flow.
 *
 */
-                    $scope.change = function() {
-                        // The data will be stored in the model on the scope
-                        $scope.send({payload: $scope.textContent});
-                    };
+                        $scope.change = function() {
+                            // The data will be stored in the model on the scope
+                            $scope.send({payload: $scope.textContent});
+                        };
 /*******************************************************************/
 /*******************************************************************
 *
@@ -241,20 +239,21 @@
 * While an input has focus, the user can press the enter key to send the updated data to the Node-RED flow.
 *
 */
-                    $scope.enterkey = function(keyEvent){
-                        if (keyEvent.which === 13) {
-                            $scope.send({payload: $scope.textContent});
-                        }
-                    };
+                        $scope.enterkey = function(keyEvent){
+                            if (keyEvent.which === 13) {
+                                $scope.send({payload: $scope.textContent});
+                            }
+                        };
 /*******************************************************************/
 
 
-                }
-            });
-        }
+                    }
+                });
+            }
         }
         catch (e) {
-            console.log(e);		// catch any errors that may occur and display them in the web browsers console
+            // eslint-disable-next-line no-console
+            console.warn(e);		// catch any errors that may occur and display them in the web browsers console
         }
 
 /*******************************************************************
