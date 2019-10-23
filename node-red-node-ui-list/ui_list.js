@@ -57,7 +57,7 @@ module.exports = function(RED) {
         var desc = (allowHTML ? String.raw`<span ng-bind-html="item.description"></span>` : String.raw`{{item.description}}`);
         var icon = String.raw`
         <img src="{{item.icon}}" class="md-avatar" ng-if="(item.icon !== undefined) && (item.icon !== null)">
-        <md-icon aria-label="{{item.desc}}" ng-if="(item.icon === undefined) && (item.icon_name !== undefined)"><ui-icon icon="{{item.icon_name}}"></ui-icon></md-icon>
+        <md-icon ng-class="item.icon_class" aria-label="{{item.desc}}" ng-if="(item.icon === undefined) && (item.icon_name !== undefined)"><ui-icon icon="{{item.icon_name}}"></ui-icon></md-icon>
         <md-icon class="md-avatar-icon" aria-label="{{item.desc}}" ng-if="(item.icon === null) && (item.icon_name === undefined)"></md-icon>
 `;
         var body = null;
