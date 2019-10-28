@@ -64,7 +64,10 @@ module.exports = function (RED) {
                     group: config.group,
                     forwardInputMessages: false,
                     beforeEmit: function (msg, value) {
-                        return { msg: { payload: value } };
+                        if (msg.hasOwnProperty("ui_control") && Array.isArray(msg.ui_control))
+                            return {msg: {payload: value, ui_control: msg.ui_control } };
+                        else
+                            return { msg: { payload: value } };
                     },
                     beforeSend: function (msg, orig) {
                         if (orig) { return orig.msg; }
@@ -108,7 +111,15 @@ module.exports = function (RED) {
                                     $scope.tabledata = msg.payload;
                                     return;
                                 }
-                                createTable(tablediv,msg.payload,$scope.config.columns,$scope.config.outputs);
+                                if ( msg.hasOwnProperty("ui_control") && Array.isArray(msg.ui_control)) {
+                                    if ($scope.inited == false) {
+                                        $scope.config.columns = msg.ui_control;
+                                        return;
+                                    }
+                                    createTable(tablediv,msg.payload,msg.ui_control,$scope.config.outputs);
+                                } else {
+                                    createTable(tablediv,msg.payload,$scope.config.columns,$scope.config.outputs);
+                                }
                             }
                         });
                     }
