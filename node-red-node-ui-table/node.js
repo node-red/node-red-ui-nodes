@@ -64,7 +64,7 @@ module.exports = function (RED) {
                     group: config.group,
                     forwardInputMessages: false,
                     beforeEmit: function (msg, value) {
-                        if (msg.hasOwnProperty("ui_control") && Array.isArray(msg.ui_control))
+                        if (msg.hasOwnProperty("ui_control"))
                             return {msg: {payload: value, ui_control: msg.ui_control } };
                         else
                             return { msg: { payload: value } };
@@ -76,14 +76,14 @@ module.exports = function (RED) {
                         $scope.inited = false;
                         $scope.tabledata = [];
                         var tablediv;
-                        var createTable = function(basediv, tabledata, columndata, outputs) {
+                        var createTable = function(basediv, tabledata, columndata, outputs, ui_control) {
                             var y = (columndata.length === 0) ? 25 : 32;
                             var opts = {
                                 data: tabledata,
-                                layout: 'fitColumns',
+                                layout: (ui_control && ui_control.layout) ? ui_control.layout : 'fitColumns',
                                 columns: columndata,
-                                autoColumns: columndata.length == 0,
-                                movableColumns: true,
+                                autoColumns: (columndata.length === 0) ? true : false,
+                                movableColumns: (ui_control && (typeof ui_control.movableColumns=="boolean")) ? ui_control.movableColumns : true,
                                 height: tabledata.length * y + 26
                             }
                             if (outputs > 0) {
@@ -91,7 +91,8 @@ module.exports = function (RED) {
                                     $scope.send({topic:cell.getField(),payload:cell.getData()});
                                 };
                             }
-                            var table = new Tabulator(basediv, opts);
+                            if (Array.isArray(opts.data))
+                                var table = new Tabulator(basediv, opts);
                         };
                         $scope.init = function (config) {
                             $scope.config = config;
@@ -100,26 +101,51 @@ module.exports = function (RED) {
                                 if (document.querySelector(tablediv) && $scope.tabledata) {
                                     clearInterval(stateCheck);
                                     $scope.inited = true;
-                                    createTable(tablediv,$scope.tabledata,$scope.config.columns,$scope.config.outputs);
+                                    createTable(tablediv,$scope.tabledata,$scope.config.columns,$scope.config.outputs,$scope.config.ui_control);
                                     $scope.tabledata = [];
                                 }
                             }, 40);
                         };
                         $scope.$watch('msg', function (msg) {
                             if (msg && msg.hasOwnProperty("payload") && Array.isArray(msg.payload)) {
-                                if ($scope.inited == false) {
-                                    $scope.tabledata = msg.payload;
-                                    return;
+                                $scope.tabledata = msg.payload;
+                            }
+                            
+                            if (msg && msg.hasOwnProperty("ui_control")) {
+                                if (!$scope.config.ui_control) {
+                                    $scope.config.ui_control={};
                                 }
-                                if ( msg.hasOwnProperty("ui_control") && Array.isArray(msg.ui_control)) {
-                                    if ($scope.inited == false) {
-                                        $scope.config.columns = msg.ui_control;
-                                        return;
-                                    }
-                                    createTable(tablediv,msg.payload,msg.ui_control,$scope.config.outputs);
-                                } else {
-                                    createTable(tablediv,msg.payload,$scope.config.columns,$scope.config.outputs);
+                                if (msg.ui_control.hasOwnProperty("layout") && typeof msg.ui_control.layout == "string") {
+                                    $scope.config.ui_control.layout=msg.ui_control.layout;
                                 }
+                                if (msg.ui_control.hasOwnProperty("movableColumns") && typeof msg.ui_control.movableColumns == "boolean") {
+                                    $scope.config.ui_control.movableColumns=msg.ui_control.movableColumns;
+                                }
+                                if (msg.ui_control.hasOwnProperty("columns") && Array.isArray(msg.ui_control.columns)) {
+                                    // creates functions for color and legend properties if value includes {}
+                                    msg.ui_control.columns.forEach(function (element) {
+                                        if (element.hasOwnProperty("formatterParams")) {
+                                            for (var prop in element.formatterParams) {
+                                                if ((element.formatterParams.hasOwnProperty("color") ||
+                                                element.formatterParams.hasOwnProperty("legend")) &&
+                                                (typeof element.formatterParams[prop] === "string") && 
+                                                element.formatterParams[prop].includes('{') && 
+                                                element.formatterParams[prop].includes('}')) {
+                                                    
+                                                    element.formatterParams[prop]= Function("value",element.formatterParams[prop]);
+                                                }
+                                            }
+                                        }
+                                    });
+
+                                    $scope.config.columns = msg.ui_control.columns;
+                                }
+                            }
+
+                            if ($scope.inited == false) {
+                                return;
+                            } else {
+                                createTable(tablediv, $scope.tabledata, $scope.config.columns, $scope.config.outputs, $scope.config.ui_control);
                             }
                         });
                     }
