@@ -76,13 +76,14 @@ module.exports = function (RED) {
                         $scope.inited = false;
                         $scope.tabledata = [];
                         var tablediv;
+                        // (columndata.length === 0) ? true : false,
                         var createTable = function(basediv, tabledata, columndata, outputs, ui_control) {
-                            var y = (columndata.length === 0) ? 25 : 32;
+                            var y = ((ui_control && ui_control.columns.length > 0) || columndata.length > 0) ? 32 : 25;
                             var opts = {
                                 data: tabledata,
                                 layout: (ui_control && ui_control.layout) ? ui_control.layout : 'fitColumns',
-                                columns: columndata,
-                                autoColumns: (columndata.length === 0) ? true : false,
+                                columns: (ui_control && ui_control.columns) ? ui_control.columns : columndata,
+                                autoColumns: ((ui_control && ui_control.columns.length>0) || columndata.length > 0) ? false : true,
                                 movableColumns: (ui_control && (typeof ui_control.movableColumns=="boolean")) ? ui_control.movableColumns : true,
                                 height: tabledata.length * y + 26
                             }
@@ -138,7 +139,7 @@ module.exports = function (RED) {
                                         }
                                     });
 
-                                    $scope.config.columns = msg.ui_control.columns;
+                                   $scope.config.ui_control.columns = msg.ui_control.columns;
                                 }
                             }
 
