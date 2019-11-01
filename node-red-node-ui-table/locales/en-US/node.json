@@ -3,7 +3,8 @@
         "label" : {
             "group" : "Group",
             "size" : "Size",
-            "send" : "Send data on click "
+            "send" : "Send data on click ",
+            "sendLayout" : "Send layout on change "
         },
         "error": {
             "no-group": "group not configured"
