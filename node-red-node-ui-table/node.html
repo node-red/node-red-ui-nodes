@@ -39,7 +39,6 @@
         <label for="node-input-width" style="vertical-align:top"><i class="fa fa-list-alt"></i> Columns</label>
         <span style="float:right">
             <span data-i18n='table.label.send'>&nbsp;</span><input type="checkbox" id="node-input-cts" style="display:inline-block; width:auto; vertical-align:top;">
-            <span data-i18n='table.label.sendLayout'>&nbsp;</span><input type="checkbox" id="node-input-slc" style="display:inline-block; width:auto; vertical-align:top;">
         </span>
         <ol id="node-input-column-container"></ol>
     </div>
@@ -68,8 +67,7 @@
             height: { value: 0 },
             columns: { value: [] },
             outputs: { value: 0 },
-            cts: { value: false },
-            slc: { value: false }  // send layout changes
+            cts: { value: false }
         },
         inputs: 1,
         outputs: 0,
@@ -186,9 +184,8 @@
                 node.columns.push(c);
             });
             var that = this;
-            that.outputs = 0;
             if ($("#node-input-cts").is(":checked")) { that.outputs = 1; }
-            if ($("#node-input-slc").is(":checked")) { that.cts=true; that.outputs = 2; }
+                else that.outputs = 0;
         },
         oneditresize: function(size) {
             var rows = $("#dialog-form>div:not(.node-input-column-container-row)");

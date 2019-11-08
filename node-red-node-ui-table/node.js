@@ -63,62 +63,50 @@ module.exports = function (RED) {
                     order: config.order,
                     group: config.group,
                     forwardInputMessages: false,
-                    columns: config.columns,
+
                     beforeEmit: function (msg, value) {
                         return {msg: {
                             payload: value, 
                             ui_control: (msg.hasOwnProperty("ui_control")) ? msg.ui_control : undefined,
-                            topic: (msg.hasOwnProperty("topic")) ? msg.topic : undefined,
                         }};
                     },
                     beforeSend: function (msg, orig) {
-                        if (orig) { 
-                            if (orig.msg.hasOwnProperty("layout"))
-                                return [null,orig.msg];
-                            else
-                                return [orig.msg,null];
-                            }
+                        if (orig) { return orig.msg; }
                     },
                     initController: function ($scope, events) {
                         $scope.inited = false;
                         $scope.tabledata = [];
                         var tablediv;
-                        // (columndata.length === 0) ? true : false,
                         var createTable = function(basediv, tabledata, columndata, outputs, ui_control) {
-                            var y = ((ui_control && ui_control.columns.length > 0) || columndata.length > 0) ? 32 : 25;
-                            var opts = {
-                                data: tabledata,
-                                layout: (ui_control && ui_control.layout) ? ui_control.layout : 'fitColumns',
-                                columns: (ui_control && ui_control.columns) ? ui_control.columns : columndata,
-                                autoColumns: ((ui_control && ui_control.columns.length>0) || columndata.length > 0) ? false : true,
-                                movableColumns: (ui_control && (typeof ui_control.movableColumns=="boolean")) ? ui_control.movableColumns : true,
-                                groupBy: (ui_control && ui_control.groupBy) ? ui_control.groupBy : undefined,
-                                groupHeader: (ui_control && ui_control.groupHeader) ? ui_control.groupHeader : undefined,
-                                height: tabledata.length * y + 26,
-                            }
+                            if (!ui_control || !ui_control.tabulator) {
+                                var y = (columndata.length === 0) ? 25 : 32;
+                                var opts = {
+                                    data: tabledata,
+                                    layout: 'fitColumns',
+                                    columns: columndata,
+                                    autoColumns: columndata.length == 0,
+                                    movableColumns: true,
+                                    height: tabledata.length * y + 26
+                                }
+                            } else { // configuration via ui_control
+                                var y = (ui_control.tabulator.columns.length > 0) ? 32 : 25;
+                                var opts = ui_control.tabulator;
+                                opts.data = tabledata;
+                                if (!ui_control.tabulator.layout) opts.layout = 'fitColumns';
+                                if (!ui_control.tabulator.movableColumns) opts.movableColumns = true;
+                                if (!ui_control.tabulator.columns) opts.columns = columndata;
+                                if (!ui_control.tabulator.autoColumns) autoColumns = columndata.length == 0;
+                                if (!ui_control.customHeight) opts.height= tabledata.length * y + 26;
+                                    else opts.height= ui_control.customHeight * y + 26;
+                            } // end of configuration via ui_control
+
                             if (outputs > 0) {
                                 opts.cellClick = function(e, cell) {
-                                    $scope.send({origin:"ui-table",topic:cell.getField(),payload:cell.getData()});
+                                    $scope.send({topic:cell.getField(),payload:cell.getData()});
                                 };
-                                if (opts.movableColumns) {
-                                    opts.columnMoved = function(column, columns){
-                                        console.log(columns);
-                                        var newColumns=[];
-                                        columns.forEach(function (column) {
-                                            newColumns.push({"field": column._column.field});
-                                        });
-                                        $scope.send({origin:"ui-table",topic:$scope.config.topic,layout:"columnMoved",payload:newColumns});
-                                    }
+                            }
 
-                                }
-                                opts.columnResized = function(column){
-                                    $scope.send({origin:"ui-table",topic:$scope.config.topic,layout:"columnResized",payload:{"field":column._column.field,"width":column._column.width,"widthStyled":column._column.widthStyled}});
-                                };
-                            }
-                            if (Array.isArray(opts.data)){
-                                console.log(opts);
-                                var table = new Tabulator(basediv, opts);
-                            }
+                            var table = new Tabulator(basediv, opts);
                         };
                         $scope.init = function (config) {
                             $scope.config = config;
@@ -130,71 +118,51 @@ module.exports = function (RED) {
                                     createTable(tablediv,$scope.tabledata,$scope.config.columns,$scope.config.outputs,$scope.config.ui_control);
                                     $scope.tabledata = [];
                                 }
-                            }, 200); // lowest setting on my browser ... fails sometimes
+                            }, 200); // lowest setting on my side ... still fails sometimes ;)
                         };
                         $scope.$watch('msg', function (msg) {
-                            if (msg && msg.hasOwnProperty("origin") && (msg.origin=="ui-table")) return;
-                            if (msg && msg.hasOwnProperty("topic")) $scope.config.topic=msg.topic;
-
+                            if (msg && msg.hasOwnProperty("ui_control") && msg.ui_control.hasOwnProperty("callback")) return; // to avoid loopback from callbacks. No better solution jet. Help needed.
                             if (msg && msg.hasOwnProperty("payload") && Array.isArray(msg.payload)) {
                                 $scope.tabledata = msg.payload;
                             }
                             
+                            // configuration via ui_control
                             if (msg && msg.hasOwnProperty("ui_control")) {
-                                if (!$scope.config.ui_control) {
-                                    $scope.config.ui_control={};
-                                }
+
                                 var addValueOrFunction = function (config,param,value) {
-                                    
                                     if (typeof String.prototype.parseFunction != 'function') {
                                         String.prototype.parseFunction = function () {
                                             var funcReg = /function *\(([^()]*)\)[ \n\t]*{(.*)}/gmi;
                                             var match = funcReg.exec(this.replace(/\n/g, ' '));
-                                    
                                             if(match) {
                                                 return new Function(match[1].split(','), match[2]);
                                             }
-                                    
                                             return null;
                                         };
                                     }
+                                    var valueFunction;
+                                    if (typeof value === "string" && (valueFunction = value.parseFunction())) {
+                                        config[param]=valueFunction.bind($scope); // to enable this.send() for callback functions.
+                                    }
+                                    else config[param]= value;
+                                }
 
-                                    if ((typeof value === "string") && value.includes('{') && value.includes('}')) {
-                                        config[param]= value.parseFunction();
-                                    } else {
-                                        config[param]= value;
+                                var addObject = function (destinationObject,sourceObject) {
+                                    for (var element in sourceObject) {
+                                        if (!destinationObject[element]) destinationObject[element]=(Array.isArray(sourceObject[element]))? [] : {};
+                                        if (typeof sourceObject[element] === "object") {
+                                            addObject(destinationObject[element],sourceObject[element])
+                                        } else {
+                                            addValueOrFunction(destinationObject,element,sourceObject[element]);
+                                        }
                                     }
                                 }
 
-                                if (msg.ui_control.hasOwnProperty("layout") && typeof msg.ui_control.layout == "string") {
-                                    $scope.config.ui_control.layout=msg.ui_control.layout;
-                                }
-                                if (msg.ui_control.hasOwnProperty("movableColumns") && typeof msg.ui_control.movableColumns == "boolean") {
-                                    $scope.config.ui_control.movableColumns=msg.ui_control.movableColumns;
-                                }
-                                if (msg.ui_control.hasOwnProperty("groupBy")) {
-                                    addValueOrFunction($scope.config.ui_control,"groupBy",msg.ui_control.groupBy);
-                                }
-                                if (msg.ui_control.hasOwnProperty("groupHeader")) {
-                                    addValueOrFunction($scope.config.ui_control,"groupHeader",msg.ui_control.groupHeader);
-                                }
+                                if (!$scope.config.ui_control) { $scope.config.ui_control={}; }
 
-                                if (msg.ui_control.hasOwnProperty("columns") && Array.isArray(msg.ui_control.columns)) {
-                                    // creates functions for color and legend properties if value includes {}
-                                    msg.ui_control.columns.forEach(function (element) {
-                                        if (element.hasOwnProperty("formatterParams")) {
-                                            for (var prop in element.formatterParams) {
-                                                if ((element.formatterParams.hasOwnProperty("color") ||
-                                                element.formatterParams.hasOwnProperty("legend"))) {
-                                                    addValueOrFunction(element.formatterParams,prop,element.formatterParams[prop])
-                                                }
-                                            }
-                                        }
-                                    });
+                                addObject($scope.config.ui_control,msg.ui_control);
 
-                                   $scope.config.ui_control.columns = msg.ui_control.columns;
-                                }
-                            }
+                            } // end off configuration via ui_control
 
                             if ($scope.inited == false) {
                                 return;
