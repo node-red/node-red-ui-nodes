@@ -37,7 +37,9 @@
     </div>
     <div class="form-row node-input-column-container-row">
         <label for="node-input-width" style="vertical-align:top"><i class="fa fa-list-alt"></i> Columns</label>
-        <span style="float:right"><span data-i18n='table.label.send'>&nbsp;</span><input type="checkbox" id="node-input-cts" style="display:inline-block; width:auto; vertical-align:top;"></span>
+        <span style="float:right">
+            <span data-i18n='table.label.send'>&nbsp;</span><input type="checkbox" id="node-input-cts" style="display:inline-block; width:auto; vertical-align:top;">
+        </span>
         <ol id="node-input-column-container"></ol>
     </div>
 </script>
@@ -183,7 +185,7 @@
             });
             var that = this;
             if ($("#node-input-cts").is(":checked")) { that.outputs = 1; }
-            else { that.outputs = 0; }
+                else that.outputs = 0;
         },
         oneditresize: function(size) {
             var rows = $("#dialog-form>div:not(.node-input-column-container-row)");
