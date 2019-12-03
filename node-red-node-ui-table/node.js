@@ -102,7 +102,7 @@ module.exports = function (RED) {
 
                             if (outputs > 0) {
                                 opts.cellClick = function(e, cell) {
-                                    $scope.send({topic:cell.getField(),payload:cell.getData()});
+                                    $scope.send({topic:cell.getField(), payload:cell.getData(), row:(cell.getRow()).getPosition()});
                                 };
                             }
 
