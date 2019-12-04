@@ -1,0 +1,105 @@
+[
+    {
+        "id": "ba92cba0.ee4ad8",
+        "type": "inject",
+        "z": "fbd51901.ad38e8",
+        "name": "",
+        "topic": "",
+        "payload": "[{\"name\":\"MEQ0451495\",\"room\":\"Bathroom\",\"SET_TEMPERATURE-value\":22,\"ACTUAL_TEMPERATURE-value\":21.8,\"VALVE_STATE-value\":90,\"BATTERY_STATE-value\":2.7,\"BOOST_STATE-value\":0,\"AUTO_MODE-value\":true,\"CONTROL_MODE-value\":0},{\"name\":\"MEQ1875547\",\"room\":\"Living Room\",\"SET_TEMPERATURE-value\":12,\"ACTUAL_TEMPERATURE-value\":16.2,\"VALVE_STATE-value\":0,\"BATTERY_STATE-value\":2.7,\"BOOST_STATE-value\":0,\"AUTO_MODE-value\":false,\"CONTROL_MODE-value\":1},{\"name\":\"MEQ1875538\",\"room\":\"Living Room\",\"SET_TEMPERATURE-value\":18,\"ACTUAL_TEMPERATURE-value\":19.5,\"VALVE_STATE-value\":0,\"BATTERY_STATE-value\":2.6,\"BOOST_STATE-value\":0,\"AUTO_MODE-value\":false,\"CONTROL_MODE-value\":2},{\"name\":\"MEQ0447462\",\"room\":\"Kitchen\",\"SET_TEMPERATURE-value\":17,\"ACTUAL_TEMPERATURE-value\":22.2,\"VALVE_STATE-value\":0,\"BATTERY_STATE-value\":2.7,\"BOOST_STATE-value\":10,\"AUTO_MODE-value\":false,\"CONTROL_MODE-value\":3},{\"name\":\"MEQ1875551\",\"room\":\"Office\",\"SET_TEMPERATURE-value\":18,\"ACTUAL_TEMPERATURE-value\":20.2,\"VALVE_STATE-value\":0,\"BATTERY_STATE-value\":2.7,\"BOOST_STATE-value\":0,\"AUTO_MODE-value\":false,\"CONTROL_MODE-value\":0},{\"name\":\"MEQ0447425\",\"room\":\"Dining Room\",\"SET_TEMPERATURE-value\":19,\"ACTUAL_TEMPERATURE-value\":20.4,\"VALVE_STATE-value\":0,\"BATTERY_STATE-value\":2.7,\"BOOST_STATE-value\":0,\"AUTO_MODE-value\":false,\"CONTROL_MODE-value\":0},{\"name\":\"MEQ1875546\",\"room\":\"Dining Room\",\"SET_TEMPERATURE-value\":20,\"ACTUAL_TEMPERATURE-value\":18.8,\"VALVE_STATE-value\":99,\"BATTERY_STATE-value\":2.7,\"BOOST_STATE-value\":0,\"AUTO_MODE-value\":false,\"CONTROL_MODE-value\":0},{\"name\":\"MEQ0447483\",\"room\":\"Bedroom\",\"SET_TEMPERATURE-value\":17,\"ACTUAL_TEMPERATURE-value\":22.4,\"VALVE_STATE-value\":0,\"BATTERY_STATE-value\":2.7,\"BOOST_STATE-value\":0,\"AUTO_MODE-value\":false,\"CONTROL_MODE-value\":0},{\"name\":\"MEQ1875541\",\"room\":\"Child\",\"SET_TEMPERATURE-value\":18,\"ACTUAL_TEMPERATURE-value\":20.4,\"VALVE_STATE-value\":0,\"BATTERY_STATE-value\":2.7,\"BOOST_STATE-value\":0,\"AUTO_MODE-value\":false,\"CONTROL_MODE-value\":0},{\"name\":\"MEQ1875552\",\"room\":\"Guest Room\",\"SET_TEMPERATURE-value\":20,\"ACTUAL_TEMPERATURE-value\":21.1,\"VALVE_STATE-value\":9,\"BATTERY_STATE-value\":2.8,\"BOOST_STATE-value\":0,\"AUTO_MODE-value\":false,\"CONTROL_MODE-value\":0}]",
+        "payloadType": "json",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "x": 169,
+        "y": 221,
+        "wires": [
+            [
+                "8115c722.5d91d8"
+            ]
+        ]
+    },
+    {
+        "id": "8115c722.5d91d8",
+        "type": "change",
+        "z": "fbd51901.ad38e8",
+        "name": "ui_control",
+        "rules": [
+            {
+                "t": "set",
+                "p": "ui_control",
+                "pt": "msg",
+                "to": "{\"tabulator\":{\"columnResized\":\"function(column){     var newColumn = {         field: column._column.field,         visible: column._column.visible,         width: column._column.width,         widthFixed: column._column.widthFixed,         widthStyled: column._column.widthStyled     }; this.send({topic:this.config.topic,ui_control:{callback:'columnResized',columnWidths:newColumn}}); }\",\"columnMoved\":\"function(column, columns){     var newColumns=[];     columns.forEach(function (column) {         newColumns.push({'field': column._column.field});     });     this.send({topic:this.config.topic,ui_control:{callback:'columnMoved',columns:newColumns}}); }\",\"groupHeader\":\"function (value, count, data, group) {return value + \\\"<span style='color:#d00; margin-left:10px;'>(\\\" + count + \\\" Termostat\\\"+((count>1) ? \\\"e\\\" : \\\"\\\") + \\\")</span>\\\";}\",\"columns\":[{\"formatterParams\":{\"target\":\"_blank\"},\"title\":\"ROom\",\"field\":\"room\",\"width\":100,\"frozen\":true},{\"formatterParams\":{\"target\":\"_blank\"},\"title\":\"Device\",\"field\":\"name\",\"width\":100,\"align\":\"center\"},{\"formatterParams\":{\"target\":\"_blank\"},\"title\":\"Type\",\"field\":\"deviceType\",\"width\":100,\"align\":\"center\"},{\"formatterParams\":{\"target\":\"_blank\"},\"title\":\"Measurements\",\"columns\":[{\"formatterParams\":{\"target\":\"_blank\"},\"title\":\"target\",\"field\":\"SET_TEMPERATURE-value\",\"formatter\":\"function(cell, formatterParams, onRendered){return cell.getValue()+'°C';}\",\"topCalc\":\"avg\",\"width\":100},{\"formatterParams\":{\"target\":\"_blank\",\"min\":10,\"max\":25,\"color\":[\"blue\",\"green\",\"red\"],\"legend\":\"function (value) {return '&nbsp;&nbsp;'+value+'°C';}\",\"legendColor\":\"#101010\",\"legendAlign\":\"left\"},\"title\":\"current\",\"field\":\"ACTUAL_TEMPERATURE-value\",\"formatter\":\"progress\",\"topCalc\":\"avg\",\"width\":100},{\"formatterParams\":{\"target\":\"_blank\",\"min\":0,\"max\":99,\"color\":[\"gray\",\"orange\",\"red\"],\"legend\":\"function (value) {return (value>0)? '&nbsp;&nbsp;'+value+' %' : '-';}\",\"legendColor\":\"#101010\",\"legendAlign\":\"center\"},\"title\":\"Valve\",\"field\":\"VALVE_STATE-value\",\"formatter\":\"progress\",\"topCalc\":\"max\",\"width\":100},{\"formatterParams\":{\"target\":\"_blank\",\"min\":1.5,\"max\":4.6,\"color\":[\"red\",\"orange\",\"green\"],\"legend\":\"function (value) {return value+' V';}\",\"legendColor\":\"#101010\",\"legendAlign\":\"center\"},\"title\":\"Batt\",\"field\":\"BATTERY_STATE-value\",\"formatter\":\"progress\",\"topCalc\":\"min\",\"width\":100}]},{\"formatterParams\":{\"target\":\"_blank\"},\"title\":\"Settings\",\"columns\":[{\"formatterParams\":{\"target\":\"_blank\",\"min\":0,\"max\":30,\"color\":[\"red\",\"orange\",\"green\"],\"legend\":\"function (value) {     if (value>0)         return \\\"<span style='color:#101010;'>\\\"+value+\\\" min</span>\\\";     else         return \\\"<span style='color:#A0A0A0;'>aus</span>\\\"; }\",\"legendColor\":\"#101010\",\"legendAlign\":\"center\"},\"title\":\"Boost\",\"field\":\"BOOST_STATE-value\",\"formatter\":\"progress\",\"width\":100},{\"formatterParams\":{\"target\":\"_blank\",\"allowEmpty\":true,\"allowTruthy\":true,\"tickElement\":\"<i class='fa fa-clock-o'></i>\",\"crossElement\":\"<i class='fa fa-ban'></i>\"},\"title\":\"Auto\",\"field\":\"AUTO_MODE-value\",\"formatter\":\"tickCross\",\"width\":100,\"align\":\"center\"},{\"formatterParams\":{\"target\":\"_blank\"},\"title\":\"Mode\",\"field\":\"CONTROL_MODE-value\",\"formatter\":\"function(cell, formatterParams, onRendered){     var html=\\\"<i class=\\\\\\\"\\\";     switch(cell.getValue()) {         case 0: html+=\\\"fa fa-calendar-check-o\\\"; break;         case 1: html+=\\\"fa fa-hand-o-up\\\"; break;         case 2: html+=\\\"fa fa-suitcase\\\"; break;         case 3: html+=\\\"fa fa-spinner fa-spin fa-fw\\\"; break;     }     html+='\\\\\\\"></i>';     return html; }\",\"width\":100,\"align\":\"center\"},{\"formatterParams\":{\"target\":\"_blank\"},\"title\":\"Auto\",\"field\":\"AUTO_MODE-value\",\"formatter\":\"tick\",\"width\":100,\"align\":\"center\"}]}],\"layout\":\"fitColumns\",\"movableColumns\":true,\"groupBy\":\"\"},\"customHeight\":12}",
+                "tot": "json"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 315,
+        "y": 221,
+        "wires": [
+            [
+                "4b960bb2.f61934"
+            ]
+        ]
+    },
+    {
+        "id": "5d38f5fa.6541bc",
+        "type": "debug",
+        "z": "fbd51901.ad38e8",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "x": 628,
+        "y": 221,
+        "wires": []
+    },
+    {
+        "id": "4b960bb2.f61934",
+        "type": "ui_table",
+        "z": "fbd51901.ad38e8",
+        "group": "51ce6aa1.620754",
+        "name": "Thermostats",
+        "order": 1,
+        "width": "20",
+        "height": "7",
+        "columns": [],
+        "outputs": 1,
+        "cts": true,
+        "x": 478,
+        "y": 221,
+        "wires": [
+            [
+                "5d38f5fa.6541bc"
+            ]
+        ]
+    },
+    {
+        "id": "51ce6aa1.620754",
+        "type": "ui_group",
+        "z": "",
+        "name": "ui_control",
+        "tab": "3b08fac0.8f06b6",
+        "order": 1,
+        "disp": true,
+        "width": "22",
+        "collapse": false
+    },
+    {
+        "id": "3b08fac0.8f06b6",
+        "type": "ui_tab",
+        "z": "",
+        "name": "Home",
+        "icon": "track_changes",
+        "order": 1,
+        "disabled": false,
+        "hidden": false
+    }
+]

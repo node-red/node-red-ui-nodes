@@ -62,3 +62,64 @@ The columns can be configured manually. If so then only the `msg.payload` proper
     }
 ]
 ```
+
+## control ui-table by sending ```msg.ui_control``` messages
+
+ui-table is based on the **tabulator** module and can be customized by sending configuration data to `msg.ui_control.tabulator`. You can find an excellent in depth [documentation here](http://tabulator.info/docs/4.4) with many [examples here](http://tabulator.info/examples/4.4).
+
+![customized table](./ui-table-custom.png)
+
+by adding ***headers***, ***footers***, ***line*** or ***column grouping*** it is sometimes not possible to determine the amount of lines. Therefore the height can be defined by sending `msg.ui_control.customHeight=lines`. 
+
+Example flow "3 ui_control table.json" file can be found in the examples folder
+
+- grouped columns by nesting column definition in ` ui_control.tabulator.columns`
+- first column ```frozen``` from horizontal scrolling
+- `formatterParams` to define min/max, color, legend or other parameters for `progress` and `planText` formatters 
+- functions to format legend values
+``` javascript
+// add a unit
+var function(cell, formatterParams, onRendered){
+    return cell.getValue()+"°C";
+}
+```
+or more sophisticated using html
+``` javascript
+// convert Number to Icons
+var function(cell, formatterParams, onRendered){
+    var html="<i class=\"";
+    switch(cell.getValue()) {
+        case 0: html+="fa fa-calendar-check-o"; break;
+        case 1: html+="fa fa-hand-o-up"; break;
+        case 2: html+="fa fa-suitcase"; break;
+        case 3: html+="fa fa-spinner fa-spin fa-fw"; break;
+    }
+    html+='\"></i>';
+    return html;
+}
+```
+- `topCalc` for average and min/max calculations
+- custom icons for `tickCross` formatter
+- `tick` formatter
+- `groupBy` parameter to use group lines. `groupHeader` function to format legend and adding html tags (Insert a field name in the groupBy paramter at the end of json in the change node to use this feature)
+- `columnResized` callback function to receive a message when the user resize a column
+``` javascript
+columnResized = function(column){
+    var newColumn = {
+        field: column._column.field,
+        visible: column._column.visible,
+        width: column._column.width,
+        widthFixed: column._column.widthFixed,
+        widthStyled: column._column.widthStyled
+    };
+    this.send({
+        ui_control:{callback:'columnResized',columnWidths:newColumn}
+    });
+}
+```
+- use `this.send({})` to pass result to Node-RED. (to avoid a loopback add`ui_control.callback="someText"`)
+```javascript
+ this.send({topic: "anyTopic",payload:"anyPayload",ui_control: {callback:"myCallback"}});
+```
+- all parameters are named according to tabulator documentation. Use ```field``` instead of ```Property``` used in node configuration
+- no validation of `msg.ui_control` data is performed! So if you don`t get the results you expect take a look on your browsers console.
