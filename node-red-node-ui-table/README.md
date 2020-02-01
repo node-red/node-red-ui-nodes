@@ -62,12 +62,52 @@ The columns can be configured manually. If so then only the `msg.payload` proper
     }
 ]
 ```
+## advanced features
+
+ui-table is based on the **tabulator** module. You can find an excellent in depth [documentation here](http://tabulator.info/docs/4.4) with many [examples here](http://tabulator.info/examples/4.4).
+
+## send commands to ui-table
+
+Instead of sending an array to ui-table this node to replace the complete table data ui-table also accepts an object as payload to send commands. The object must have the following properties
+
+- `command` a valid tabulator function such as `addRow`, `replaceData` or `addFilter`
+- `arguments` *(optional)* array of arguments for that function
+- `returnPromise` *(optional)* a boolean value. `true` if the function should return a promise message.
+
+example
+```json
+{"payload":{
+    "command":"addData",
+    "arguments":[
+        {
+            "facility":"daemon",
+            "facilityCode":3,
+            "severity":"info",
+            "severityCode":6,
+            "tag":"systemd[1]",
+            "timestamp":"2020-01-02T19:17:39.793Z",
+            "hostname":"localhost",
+            "address":"127.0.0.1",
+            "family":"IPv4",
+            "port":38514,
+            "size":80,
+            "msg":"some demo data",
+            "id":2351
+        },
+        true
+    ],
+    "returnPromise":true
+    }
+}
+```
+
+Example flow "4 syslog server.json" file can be found in the examples folder. The example uses the [node-red-contrib-syslog-input](https://flows.nodered.org/node/node-red-contrib-syslog-input) node to feed live data into ui-table and add line by line until a user defined amount of lines reached. Exceeding lines will be dynamically deleted from ui-table using the `deleteRow` command. The flow also provides a separate buffer for storing data even when no client is connected. Filters can be set and custom formating using `msg.ui_control`. All nodes have info text available in the info/help tab.
 
 ## control ui-table by sending ```msg.ui_control``` messages
 
-ui-table is based on the **tabulator** module and can be customized by sending configuration data to `msg.ui_control.tabulator`. You can find an excellent in depth [documentation here](http://tabulator.info/docs/4.4) with many [examples here](http://tabulator.info/examples/4.4).
+ui-table can be customized by sending configuration data to `msg.ui_control.tabulator`.
 
-![customized table](./ui-table-custom.png)
+![customized table](https://raw.githubusercontent.com/node-red/node-red-ui-nodes/master/node-red-node-ui-table//ui-table-custom.png)
 
 by adding ***headers***, ***footers***, ***line*** or ***column grouping*** it is sometimes not possible to determine the amount of lines. Therefore the height can be defined by sending `msg.ui_control.customHeight=lines`. 
 
