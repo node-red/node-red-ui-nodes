@@ -46,6 +46,7 @@ module.exports = function (RED) {
             RED.nodes.createNode(this, config);
             if (checkConfig(node, config)) {
                 var ui = RED.require('node-red-dashboard')(RED);
+                var sizes = ui.getSizes();
                 var luma = 255;
                 if (ui.hasOwnProperty("getTheme") && (ui.getTheme() !== undefined)) {
                     var rgb = parseInt(ui.getTheme()["page-sidebar-backgroundColor"].value.substring(1), 16);   // convert rrggbb to decimal
@@ -86,7 +87,7 @@ module.exports = function (RED) {
                                     columns: columndata,
                                     autoColumns: columndata.length == 0,
                                     movableColumns: true,
-                                    height: tabledata.length * y + 26
+                                    height: (tabledata.length > 0 )? tabledata.length * y + 26 : $scope.height*(sizes.sy+sizes.cy)
                                 }
                             } else { // configuration via ui_control
                                 var y = (ui_control.tabulator.columns.length > 0) ? 32 : 25;

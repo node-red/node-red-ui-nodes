@@ -1,0 +1,944 @@
+[
+    {
+        "id": "b075d2ac.a69f3",
+        "type": "ui_table",
+        "z": "292ca715.a2db08",
+        "group": "237da972.5d69a6",
+        "name": "",
+        "order": 0,
+        "width": "17",
+        "height": "9",
+        "columns": [
+            {
+                "field": "id",
+                "title": "id",
+                "width": "",
+                "align": "right",
+                "formatter": "plaintext",
+                "formatterParams": {
+                    "target": "_blank"
+                }
+            },
+            {
+                "field": "timestamp",
+                "title": "Timestamp",
+                "width": "",
+                "align": "left",
+                "formatter": "plaintext",
+                "formatterParams": {
+                    "target": "_blank"
+                }
+            },
+            {
+                "field": "text",
+                "title": "Text",
+                "width": "",
+                "align": "left",
+                "formatter": "plaintext",
+                "formatterParams": {
+                    "target": "_blank"
+                }
+            }
+        ],
+        "outputs": 1,
+        "cts": true,
+        "x": 866,
+        "y": 425,
+        "wires": [
+            [
+                "588f316.0b070d",
+                "76c4495f.da70f8"
+            ]
+        ]
+    },
+    {
+        "id": "f8a9323b.fedf4",
+        "type": "inject",
+        "z": "292ca715.a2db08",
+        "name": "add @ top",
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "x": 230,
+        "y": 323,
+        "wires": [
+            [
+                "eb577b4b.510388"
+            ]
+        ]
+    },
+    {
+        "id": "b54f6ce8.3b1a4",
+        "type": "debug",
+        "z": "292ca715.a2db08",
+        "name": "addRow",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "x": 451,
+        "y": 425,
+        "wires": []
+    },
+    {
+        "id": "eb577b4b.510388",
+        "type": "function",
+        "z": "292ca715.a2db08",
+        "name": "addRow @ top",
+        "func": "var id=flow.get(\"lastId\") || 0;\n++id;\nmsg.payload={\n    command:\"addRow\",\n    arguments: [\n        [\n            {\n            \"id\":id,\n            \"timestamp\":msg.payload,\n            \"text\":\"addRow @ top (#\"+id+\")\"\n            }\n        ],\n        true\n    ],\n    returnPromise: true\n}\nflow.set(\"lastId\",id);\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 471,
+        "y": 289,
+        "wires": [
+            [
+                "b54f6ce8.3b1a4",
+                "b075d2ac.a69f3"
+            ]
+        ],
+        "info": "# addRow([row],onTop)\n\n`onTop=true`\n\nadds a new Row on top of the table"
+    },
+    {
+        "id": "588f316.0b070d",
+        "type": "debug",
+        "z": "292ca715.a2db08",
+        "name": "response from ui-table",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "x": 1171,
+        "y": 425,
+        "wires": []
+    },
+    {
+        "id": "12606591.7a3dca",
+        "type": "inject",
+        "z": "292ca715.a2db08",
+        "name": "Init 20 rows",
+        "topic": "",
+        "payload": "20",
+        "payloadType": "num",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "x": 240,
+        "y": 153,
+        "wires": [
+            [
+                "d4dce9b4.1f2588"
+            ]
+        ]
+    },
+    {
+        "id": "d4dce9b4.1f2588",
+        "type": "function",
+        "z": "292ca715.a2db08",
+        "name": "table with n rows as array",
+        "func": "var numberOfRows = msg.payload;\nflow.set(\"lastId\",numberOfRows);\nmsg.payload=[];\nfor (let i=1; i<=numberOfRows; i++) {\n    msg.payload.push({\"id\":i,\"timestamp\":Date.now(),\"text\":\"this is line\"+i})\n}\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 501,
+        "y": 119,
+        "wires": [
+            [
+                "b075d2ac.a69f3",
+                "f9bfd98.abe1a28",
+                "76c4495f.da70f8"
+            ]
+        ]
+    },
+    {
+        "id": "8254f2d2.eeaa1",
+        "type": "function",
+        "z": "292ca715.a2db08",
+        "name": "updateOrAddData (add)",
+        "func": "var id=flow.get(\"lastId\") || 0;\n++id;\nmsg.payload={\n    command:\"updateOrAddData\",\n    arguments: [\n        [\n            {\n            \"id\":id,\n            \"timestamp\":msg.payload,\n            \"text\":\"updateOrAddData (add) (#\"+id+\")\"\n            }\n        ]\n    ],\n    returnPromise: true\n}\nflow.set(\"lastId\",id);\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 501,
+        "y": 476,
+        "wires": [
+            [
+                "570e922d.1d465c",
+                "b075d2ac.a69f3"
+            ]
+        ],
+        "info": "# updateOrAddData([row])\n\nadds a the row with a new id (same as addRow)"
+    },
+    {
+        "id": "cbd6baa0.fa7d78",
+        "type": "inject",
+        "z": "292ca715.a2db08",
+        "name": "add",
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "x": 220,
+        "y": 510,
+        "wires": [
+            [
+                "8254f2d2.eeaa1"
+            ]
+        ]
+    },
+    {
+        "id": "570e922d.1d465c",
+        "type": "debug",
+        "z": "292ca715.a2db08",
+        "name": "updateOrAddData",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "x": 481,
+        "y": 595,
+        "wires": []
+    },
+    {
+        "id": "782ab41e.cbb66c",
+        "type": "inject",
+        "z": "292ca715.a2db08",
+        "name": "add @ end",
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "x": 230,
+        "y": 408,
+        "wires": [
+            [
+                "760fde70.028f"
+            ]
+        ]
+    },
+    {
+        "id": "760fde70.028f",
+        "type": "function",
+        "z": "292ca715.a2db08",
+        "name": "addRow @ end",
+        "func": "var id=flow.get(\"lastId\") || 0;\n++id;\nmsg.payload={\n    command:\"addRow\",\n    arguments: [\n        [\n            {\n            \"id\":id,\n            \"timestamp\":msg.payload,\n            \"text\":\"addRow @ end (#\"+id+\")\"\n            }\n        ],\n        false\n    ],\n    returnPromise: true\n}\nflow.set(\"lastId\",id);\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 471,
+        "y": 374,
+        "wires": [
+            [
+                "b54f6ce8.3b1a4",
+                "b075d2ac.a69f3"
+            ]
+        ],
+        "info": "# addRow([row],onTop)\n\n`onTop=false`\n\nadds a new Row on top of the table"
+    },
+    {
+        "id": "deeff963.289f08",
+        "type": "function",
+        "z": "292ca715.a2db08",
+        "name": "updateOrAddData (update)",
+        "func": "var id=flow.get(\"lastId\") || 0;\nif (id<2) {\n    node.error(\"use only if minimum of 2 Lines existing!\")\n    return;\n}\n\nid=Math.floor(id/2); //\nmsg.payload={\n    command:\"updateOrAddData\",\n    arguments: [\n        [\n            {\n            \"id\":id,\n            \"timestamp\":msg.payload,\n            \"text\":\"updateOrAddData (update) (#\"+id+\")\"\n            }\n        ]\n    ],\n    returnPromise: true\n}\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 511,
+        "y": 544,
+        "wires": [
+            [
+                "570e922d.1d465c",
+                "b075d2ac.a69f3"
+            ]
+        ],
+        "info": "# updateOrAddData([row])\n\nupdates a the row with an id in the middle from 1 to lastId, hope it exists!\nIf not a row will be added"
+    },
+    {
+        "id": "557e109d.f9d7e",
+        "type": "comment",
+        "z": "292ca715.a2db08",
+        "name": "update ui-table by passing the complete tableData as array",
+        "info": "",
+        "x": 363,
+        "y": 68,
+        "wires": []
+    },
+    {
+        "id": "6a095f36.8f13a",
+        "type": "comment",
+        "z": "292ca715.a2db08",
+        "name": "update ui-table by using commands",
+        "info": "",
+        "x": 293,
+        "y": 238,
+        "wires": []
+    },
+    {
+        "id": "f08308d6.c66f68",
+        "type": "inject",
+        "z": "292ca715.a2db08",
+        "name": "update",
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "x": 220,
+        "y": 578,
+        "wires": [
+            [
+                "deeff963.289f08"
+            ]
+        ]
+    },
+    {
+        "id": "77b4d006.543ed",
+        "type": "function",
+        "z": "292ca715.a2db08",
+        "name": "deleteRow",
+        "func": "var id=flow.get(\"lastId\") || 0;\nif (id<2) {\n    node.error(\"use only if minimum of 2 Lines existing!\")\n    return;\n}\n\nid=Math.floor(id/2); //\nmsg.payload={\n    command:\"deleteRow\",\n    arguments: [id],\n    returnPromise: true\n}\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 461,
+        "y": 697,
+        "wires": [
+            [
+                "e34a75a3.9f0188",
+                "b075d2ac.a69f3"
+            ]
+        ],
+        "info": "# deleteRow(row / [rows])\n\n`row=singleId`\n\nor\n\n`row=[array of IDs]` // seems there is a bug/issue in tabulator\n\ndelete a single the row with an id in the middle from 1 to lastId, hope it exists.\n\nWill fail on the second hit if you inject this two times because the id wad deleteted on the first"
+    },
+    {
+        "id": "936c8219.458bc",
+        "type": "inject",
+        "z": "292ca715.a2db08",
+        "name": "delete",
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "x": 220,
+        "y": 731,
+        "wires": [
+            [
+                "77b4d006.543ed"
+            ]
+        ]
+    },
+    {
+        "id": "e34a75a3.9f0188",
+        "type": "debug",
+        "z": "292ca715.a2db08",
+        "name": "deleteRow",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "x": 461,
+        "y": 816,
+        "wires": []
+    },
+    {
+        "id": "fafa24f8.577d28",
+        "type": "comment",
+        "z": "292ca715.a2db08",
+        "name": "deleteRow will punch holes in table!",
+        "info": "",
+        "x": 293,
+        "y": 646,
+        "wires": []
+    },
+    {
+        "id": "f9bfd98.abe1a28",
+        "type": "debug",
+        "z": "292ca715.a2db08",
+        "name": "addRow",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "x": 451,
+        "y": 170,
+        "wires": []
+    },
+    {
+        "id": "76c4495f.da70f8",
+        "type": "function",
+        "z": "292ca715.a2db08",
+        "name": "table recorder",
+        "func": "var status = {fill:\"red\",shape:\"ring\",text:\"an error occured\"};\nvar success = (msg.topic && msg.topic===\"success\") || false;\nvar tableData = flow.get(\"tableData\");\nif (tableData === undefined) {\n    tableData = [];\n    flow.set(\"tableData\",tableData);\n}\n\n// find the index for a row in tableData for a given index (id)\nfunction checkIndex(id) {\n    let matchRow=-1\n    tableData.forEach(function (row,index){\n        if (row.id === id){\n            matchRow=index;\n            return matchRow;\n        }\n    })\n    return matchRow;\n}\n\n// flat merge one row \nfunction mergeRow(dest,source) {\n    Object.keys(source).forEach(function(key) {\n        dest[key]=source[key];\n    })\n}\n\n//merge or add one or many rows into tableData \nfunction mergeData(newData,toTop) {\n    newData.forEach(function (item,index) {\n        node.warn([\"findIndex\",item]);\n        let row=checkIndex(item.id);\n        if (row<0) { // row do not existst in tableData\n            if (toTop) {\n                tableData.push(item);\n                status.text+=\"newRow @ top\";\n            } else {\n                tableData.unshift(item);\n                status.text+=\"newRow @ bottom\";\n            }\n            return;\n        } else { // row exists so update\n            mergeRow(tableData[row],item);\n            status.text+=\"row updated\";\n            return;\n        }\n        if (status.text!==\"\") node.status(status);\n    });\n}\n\nswitch (typeof msg.payload){\n    case \"string\":\n        node.warn([\"[table recorder] \",(typeof msg.payload),msg.payload]);\n        switch (msg.payload){\n            case \"change\":\n                status={fill:\"green\",shape:\"dot\",text:\"table restored \"+tableData.length+\" rows\"};\n                msg.payload=tableData;\n                break;\n        }\n        break;\n    case \"object\":\n        node.warn([\"[table recorder] \",(typeof msg.payload),msg.payload]);\n        if (Array.isArray(msg.payload)) { // replace all tableData\n            status={fill:\"green\",shape:\"dot\",text:\"table replaced \"+msg.payload.length+\" rows\"};\n            tableData=RED.util.cloneMessage(msg.payload); \n        } else {\n            switch (msg.payload.command) { // clearData does not return a promise!\n                case \"clearData\":\n                    status={fill:\"green\",shape:\"dot\",text:\"clearData: done\"};\n                    tableData=[];\n                    flow.set(\"lastId\",0);\n                    break;                \n            }\n        }\n        break;\n    default: // likely a msg fom a ui-table command or callback\n        if (msg.hasOwnProperty(\"topic\")&&\n            msg.hasOwnProperty(\"ui_control\") && \n            msg.ui_control.hasOwnProperty(\"callback\") &&\n            msg.hasOwnProperty(\"return\")) { // message originates from a ui-table callback\n            if (success) {\n                switch(msg.return.command) {\n                    case \"addRow\":\n                        status.text=\"addRow: \";\n                        mergeData(msg.return.arguments[0],msg.return.arguments[1]);\n                        status.shape=\"dot\";\n                        break;\n                    case \"updateOrAddData\":\n                        status.text=\"updateOrAddData: \";\n                        mergeData(msg.return.arguments[0]);\n                        break;\n                    case \"deleteRow\":\n                        let row=checkIndex(msg.return.arguments[0]);\n                        tableData.splice(row,1);\n                        status.shape=\"dot\";\n                        status.text=\"deleteRow: \"+row+\" deleted\";\n                        break;\n                    default:\n                        status={fill:\"yellow\",shape:\"dot\",text:msg.return.command + \" unknown!\"};\n                        break;         \n                }\n            } else {\n                status.text=msg.topic+\" \"+msg.error;\n            }\n        }\n        break;\n}\nif (success) status.fill=\"green\";\nflow.set(\"tableData\",tableData);\nnode.status(status);\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 1151,
+        "y": 493,
+        "wires": [
+            [
+                "b075d2ac.a69f3"
+            ]
+        ],
+        "icon": "font-awesome/fa-database",
+        "info": "# simple ui-table handler\n## abstract\nUsing ui-table with commands offer the hole flexibilty of tabulator. The table can be manipulated down to cell level.\nAs the ui-table node only passes the commands to tabulator and receives promises back the node does not hold the table data. If the data should be available after refresh, tab change, new connections the flow is responsible to cache the data and all the manipulations.\nThis node takes care of most simple data manipulation commands and holds a copy of the data in `flow.context.tabledata`\n\n## details\n\n### row index (id)\n\nTo identify a [row a index](http://tabulator.info/docs/4.5/data#overview) column has to be defined. This colum defaults to `id` but can be changed by specifing a **field** by using `msg.ui_control`. In this example the row index is a simple counter adding up by one if a new line is added.\n\n### addRow command\n\n[details @ tabulator addRow docs](http://tabulator.info/docs/4.5/update#alter-add)\n\nYou can add a row by sending the `addRow` command. You can decide if the row adds on the top or at the bottom of table.\n\n### addOrUpdate command\n\n[details @ tabulator addOrUpdate docs](http://tabulator.info/docs/4.5/update#alter-update)\n\nTo update data the best way is to use the `addOrUpdate` command. If the row indetified by the index is not exeisting a new row will be added automatically\n\n### deleteRow command\n\n[details @ tabulator deleteRow docs](http://tabulator.info/docs/4.5/update#row)\n\nDelete one or more rows (passing an array always results in \"row not found error\"! I think there is an issue in tabulator)\n\n### clearData\n\n[details @ tabulator clearData docs](http://tabulator.info/docs/4.5/update#alter-empty)\n\nunfortunately this command (currently) do not send a promise back! So we have to pass it directly to the table handler"
+    },
+    {
+        "id": "7b1c27f4.36a718",
+        "type": "ui_ui_control",
+        "z": "292ca715.a2db08",
+        "name": "",
+        "events": "all",
+        "x": 876,
+        "y": 493,
+        "wires": [
+            [
+                "76c4495f.da70f8"
+            ]
+        ]
+    },
+    {
+        "id": "8b79840b.aff7e8",
+        "type": "inject",
+        "z": "292ca715.a2db08",
+        "d": true,
+        "name": "delete 1-5",
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "x": 230,
+        "y": 765,
+        "wires": [
+            [
+                "fee8b78d.068f98"
+            ]
+        ]
+    },
+    {
+        "id": "fee8b78d.068f98",
+        "type": "function",
+        "z": "292ca715.a2db08",
+        "d": true,
+        "name": "delete Rows [2,4,6,8,10]",
+        "func": "var id=flow.get(\"lastId\") || 0;\nif (id<10) {\n    node.error(\"use only if minimum of 10 Lines existing!\")\n    return;\n}\n\nid=Math.floor(id/2); //\nmsg.payload={\n    command:\"deleteRow\",\n    arguments: [[2,4,6,8,10]],\n    returnPromise: true\n}\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 501,
+        "y": 765,
+        "wires": [
+            [
+                "b075d2ac.a69f3",
+                "e34a75a3.9f0188"
+            ]
+        ],
+        "info": "# deleteRow(row / [rows])\n\n`row=singleId`\n\nor\n\n`row=[array of IDs]` // seems there is a bug/issue in tabulator\n\ndelete a single the row with an id in the middle from 1 to lastId, hope it exists.\n\nWill fail on the second hit if you inject this two times because the id wad deleteted on the first"
+    },
+    {
+        "id": "fe4ba122.df8fb",
+        "type": "function",
+        "z": "292ca715.a2db08",
+        "name": "clearData",
+        "func": "\nmsg.payload={\n    command:\"clearData\",\n    arguments: [],\n    returnPromise: true\n}\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 451,
+        "y": 935,
+        "wires": [
+            [
+                "6e49e266.f72b6c",
+                "b075d2ac.a69f3",
+                "76c4495f.da70f8"
+            ]
+        ],
+        "info": "# clear data\n\nunfortunately this command (currently) do not send a promise back! So we have to pass it directly to the table handler"
+    },
+    {
+        "id": "82194704.7ab2d8",
+        "type": "inject",
+        "z": "292ca715.a2db08",
+        "name": "clear",
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "x": 220,
+        "y": 969,
+        "wires": [
+            [
+                "fe4ba122.df8fb"
+            ]
+        ]
+    },
+    {
+        "id": "df623146.8270a",
+        "type": "comment",
+        "z": "292ca715.a2db08",
+        "name": "Erase all data by using clearData command",
+        "info": "",
+        "x": 323,
+        "y": 884,
+        "wires": []
+    },
+    {
+        "id": "6e49e266.f72b6c",
+        "type": "debug",
+        "z": "292ca715.a2db08",
+        "name": "clearData",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "x": 451,
+        "y": 986,
+        "wires": []
+    },
+    {
+        "id": "d404def3.39a63",
+        "type": "inject",
+        "z": "292ca715.a2db08",
+        "name": "change",
+        "topic": "",
+        "payload": "change",
+        "payloadType": "str",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "x": 866,
+        "y": 561,
+        "wires": [
+            [
+                "76c4495f.da70f8"
+            ]
+        ]
+    },
+    {
+        "id": "36be75f0.115c6a",
+        "type": "ui_button",
+        "z": "292ca715.a2db08",
+        "name": "",
+        "group": "c91332c0.50c11",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "passthru": false,
+        "label": "Init 20 rows",
+        "tooltip": "init table by passing the hole table array (default way)",
+        "color": "",
+        "bgcolor": "",
+        "icon": "",
+        "payload": "20",
+        "payloadType": "num",
+        "topic": "",
+        "x": 240,
+        "y": 119,
+        "wires": [
+            [
+                "d4dce9b4.1f2588"
+            ]
+        ]
+    },
+    {
+        "id": "b496aa6a.32f2d8",
+        "type": "ui_button",
+        "z": "292ca715.a2db08",
+        "name": "",
+        "group": "c91332c0.50c11",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "passthru": false,
+        "label": "add one row @ top",
+        "tooltip": "add a new row to the top",
+        "color": "",
+        "bgcolor": "",
+        "icon": "",
+        "payload": "",
+        "payloadType": "date",
+        "topic": "",
+        "x": 260,
+        "y": 289,
+        "wires": [
+            [
+                "eb577b4b.510388"
+            ]
+        ]
+    },
+    {
+        "id": "79d05aaa.e2c7d4",
+        "type": "ui_button",
+        "z": "292ca715.a2db08",
+        "name": "",
+        "group": "c91332c0.50c11",
+        "order": 3,
+        "width": 0,
+        "height": 0,
+        "passthru": false,
+        "label": "add one row @ end",
+        "tooltip": "add a new row at the end ",
+        "color": "",
+        "bgcolor": "",
+        "icon": "",
+        "payload": "",
+        "payloadType": "date",
+        "topic": "",
+        "x": 260,
+        "y": 374,
+        "wires": [
+            [
+                "760fde70.028f"
+            ]
+        ]
+    },
+    {
+        "id": "d37bf3a8.373dd",
+        "type": "ui_button",
+        "z": "292ca715.a2db08",
+        "name": "",
+        "group": "c91332c0.50c11",
+        "order": 4,
+        "width": 0,
+        "height": 0,
+        "passthru": false,
+        "label": "addOrUpdate (add)",
+        "tooltip": "add a new row by passing a new id",
+        "color": "",
+        "bgcolor": "",
+        "icon": "",
+        "payload": "",
+        "payloadType": "date",
+        "topic": "",
+        "x": 260,
+        "y": 476,
+        "wires": [
+            [
+                "8254f2d2.eeaa1"
+            ]
+        ]
+    },
+    {
+        "id": "d31c2ac7.05bed8",
+        "type": "ui_button",
+        "z": "292ca715.a2db08",
+        "name": "",
+        "group": "c91332c0.50c11",
+        "order": 5,
+        "width": 0,
+        "height": 0,
+        "passthru": false,
+        "label": "addOrUpdate (update)",
+        "tooltip": "update the row in the middle (or add if a row with that id not exists)",
+        "color": "",
+        "bgcolor": "",
+        "icon": "",
+        "payload": "",
+        "payloadType": "date",
+        "topic": "",
+        "x": 270,
+        "y": 544,
+        "wires": [
+            [
+                "deeff963.289f08"
+            ]
+        ]
+    },
+    {
+        "id": "c637efb3.9c38c",
+        "type": "ui_button",
+        "z": "292ca715.a2db08",
+        "name": "",
+        "group": "c91332c0.50c11",
+        "order": 6,
+        "width": 0,
+        "height": 0,
+        "passthru": false,
+        "label": "delete (middle)",
+        "tooltip": "delate the row with the id=maxId/2. Will result an error if not existing",
+        "color": "",
+        "bgcolor": "",
+        "icon": "",
+        "payload": "",
+        "payloadType": "date",
+        "topic": "",
+        "x": 250,
+        "y": 697,
+        "wires": [
+            [
+                "77b4d006.543ed"
+            ]
+        ]
+    },
+    {
+        "id": "5531f2d0.fb913c",
+        "type": "ui_button",
+        "z": "292ca715.a2db08",
+        "name": "",
+        "group": "c91332c0.50c11",
+        "order": 7,
+        "width": 0,
+        "height": 0,
+        "passthru": false,
+        "label": "clear",
+        "tooltip": "clear all table data",
+        "color": "",
+        "bgcolor": "",
+        "icon": "",
+        "payload": "",
+        "payloadType": "date",
+        "topic": "",
+        "x": 220,
+        "y": 935,
+        "wires": [
+            [
+                "fe4ba122.df8fb"
+            ]
+        ]
+    },
+    {
+        "id": "858a6bc2.0384e8",
+        "type": "ui_text",
+        "z": "292ca715.a2db08",
+        "group": "c91332c0.50c11",
+        "order": 9,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "status",
+        "format": "{{status.text}}",
+        "layout": "col-center",
+        "x": 1036,
+        "y": 731,
+        "wires": []
+    },
+    {
+        "id": "213d641a.12a53c",
+        "type": "status",
+        "z": "292ca715.a2db08",
+        "name": "",
+        "scope": [
+            "76c4495f.da70f8"
+        ],
+        "x": 875,
+        "y": 731,
+        "wires": [
+            [
+                "858a6bc2.0384e8"
+            ]
+        ]
+    },
+    {
+        "id": "e7d10007.d6e73",
+        "type": "ui_button",
+        "z": "292ca715.a2db08",
+        "name": "",
+        "group": "c91332c0.50c11",
+        "order": 8,
+        "width": 0,
+        "height": 0,
+        "passthru": false,
+        "label": "refresh (change)",
+        "tooltip": "Same as ui-control sending a change message",
+        "color": "",
+        "bgcolor": "",
+        "icon": "",
+        "payload": "change",
+        "payloadType": "str",
+        "topic": "",
+        "x": 896,
+        "y": 527,
+        "wires": [
+            [
+                "76c4495f.da70f8"
+            ]
+        ]
+    },
+    {
+        "id": "8386c3a7.41ead",
+        "type": "inject",
+        "z": "292ca715.a2db08",
+        "name": "format table",
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "x": 240,
+        "y": 1122,
+        "wires": [
+            [
+                "8ae898e7.418068"
+            ]
+        ]
+    },
+    {
+        "id": "f59e9830.e23608",
+        "type": "comment",
+        "z": "292ca715.a2db08",
+        "name": "Format Table using ui_control",
+        "info": "",
+        "x": 273,
+        "y": 1037,
+        "wires": []
+    },
+    {
+        "id": "19e88f0.0c32071",
+        "type": "debug",
+        "z": "292ca715.a2db08",
+        "name": "clearData",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "x": 451,
+        "y": 1139,
+        "wires": []
+    },
+    {
+        "id": "ea064e3c.22437",
+        "type": "ui_button",
+        "z": "292ca715.a2db08",
+        "name": "",
+        "group": "c91332c0.50c11",
+        "order": 7,
+        "width": 0,
+        "height": 0,
+        "passthru": false,
+        "label": "format table",
+        "tooltip": "Formats the table using msg.ui_control",
+        "color": "",
+        "bgcolor": "",
+        "icon": "",
+        "payload": "",
+        "payloadType": "date",
+        "topic": "",
+        "x": 240,
+        "y": 1088,
+        "wires": [
+            [
+                "8ae898e7.418068"
+            ]
+        ]
+    },
+    {
+        "id": "8ae898e7.418068",
+        "type": "change",
+        "z": "292ca715.a2db08",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "ui_control",
+                "pt": "msg",
+                "to": "{\"customHeight\":18,\"tabulator\":{\"layout\":\"fitColumns\",\"movableColumns\":false,\"index\":\"id\",\"columns\":[{\"title\":\"ID\",\"field\":\"id\",\"formatter\":\"text\",\"headerTooltip\":\"id number act as row index\"},{\"formatterParams\":{\"outputFormat\":\"HH:mm:ss.SSS\",\"inputFormat\":\"x\",\"invalidPlaceholder\":\"(unknown)\"},\"title\":\"Timestamp\",\"field\":\"timestamp\",\"formatter\":\"datetime\",\"headerTooltip\":\"timestamp of last change\"},{\"title\":\"Text\",\"field\":\"text\",\"headerTooltip\":\"last cause of reboot (provided by http json request)\"}]}}",
+                "tot": "json"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 481,
+        "y": 1088,
+        "wires": [
+            [
+                "19e88f0.0c32071",
+                "b075d2ac.a69f3",
+                "6bd61b7.a6a56e4"
+            ]
+        ]
+    },
+    {
+        "id": "6bd61b7.a6a56e4",
+        "type": "change",
+        "z": "292ca715.a2db08",
+        "name": "change",
+        "rules": [
+            {
+                "t": "delete",
+                "p": "ui_control",
+                "pt": "msg"
+            },
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "change",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 689,
+        "y": 1088,
+        "wires": [
+            [
+                "76c4495f.da70f8"
+            ]
+        ]
+    },
+    {
+        "id": "237da972.5d69a6",
+        "type": "ui_group",
+        "z": "",
+        "name": "ui-table with commands",
+        "tab": "379a501f.53b59",
+        "disp": true,
+        "width": "17",
+        "collapse": false
+    },
+    {
+        "id": "c91332c0.50c11",
+        "type": "ui_group",
+        "z": "",
+        "name": "commands",
+        "tab": "379a501f.53b59",
+        "disp": true,
+        "width": "6",
+        "collapse": false
+    },
+    {
+        "id": "379a501f.53b59",
+        "type": "ui_tab",
+        "z": "",
+        "name": "ui-table command",
+        "icon": "fa-table",
+        "disabled": false,
+        "hidden": false
+    }
+]

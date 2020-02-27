@@ -68,11 +68,11 @@ ui-table is based on the **tabulator** module. You can find an excellent in dept
 
 ## send commands to ui-table
 
-Instead of sending an array to ui-table this node to replace the complete table data ui-table also accepts an object as payload to send commands. The object must have the following properties
+Instead of sending an array to ui-table this node to replace the complete table data ui-table also accepts an object as payload to send commands. Beside data manipulation you can [set filters](http://tabulator.info/docs/4.5/filter#func) and do many other things with commands. The object must have the following properties
 
 - `command` a valid tabulator function such as `addRow`, `replaceData` or `addFilter`
 - `arguments` *(optional)* array of arguments for that function
-- `returnPromise` *(optional)* a boolean value. `true` if the function should return a promise message.
+- `returnPromise` *(optional)* a boolean value. `true` if the function should return a promise message. See tabulator documentation which commands will return promises
 
 example
 ```json
@@ -100,8 +100,16 @@ example
     }
 }
 ```
+By sending only changed or new data to ui-table it is possible to update the table very fast by only sending the new data down to cell level. Or huge amounts of data could be sent like logs. 
 
-Example flow "4 syslog server.json" file can be found in the examples folder. The example uses the [node-red-contrib-syslog-input](https://flows.nodered.org/node/node-red-contrib-syslog-input) node to feed live data into ui-table and add line by line until a user defined amount of lines reached. Exceeding lines will be dynamically deleted from ui-table using the `deleteRow` command. The flow also provides a separate buffer for storing data even when no client is connected. Filters can be set and custom formating using `msg.ui_control`. All nodes have info text available in the info/help tab.
+**important notices**
+
+Data which is sent to ui-table through commands is **not** cached by ui-table! The flow has to take care to update the table for new clients connection or dashboard tab changes!
+Tabulator does not limit the amount of data it holds. It is quite efficient in showing tables with a couple of thousand rows. If it the data exceeds the capabilities of the clients browser it will crash with an **out of memory** error without notice.
+
+Example flow "4 sending commands.json" file can be found in the examples folder or installed directly using **menu/import/examples/ui-table**.
+This flow shows a basic implementation how the flow can keep a cached copy of all table data and add/delete or update selective rows.
+Most nodes have info text available in the info/help tab.
 
 ## control ui-table by sending ```msg.ui_control``` messages
 
@@ -119,14 +127,14 @@ Example flow "3 ui_control table.json" file can be found in the examples folder
 - functions to format legend values
 ``` javascript
 // add a unit
-var function(cell, formatterParams, onRendered){
+function(cell, formatterParams, onRendered){
     return cell.getValue()+"°C";
 }
 ```
 or more sophisticated using html
 ``` javascript
 // convert Number to Icons
-var function(cell, formatterParams, onRendered){
+function(cell, formatterParams, onRendered){
     var html="<i class=\"";
     switch(cell.getValue()) {
         case 0: html+="fa fa-calendar-check-o"; break;
@@ -144,7 +152,7 @@ var function(cell, formatterParams, onRendered){
 - `groupBy` parameter to use group lines. `groupHeader` function to format legend and adding html tags (Insert a field name in the groupBy paramter at the end of json in the change node to use this feature)
 - `columnResized` callback function to receive a message when the user resize a column
 ``` javascript
-columnResized = function(column){
+function(column){
     var newColumn = {
         field: column._column.field,
         visible: column._column.visible,
