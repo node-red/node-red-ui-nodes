@@ -46,6 +46,7 @@ module.exports = function (RED) {
             RED.nodes.createNode(this, config);
             if (checkConfig(node, config)) {
                 var ui = RED.require('node-red-dashboard')(RED);
+                var sizes = ui.getSizes();
                 var luma = 255;
                 if (ui.hasOwnProperty("getTheme") && (ui.getTheme() !== undefined)) {
                     var rgb = parseInt(ui.getTheme()["page-sidebar-backgroundColor"].value.substring(1), 16);   // convert rrggbb to decimal
@@ -86,7 +87,7 @@ module.exports = function (RED) {
                                     columns: columndata,
                                     autoColumns: columndata.length == 0,
                                     movableColumns: true,
-                                    height: tabledata.length * y + 26
+                                    height: (tabledata.length > 0 )? tabledata.length * y + 26 : $scope.height*(sizes.sy+sizes.cy)
                                 }
                             } else { // configuration via ui_control
                                 var y = (ui_control.tabulator.columns.length > 0) ? 32 : 25;
@@ -106,7 +107,7 @@ module.exports = function (RED) {
                                 };
                             }
 
-                            var table = new Tabulator(basediv, opts);
+                            $scope.table = new Tabulator(basediv, opts);
                         };
                         $scope.init = function (config) {
                             $scope.config = config;
@@ -121,11 +122,10 @@ module.exports = function (RED) {
                             }, 200); // lowest setting on my side ... still fails sometimes ;)
                         };
                         $scope.$watch('msg', function (msg) {
-                            if (msg && msg.hasOwnProperty("ui_control") && msg.ui_control.hasOwnProperty("callback")) return; // to avoid loopback from callbacks. No better solution jet. Help needed.
-                            if (msg && msg.hasOwnProperty("payload") && Array.isArray(msg.payload)) {
-                                $scope.tabledata = msg.payload;
-                            }
-                            
+                            //console.log("ui-table message arrived:",msg);
+                            if (msg && msg.hasOwnProperty("ui_control") && msg.ui_control.hasOwnProperty("callback")) return msg; // to avoid loopback from callbacks. No better solution jet. Help needed.
+                            //console.log("ui-table msg: ", msg);
+
                             // configuration via ui_control
                             if (msg && msg.hasOwnProperty("ui_control")) {
 
@@ -162,8 +162,37 @@ module.exports = function (RED) {
 
                                 addObject($scope.config.ui_control,msg.ui_control);
 
-                            } // end off configuration via ui_control
+                            } // end of configuration via ui_control
 
+                            if (msg && msg.hasOwnProperty("payload")) {
+                                if (Array.isArray(msg.payload)) {
+                                    $scope.tabledata = msg.payload;
+                                }
+
+                                // commands to tabulator via msg.payload object
+                                if (msg && typeof msg.payload === "object" && !Array.isArray(msg.payload)) {
+                                    if (msg.payload.hasOwnProperty("command") && $scope.table!==undefined) {
+                                        if (!msg.payload.hasOwnProperty("arguments") || !Array.isArray(msg.payload.arguments)) {
+                                            msg.payload.arguments=[];
+                                        }
+                                        if (msg.payload.returnPromise) {
+                                            $scope.table[msg.payload.command].apply($scope.table,msg.payload.arguments).then(function(...args){
+                                                $scope.send({topic:"success", ui_control: {callback:$scope.msg.payload.command}, return:$scope.msg.payload});
+                                            }).catch(function(error){
+                                                if (Object.keys(error).length>0) {
+                                                    $scope.send({topic:"error", ui_control: {callback:$scope.msg.payload.command}, return:$scope.msg.payload, error: error});
+                                                }
+                                            });
+                                        } else {
+                                            $scope.table[msg.payload.command].apply($scope.table,msg.payload.arguments);
+                                        }
+                                        return;
+                                    }
+                                    return;
+                                } // end of commands to tabulator via msg.payload object
+                                
+                            }
+                            
                             if ($scope.inited == false) {
                                 return;
                             } else {
