@@ -62,12 +62,60 @@ The columns can be configured manually. If so then only the `msg.payload` proper
     }
 ]
 ```
+## advanced features
+
+ui-table is based on the **tabulator** module. You can find an excellent in depth [documentation here](http://tabulator.info/docs/4.4) with many [examples here](http://tabulator.info/examples/4.4).
+
+## send commands to ui-table
+
+Instead of sending an array to ui-table this node to replace the complete table data ui-table also accepts an object as payload to send commands. Beside data manipulation you can [set filters](http://tabulator.info/docs/4.5/filter#func) and do many other things with commands. The object must have the following properties
+
+- `command` a valid tabulator function such as `addRow`, `replaceData` or `addFilter`
+- `arguments` *(optional)* array of arguments for that function
+- `returnPromise` *(optional)* a boolean value. `true` if the function should return a promise message. See tabulator documentation which commands will return promises
+
+example
+```json
+{"payload":{
+    "command":"addData",
+    "arguments":[
+        {
+            "facility":"daemon",
+            "facilityCode":3,
+            "severity":"info",
+            "severityCode":6,
+            "tag":"systemd[1]",
+            "timestamp":"2020-01-02T19:17:39.793Z",
+            "hostname":"localhost",
+            "address":"127.0.0.1",
+            "family":"IPv4",
+            "port":38514,
+            "size":80,
+            "msg":"some demo data",
+            "id":2351
+        },
+        true
+    ],
+    "returnPromise":true
+    }
+}
+```
+By sending only changed or new data to ui-table it is possible to update the table very fast by only sending the new data down to cell level. Or huge amounts of data could be sent like logs. 
+
+**important notices**
+
+Data which is sent to ui-table through commands is **not** cached by ui-table! The flow has to take care to update the table for new clients connection or dashboard tab changes!
+Tabulator does not limit the amount of data it holds. It is quite efficient in showing tables with a couple of thousand rows. If it the data exceeds the capabilities of the clients browser it will crash with an **out of memory** error without notice.
+
+Example flow "4 sending commands.json" file can be found in the examples folder or installed directly using **menu/import/examples/ui-table**.
+This flow shows a basic implementation how the flow can keep a cached copy of all table data and add/delete or update selective rows.
+Most nodes have info text available in the info/help tab.
 
 ## control ui-table by sending ```msg.ui_control``` messages
 
-ui-table is based on the **tabulator** module and can be customized by sending configuration data to `msg.ui_control.tabulator`. You can find an excellent in depth [documentation here](http://tabulator.info/docs/4.4) with many [examples here](http://tabulator.info/examples/4.4).
+ui-table can be customized by sending configuration data to `msg.ui_control.tabulator`.
 
-![customized table](./ui-table-custom.png)
+![customized table](https://raw.githubusercontent.com/node-red/node-red-ui-nodes/master/node-red-node-ui-table//ui-table-custom.png)
 
 by adding ***headers***, ***footers***, ***line*** or ***column grouping*** it is sometimes not possible to determine the amount of lines. Therefore the height can be defined by sending `msg.ui_control.customHeight=lines`. 
 
@@ -79,14 +127,14 @@ Example flow "3 ui_control table.json" file can be found in the examples folder
 - functions to format legend values
 ``` javascript
 // add a unit
-var function(cell, formatterParams, onRendered){
+function(cell, formatterParams, onRendered){
     return cell.getValue()+"°C";
 }
 ```
 or more sophisticated using html
 ``` javascript
 // convert Number to Icons
-var function(cell, formatterParams, onRendered){
+function(cell, formatterParams, onRendered){
     var html="<i class=\"";
     switch(cell.getValue()) {
         case 0: html+="fa fa-calendar-check-o"; break;
@@ -104,7 +152,7 @@ var function(cell, formatterParams, onRendered){
 - `groupBy` parameter to use group lines. `groupHeader` function to format legend and adding html tags (Insert a field name in the groupBy paramter at the end of json in the change node to use this feature)
 - `columnResized` callback function to receive a message when the user resize a column
 ``` javascript
-columnResized = function(column){
+function(column){
     var newColumn = {
         field: column._column.field,
         visible: column._column.visible,

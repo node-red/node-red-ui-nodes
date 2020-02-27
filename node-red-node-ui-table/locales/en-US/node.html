@@ -53,4 +53,35 @@
         "Rating": 2
     }
 ]</code></pre>
+
+    <h3>Advanced features</h3>
+    
+    Instead of sending an array to ui-table this node to replace the complete table data it also accepts an object as payload to send commands. The object must have the following properties
+
+    <ul>
+        <li> `command` a valid tabualtor command such as `addRow`, `replaceData` or `addFilter`</li>
+        <li> `arguments` *(optional)* can array of arguments for that function</li>
+        <li> `returnPromise` *(optional)* a boolean value. `true` if the function should return a promise.</li>
+    </ul>
+    
+    <dl class="message-properties">
+        <dt>payload<span class="property-type">object</span></dt>
+        <dd>An object containing a command to the ui-table widget.
+        <pre><code>{
+    command: "addRow",
+    arguments: [
+        {
+            "Name": "Oli Bob",
+            "Age": "12",
+            "Favorite Color": "red",
+            "Date Of Birth": "12/08/2017",
+            "Rating": 2
+        },
+        true
+    ],
+    returnPromise: true
+}</code></pre>
+        </dd>
+    </dl>
+
 </script>
