@@ -64,7 +64,7 @@ module.exports = function (RED) {
                     order: config.order,
                     group: config.group,
                     forwardInputMessages: false,
-
+                    storeFrontEndInputAsState: false,
                     beforeEmit: function (msg, value) {
                         return {msg: {
                             payload: value, 
