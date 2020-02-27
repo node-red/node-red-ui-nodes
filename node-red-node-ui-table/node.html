@@ -116,7 +116,7 @@
                         style: "margin-left:5px; width:82%;"
                     }).appendTo(row);
                     if (data.title) {
-                        title.val(data.title);
+                        title.val(data.title.replace(/\&#39;/g, "'"));
                     }
                     $('<br>').appendTo(row);
                     $('<div><span>Align</span></div>')
@@ -176,7 +176,7 @@
                 var colum = $(this);
                 var c = {};
                 c.field = colum.find(".node-input-column-field").val();
-                c.title = colum.find(".node-input-column-title").val();
+                c.title = colum.find(".node-input-column-title").val().replace(/'/g, "&#39;");
                 c.width = colum.find(".node-input-column-width").val();
                 c.align = colum.find(".node-input-column-align").val();
                 c.formatter = colum.find(".node-input-column-formatter").val();
