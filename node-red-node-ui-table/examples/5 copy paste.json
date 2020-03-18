@@ -1,0 +1,174 @@
+[
+    {
+        "id": "4512106a.2f145",
+        "type": "change",
+        "z": "4ddb981f.f34df8",
+        "name": "ui_control & placeholder",
+        "rules": [
+            {
+                "t": "set",
+                "p": "ui_control",
+                "pt": "msg",
+                "to": "{\"customHeight\":20,\"tabulator\":{\"layout\":\"fitColumns\",\"clipboard\":true,\"clipboardCopySelector\":\"table\",\"clipboardCopyStyled\":false,\"clipboardPasteAction\":\"function(rowData){     this.send({ui_control:{callback:'clipboardPasteAction'},payload:rowData});     return this.table.replaceData(rowData); }\",\"columns\":[{\"field\":\"col1\",\"title\":\"Column #1\"},{\"field\":\"col2\",\"title\":\"Column #2\"},{\"field\":\"col3\",\"title\":\"Column #3\"}]}}",
+                "tot": "json"
+            },
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "[{\"col1\":\"click here & CTRL+v\",\"col2\":\"or click here & CTRL+v\",\"col3\":\"or click here & CTRL+v\"},{\"col1\":\" or on any other cell\",\"col2\":\"\",\"col3\":\"\"},{\"col1\":\"\",\"col2\":\"\",\"col3\":\"\"},{\"col1\":\"\",\"col2\":\"\",\"col3\":\"\"},{\"col1\":\"\",\"col2\":\"\",\"col3\":\"\"},{\"col1\":\"\",\"col2\":\"\",\"col3\":\"\"},{\"col1\":\"\",\"col2\":\"\",\"col3\":\"\"},{\"col1\":\"\",\"col2\":\"\",\"col3\":\"\"},{\"col1\":\"\",\"col2\":\"\",\"col3\":\"\"},{\"col1\":\"\",\"col2\":\"\",\"col3\":\"\"},{\"col1\":\"\",\"col2\":\"\",\"col3\":\"\"},{\"col1\":\"\",\"col2\":\"\",\"col3\":\"\"},{\"col1\":\"there is a issue with small or empty tables\",\"col2\":\"will be dixed soon\",\"col3\":\"\"},{\"col1\":\"Untill then we have\",\"col2\":\"to fill in some\",\"col3\":\"dummy lines\"}]",
+                "tot": "json"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 399,
+        "y": 255,
+        "wires": [
+            [
+                "71d16773.2b0a38"
+            ]
+        ]
+    },
+    {
+        "id": "8d8d7ea4.2fe3f",
+        "type": "debug",
+        "z": "4ddb981f.f34df8",
+        "name": "clipboardPasteAction",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "x": 1018,
+        "y": 238,
+        "wires": []
+    },
+    {
+        "id": "71d16773.2b0a38",
+        "type": "ui_table",
+        "z": "4ddb981f.f34df8",
+        "group": "113a4af6.0aab85",
+        "name": "Copy & Paste",
+        "order": 1,
+        "width": "17",
+        "height": "7",
+        "columns": [],
+        "outputs": 1,
+        "cts": true,
+        "x": 641,
+        "y": 255,
+        "wires": [
+            [
+                "d9789454.020d58"
+            ]
+        ]
+    },
+    {
+        "id": "a0dee6b9.6423c8",
+        "type": "function",
+        "z": "4ddb981f.f34df8",
+        "name": "clipboardPasteAction Callback",
+        "func": "// callback: clipboardPasteAction\n// DO NOT USE IN A FLOW!\n\nclipboardPasteAction = \n// copy from here\nfunction(rowData){\n    this.send({ui_control:{callback:'clipboardPasteAction'},payload:rowData});\n    return this.table.replaceData(rowData);\n}\n// until here\n// use the Visual Editor!\n// paste into ui_table JSON \"clipboardPasteAction\":\"function(....\"\n\n// technical details\n//\n// the example function ends with\n//\n// return this.table.updateData(rows);\n// \n// but that's not updating the data (because it does try to update data through\n// the index field (default \"id\")\n// replaceData simply erase all existing rowData and fills in the pasted data\n// that's what we want",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 419,
+        "y": 204,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "38c0e825.798328",
+        "type": "ui_ui_control",
+        "z": "4ddb981f.f34df8",
+        "name": "on tab change",
+        "events": "change",
+        "x": 182,
+        "y": 255,
+        "wires": [
+            [
+                "4512106a.2f145"
+            ]
+        ]
+    },
+    {
+        "id": "d9789454.020d58",
+        "type": "switch",
+        "z": "4ddb981f.f34df8",
+        "name": "",
+        "property": "ui_control.callback",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "clipboardPasteAction",
+                "vt": "str"
+            },
+            {
+                "t": "else"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 815,
+        "y": 255,
+        "wires": [
+            [
+                "8d8d7ea4.2fe3f"
+            ],
+            [
+                "7b094d08.4d1224"
+            ]
+        ]
+    },
+    {
+        "id": "7b094d08.4d1224",
+        "type": "debug",
+        "z": "4ddb981f.f34df8",
+        "name": "something else",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "x": 998,
+        "y": 272,
+        "wires": []
+    },
+    {
+        "id": "22459d5a.5c4672",
+        "type": "comment",
+        "z": "4ddb981f.f34df8",
+        "name": "Copy & Paste (readme)",
+        "info": "# copy & paste\n\nYou need only one callback function I included in a separate function note for better readability (do not put this into your flow.\n\nThe change node does the preparation of the table with a `msg.ui_control` object. Because you need minimum one cell to paste into (you can`t paste into an empty table) I put in some dummy data\nIt is not necessary to configure the the table node only tick \"send data on click\" to activate the output.\n\nCTRL-c is working too. It is set to \"table\" (including currently invisble cells) and no styling.\n\n[Detailed documentation of this tabulator feature can be found here.](http://tabulator.info/docs/4.5/clipboard)\n\nBe aware that colum `field` names must match cells of the first row of the pasted data and the is tab \\t and new line \\n formatted, as windows clipboard does. [see here](http://tabulator.info/docs/4.5/clipboard#paste-parser)",
+        "x": 202,
+        "y": 153,
+        "wires": []
+    },
+    {
+        "id": "113a4af6.0aab85",
+        "type": "ui_group",
+        "z": "",
+        "name": "ui-table Copy & Paste",
+        "tab": "a1c14418.954cd8",
+        "disp": true,
+        "width": "17",
+        "collapse": false
+    },
+    {
+        "id": "a1c14418.954cd8",
+        "type": "ui_tab",
+        "z": "",
+        "name": "ui-table test",
+        "icon": "dashboard",
+        "disabled": false,
+        "hidden": false
+    }
+]
