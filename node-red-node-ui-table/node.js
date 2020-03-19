@@ -52,13 +52,12 @@ module.exports = function (RED) {
                     var rgb = parseInt(ui.getTheme()["page-sidebar-backgroundColor"].value.substring(1), 16);   // convert rrggbb to decimal
                     luma = 0.2126 * ((rgb >> 16) & 0xff) + 0.7152 * ((rgb >>  8) & 0xff) + 0.0722 * ((rgb >>  0) & 0xff); // per ITU-R BT.709
                 }
-                if (config.height == 0) { config.height = 2; } // min height to 2 so auto will show something
                 var html = HTML(config,(luma < 128));
 
                 done = ui.addWidget({
                     node: node,
                     width: config.width,
-                    height: config.height,
+                    height: (config.height > 2) ? config.height : 2,  // min height to 2 so auto will show something
                     format: html,
                     templateScope: 'local',
                     order: config.order,
@@ -87,7 +86,11 @@ module.exports = function (RED) {
                                     columns: columndata,
                                     autoColumns: columndata.length == 0,
                                     movableColumns: true,
-                                    height: (tabledata.length > 0 )? tabledata.length * y + 26 : $scope.height*(sizes.sy+sizes.cy)
+                                }
+                                if ($scope.height==2) { // auto height
+                                    opts.height = (tabledata.length > 0 )? tabledata.length * y + 26 : $scope.height*(sizes.sy+sizes.cy);
+                                } else {
+                                    opts.height = $scope.height*(sizes.sy+sizes.cy);
                                 }
                             } else { // configuration via ui_control
                                 var y = (ui_control.tabulator.columns.length > 0) ? 32 : 25;
@@ -97,8 +100,15 @@ module.exports = function (RED) {
                                 if (!ui_control.tabulator.movableColumns) opts.movableColumns = true;
                                 if (!ui_control.tabulator.columns) opts.columns = columndata;
                                 if (!ui_control.tabulator.autoColumns) autoColumns = columndata.length == 0;
-                                if (!ui_control.customHeight) opts.height= tabledata.length * y + 26;
-                                    else opts.height= ui_control.customHeight * y + 26;
+                                if (ui_control.customHeight) {
+                                    opts.height= ui_control.customHeight * y + 26;
+                                } else { // 
+                                    if ($scope.height==2) {  // auto height
+                                        opts.height= (tabledata.length > 0 )? tabledata.length * y + 26 : $scope.height*(sizes.sy+sizes.cy);
+                                    } else {
+                                        opts.height = $scope.height*(sizes.sy+sizes.cy);
+                                    }
+                                }
                             } // end of configuration via ui_control
 
                             if (outputs > 0) {
@@ -170,7 +180,7 @@ module.exports = function (RED) {
                                 }
 
                                 // commands to tabulator via msg.payload object
-                                if (msg && typeof msg.payload === "object" && !Array.isArray(msg.payload)) {
+                                if (typeof msg.payload === "object" && msg.payload!==null && !Array.isArray(msg.payload)) {
                                     if (msg.payload.hasOwnProperty("command") && $scope.table!==undefined) {
                                         if (!msg.payload.hasOwnProperty("arguments") || !Array.isArray(msg.payload.arguments)) {
                                             msg.payload.arguments=[];
