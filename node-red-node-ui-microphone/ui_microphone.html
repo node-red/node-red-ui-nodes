@@ -1,0 +1,127 @@
+<!--
+  Copyright 2020 OpenJS Foundation
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+  http://www.apache.org/licenses/LICENSE-2.0
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+
+<script type="text/javascript">
+    RED.nodes.registerType('ui_microphone',{    // type MUST start with ui_
+        category: 'dashboard',
+        color: 'rgb( 63, 173, 181)',
+        defaults: {
+            group: {type: 'ui_group', required:true},
+            order: {value: 0},
+            width: {
+                value: 0,
+                validate: function(v) {
+                    var valid = true
+                    var width = v||0;
+                    var currentGroup = $('#node-input-group').val()|| this.group;
+                    var groupNode = RED.nodes.node(currentGroup);
+                    valid = !groupNode || +width <= +groupNode.width;
+                    $("#node-input-size").toggleClass("input-error",!valid);
+                    return valid;
+                }},
+            height: {value: 0},
+            name: {value: ''},
+            maxLength: { value: 3 },
+            timeslice: { value: 0 }
+        },
+        inputs:0,
+        outputs:1,
+        icon: "font-awesome/fa-microphone",
+        paletteLabel: "microphone",
+        label: function() {
+            return this.name||"microphone";
+        },
+        labelStyle: function() {
+            return this.name?"node_label_italic":"";
+        },
+        oneditprepare: function() {
+            $("#node-input-size").elementSizer({
+                width: "#node-input-width",
+                height: "#node-input-height",
+                group: "#node-input-group"
+            });
+
+            // $("#node-input-select-timeslice").on("change", function() {
+            //     var opt = $(this).val();
+            //     if (opt === "once") {
+            //         $("#node-input-row-timeslice").hide();
+            //     } else {
+            //         $("#node-input-row-timeslice").show();
+            //     }
+            // })
+
+            // if (!this.timeslice || this.timeslice === "0") {
+            //     $("#node-input-select-timeslice").val("once");
+            //     $("#node-input-row-timeslice").hide();
+            //     $("#node-input-timeslice").val("")
+            // } else {
+            //     $("#node-input-select-timeslice").val("interval");
+            //     $("#node-input-row-timeslice").show();
+            // }
+        },
+        oneditsave: function() {
+            // var ts = $("#node-input-select-timeslice").val();
+            // if (ts === 'once') {
+            //     $("#node-input-timeslice").val("")
+            // }
+        }
+    });
+</script>
+
+<script type="text/x-red" data-template-name="ui_microphone">
+    <div class="form-row" id="template-row-group">
+        <label for="node-input-group"><i class="fa fa-table"></i> Group</span></label>
+        <input type="text" id="node-input-group">
+    </div>
+    <div class="form-row" id="template-row-size">
+        <label><i class="fa fa-object-group"></i> Size</span></label>
+        <input type="hidden" id="node-input-width">
+        <input type="hidden" id="node-input-height">
+        <button class="editor-button" id="node-input-size"></button>
+    </div>
+    <br />
+    <div class="form-row" style="min-width: 470px">
+        <label style="vertical-align: top"><i class="fa fa-cog"></i> Options</label>
+        <div style="display: inline-block; min-width: 350px; width: calc(100% - 120px);">
+        <ul>
+            <li style="margin: 0 0 8px">Click button to start recording</li>
+            <li style="margin: 8px 0 4px">Click again to stop recording</li>
+            <li style="margin: 4px 0 4px">Maximum length of recording: <input style="width: 50px" type="text" id="node-input-maxLength"> seconds
+            <!-- <li style="margin: 4px 0 4px">Send message <select style="width: auto" id="node-input-select-timeslice"><option value="once">once recording stops</option><option value="interval">at regular interval of</option></select>
+                <div id="node-input-row-timeslice"><input style="margin-left: 20px; width: 50px" type="text" id="node-input-timeslice"> seconds</div>
+            </li> -->
+        </ul>
+        </div>
+
+    </div>
+    <div class="form-row">
+        <label for="node-input-name"><i class="icon-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+</script>
+
+<script type="text/x-red" data-help-name="ui_microphone">
+    <p>A Node Red dashboard ui node to capture audio from the brower's microphone.</p>
+    <h3>Outputs</h3>
+    <dl class="message-properties">
+        <dt>payload<span class="property-type">Buffer</span></dt>
+        <dd>The captured audio in the required format.</dd>
+    </dl>
+    <h3>Details</h3>
+    <p>This node provides a single button widget in the dashboard that, when pressed,
+        will begin to capture audio. It will continue to capture audio until the button
+        is pressed again , or it reaches its configured maximum duration.</p>
+    <p>The audio is captured in WAV format and published by the node as a Buffer
+        object.</p>
+    <p></p>
+</script>
