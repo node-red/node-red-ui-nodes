@@ -84,7 +84,6 @@ module.exports = function(RED) {
                     initController: function($scope) {
 
                         $scope.init = function (config) {
-                            console.log("M:",config);
                             $scope.config = config;
                         }
 
