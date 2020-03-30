@@ -131,6 +131,8 @@ module.exports = function(RED) {
                                         clearTimeout(stopTimeout);
                                         stopTimeout = null;
                                     }
+
+                                    stream.getTracks().forEach( function(track) { track.stop() });
                                 }
                             };
                             // Timeslice is not current exposed.
