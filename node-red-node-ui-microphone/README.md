@@ -21,6 +21,17 @@ The audio is captured in WAV format and published by the node as a Buffer object
 This can be written straight to a file or passed to any other node that expects
 audio data.
 
+## Browser Support
+
+This node will work in most modern browsers as it uses the standard MediaRecorder API.
+
+ - IE : not supported
+ - Safari : MediaRecorder needs to be enabled (Develop -> Experimental Features -> MediaRecorder)
+
+If you are accessing the dashboard remotely (not via `localhost`), then you must
+use HTTPS otherwise the browser will block access to the microphone.
+
+
 ## Privacy
 
 When the button is first pressed, the browser will ask the user's permission for

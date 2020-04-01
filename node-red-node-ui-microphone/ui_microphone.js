@@ -24,7 +24,7 @@ module.exports = function(RED) {
         var html = String.raw`
             <style>
             </style>
-            <md-button id="microphone_control_{{$id}}" class="nr-ui-microphone-button" ng-click="toggleMicrophone()"><i class="fa fa-2x fa-microphone" /></md-button>
+            <md-button id="microphone_control_{{$id}}" class="nr-ui-microphone-button" ng-disabled="!enabled" ng-click="toggleMicrophone()"><i ng-if="enabled" class="fa fa-2x fa-microphone" /><i ng-if="!enabled" class="fa fa-2x fa-microphone-slash" /></md-button>
             <input type='hidden' ng-init='init(` + configAsJson + `)'>
         `;
         return html;
@@ -87,6 +87,8 @@ module.exports = function(RED) {
                             $scope.config = config;
                         }
 
+                        $scope.enabled =  !!navigator.mediaDevices;
+
                         var worker;
                         var mediaRecorder;
                         var audioContext;
@@ -95,6 +97,7 @@ module.exports = function(RED) {
 
                         var button = $("#microphone_control_"+$scope.$id);
                         $scope.toggleMicrophone = function() {
+                            if (!$scope.enabled) return;
                             if (!active) {
                                 active = true;
                                 $("#microphone_control_"+$scope.$id+" i").removeClass("fa-microphone fa-2x").addClass("fa-circle-o-notch fa-spin");
