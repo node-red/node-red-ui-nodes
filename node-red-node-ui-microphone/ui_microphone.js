@@ -22,9 +22,7 @@ module.exports = function(RED) {
     function HTML(config) {
         var configAsJson = JSON.stringify(config);
         var html = String.raw`
-            <style>
-            </style>
-            <md-button id="microphone_control_{{$id}}" class="nr-ui-microphone-button" ng-disabled="!enabled" ng-click="toggleMicrophone()"><i ng-if="enabled" class="fa fa-2x fa-microphone" /><i ng-if="!enabled" class="fa fa-2x fa-microphone-slash" /></md-button>
+            <md-button aria-label="capture audio" id="microphone_control_{{$id}}" class="nr-ui-microphone-button" ng-disabled="!enabled" ng-click="toggleMicrophone()"><i ng-if="enabled" class="fa fa-2x fa-microphone" /><i ng-if="!enabled" class="fa fa-2x fa-microphone-slash" /></md-button>
             <input type='hidden' ng-init='init(` + configAsJson + `)'>
         `;
         return html;
@@ -84,6 +82,7 @@ module.exports = function(RED) {
                     initController: function($scope) {
 
                         $scope.init = function (config) {
+                            console.log("ui_microphone: initialised config:",config);
                             $scope.config = config;
                         }
 
@@ -139,22 +138,24 @@ module.exports = function(RED) {
                                 }
                             };
                             // Timeslice is not current exposed.
-                            var timeslice = 0;
-                            if ($scope.config.timeslice) {
-                                timeslice = parseInt($scope.config.timeslice)*1000;
-                            }
-                            if (timeslice) {
-                                mediaRecorder.start(timeslice);
-                            } else {
+                            // var timeslice = 0;
+                            // if ($scope.config.timeslice) {
+                            //     timeslice = parseInt($scope.config.timeslice)*1000;
+                            // }
+                            // if (timeslice) {
+                            //     mediaRecorder.start(timeslice);
+                            // } else {
                                 mediaRecorder.start();
-                            }
+                            // }
 
-                            if ($scope.config.maxLength) {
+                            if ($scope.config && $scope.config.maxLength) {
                                 stopTimeout = setTimeout(function() {
                                     if (active) {
                                         mediaRecorder.stop();
                                     }
                                 },$scope.config.maxLength*1000)
+                            } else if (!$scope.config) {
+                                console.warn("Microphone node not initialised with user configuration. Using defaults")
                             }
                         };
 
