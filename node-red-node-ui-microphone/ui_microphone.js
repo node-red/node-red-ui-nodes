@@ -22,8 +22,8 @@ module.exports = function(RED) {
     function HTML(config) {
         var configAsJson = JSON.stringify(config);
         var html = String.raw`
-            <md-button aria-label="capture audio" id="microphone_control_{{$id}}" class="nr-ui-microphone-button" ng-disabled="!enabled" ng-click="toggleMicrophone()"><i ng-if="enabled" class="fa fa-2x fa-microphone" /><i ng-if="!enabled" class="fa fa-2x fa-microphone-slash" /></md-button>
-            <input type='hidden' ng-init='init(` + configAsJson + `)'>
+        <input type='hidden' ng-init='init(` + configAsJson + `)'>
+        <md-button aria-label="capture audio" id="microphone_control_{{$id}}" class="nr-ui-microphone-button" ng-disabled="!enabled" ng-click="toggleMicrophone()"><i class="fa fa-2x fa-microphone"></i></md-button>
         `;
         return html;
     }
@@ -87,6 +87,12 @@ module.exports = function(RED) {
                         }
 
                         $scope.enabled =  !!navigator.mediaDevices;
+
+                        if (!$scope.enabled) {
+                            setTimeout(function() {
+                                $("#microphone_control_"+$scope.$id+" i").removeClass("fa-microphone").addClass("fa-microphone-slash");
+                            },50);
+                        }
 
                         var worker;
                         var mediaRecorder;
