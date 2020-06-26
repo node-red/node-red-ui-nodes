@@ -11,6 +11,7 @@
                 <li><b>menu</b> - list of menu items (optional),</li>
                 <li><b>icon</b> - URL of icon (optional),</li>
                 <li><b>icon_name</b> - font icon name (optional).</li>
+                <li><b>icon_unicode</b> - alternative to icon name - uses text characters (optional).</li>
                 <li><b>isChecked</b> - boolean, set the item checked or on (optional).</li>
             </ul>
         </dd>
@@ -37,5 +38,6 @@
     </ul>
     <p>If <b>Allow HTML in displayed text</b> checkbox is selected, HTML tags can be used in the <code>title</code> and <code>description</code>.</p>
     <p>Icon can be specified by <code>icon</code> or <code>icon_name</code> propeety.  <code>icon</code> specifies URL of icon file.  If <code>icon</code> is <code>null</code>, blank icon is displayed.
-    <code>icon_name</code> specifies icon name of font icons. <code>icon</code> has precedence over <code>icon_name</code>.</p>
+    <code>icon_name</code> specifies icon name of font icons. <code>icon_unicode</code> specifies text to use as an icon - useful for unicode symbols like flags, etc. 
+    <code>icon</code> has precedence over <code>icon_name</code> and <code>icon_unicode</code>.</p>
 </script>
