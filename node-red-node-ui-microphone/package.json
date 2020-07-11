@@ -1,0 +1,25 @@
+{
+    "name": "node-red-node-ui-microphone",
+    "version": "0.1.4",
+    "description": "A Node-RED ui node to record audio on a dashboard.",
+    "author": "Nick O'Leary",
+    "license": "Apache-2.0",
+    "keywords": [
+        "node-red",
+        "node-red-dashboard",
+        "microphone"
+    ],
+    "bugs": {
+        "url": "https://github.com/node-red/node-red-ui-nodes/issues"
+    },
+    "homepage": "https://github.com/node-red/node-red-ui-nodes/node-red-node-ui-microphone",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/node-red/node-red-ui-nodes.git"
+    },
+    "node-red": {
+        "nodes": {
+            "ui_microphone": "ui_microphone.js"
+        }
+    }
+}

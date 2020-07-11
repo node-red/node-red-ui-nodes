@@ -26,6 +26,7 @@ An array of Items is passed in by `msg.payload`.  It consists of objects contain
 - `description` - description of the item. optional if line type is `Single-line ` or action type is `menu`,
 - `icon` - URL of icon (optional),
 - `icon_name` - Font Awesome 4.7 icon name (optional),
+- `icon_unicode` - text to use as icon - useful for unicode symbols like flags, etc (optional).
 - `menu` - list of menu items (optional).
 
 If you just need a simple text list then `msg.payload` can be a simple array of strings, e.g. `["Item1","Item2","Item3"]`
@@ -42,7 +43,9 @@ An action to be taken for a displayed item can be selected by the `Action` selec
 
 If `Allow HTML in displayed text` checkbox is selected, HTML tags can be used in `title` and `description`.
 
-Icon can be specified by `icon` or `icon_name` property.  `icon` specifies URL of icon image.  If `icon` is `null`, blank icon is displayed. `icon_name` specifies an icon name of Font Awesome 4.7 icons (e.g. `fa-home`). `icon` has precedence over `icon_name`.
+Icon can be specified by `icon` or `icon_name` property.  `icon` specifies URL of icon image.  If `icon` is `null`, blank icon is displayed. `icon_name` specifies an icon name of Font Awesome 4.7 icons (e.g. `fa-home`). 
+`icon_unicode` specifies text character to use as an icon, useful for displaying unicode symbols like flags, etc.
+`icon` has precedence over `icon_name` and `icon_unicode`.
 
 Example
 -------
