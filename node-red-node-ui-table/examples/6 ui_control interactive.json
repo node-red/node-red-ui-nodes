@@ -1,0 +1,461 @@
+[
+    {
+        "id": "2e6a6379.742abc",
+        "type": "ui_table",
+        "z": "c4712650.59b5e8",
+        "group": "ff9fdb9a.7da098",
+        "name": "testTable",
+        "order": 6,
+        "width": "8",
+        "height": 5,
+        "columns": [
+            {
+                "field": "rowNumber",
+                "title": "Row Number 1",
+                "width": "",
+                "align": "left",
+                "formatter": "rownum",
+                "formatterParams": {
+                    "target": "_blank"
+                }
+            },
+            {
+                "field": "textValue",
+                "title": "Text",
+                "width": "",
+                "align": "left",
+                "formatter": "plaintext",
+                "formatterParams": {
+                    "target": "_blank"
+                }
+            },
+            {
+                "field": "numberValue",
+                "title": "Number",
+                "width": "",
+                "align": "left",
+                "formatter": "plaintext",
+                "formatterParams": {
+                    "target": "_blank"
+                }
+            }
+        ],
+        "outputs": 1,
+        "cts": true,
+        "x": 808,
+        "y": 357,
+        "wires": [
+            [
+                "1c377ea0.5801e1"
+            ]
+        ]
+    },
+    {
+        "id": "16664cef.5b26b3",
+        "type": "function",
+        "z": "c4712650.59b5e8",
+        "name": "table paramter",
+        "func": "msg.ui_control = {tabulator:{}};\n\n//workaround that buttos can`t deliver empty strings\nif (msg.payload.hasOwnProperty('payload')) {\n    msg.payload=msg.payload.payload;\n}\n\nmsg.ui_control.tabulator[msg.topic]=msg.payload;\ndelete msg.topic;\nmsg.payload=null;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 590,
+        "y": 646,
+        "wires": [
+            [
+                "2e6a6379.742abc",
+                "b8d75d24.6cbed"
+            ]
+        ]
+    },
+    {
+        "id": "b8d75d24.6cbed",
+        "type": "debug",
+        "z": "c4712650.59b5e8",
+        "name": "table input",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "x": 818,
+        "y": 646,
+        "wires": []
+    },
+    {
+        "id": "1c377ea0.5801e1",
+        "type": "debug",
+        "z": "c4712650.59b5e8",
+        "name": "table output",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "x": 971,
+        "y": 357,
+        "wires": []
+    },
+    {
+        "id": "b15c31a9.af37c",
+        "type": "ui_switch",
+        "z": "c4712650.59b5e8",
+        "name": "selectable",
+        "label": "selectable",
+        "tooltip": "",
+        "group": "ff9fdb9a.7da098",
+        "order": 7,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "decouple": "false",
+        "topic": "selectable",
+        "style": "",
+        "onvalue": "true",
+        "onvalueType": "bool",
+        "onicon": "",
+        "oncolor": "",
+        "offvalue": "false",
+        "offvalueType": "bool",
+        "officon": "",
+        "offcolor": "",
+        "x": 230,
+        "y": 442,
+        "wires": [
+            [
+                "16664cef.5b26b3"
+            ]
+        ]
+    },
+    {
+        "id": "75207e8d.c54d4",
+        "type": "ui_switch",
+        "z": "c4712650.59b5e8",
+        "name": "movableColumns",
+        "label": "movableColumns",
+        "tooltip": "",
+        "group": "ff9fdb9a.7da098",
+        "order": 8,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "decouple": "false",
+        "topic": "movableColumns",
+        "style": "",
+        "onvalue": "true",
+        "onvalueType": "bool",
+        "onicon": "",
+        "oncolor": "",
+        "offvalue": "false",
+        "offvalueType": "bool",
+        "officon": "",
+        "offcolor": "",
+        "x": 260,
+        "y": 493,
+        "wires": [
+            [
+                "16664cef.5b26b3"
+            ]
+        ]
+    },
+    {
+        "id": "c585e7a1.dfc648",
+        "type": "ui_button",
+        "z": "c4712650.59b5e8",
+        "name": "",
+        "group": "ff9fdb9a.7da098",
+        "order": 9,
+        "width": "4",
+        "height": "1",
+        "passthru": false,
+        "label": "Format Numbers > 100",
+        "tooltip": "using a rowFormatter callback function",
+        "color": "",
+        "bgcolor": "",
+        "icon": "",
+        "payload": "function(row){         if(row.getData().numberValue>100){             row.getElement().style.backgroundColor = \"#A6A6DF\";         }     },",
+        "payloadType": "str",
+        "topic": "rowFormatter",
+        "x": 280,
+        "y": 561,
+        "wires": [
+            [
+                "16664cef.5b26b3"
+            ]
+        ]
+    },
+    {
+        "id": "f178c6fe.710ef8",
+        "type": "ui_button",
+        "z": "c4712650.59b5e8",
+        "name": "",
+        "group": "ff9fdb9a.7da098",
+        "order": 5,
+        "width": 0,
+        "height": 0,
+        "passthru": false,
+        "label": "Fill demo data",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "icon": "",
+        "payload": "[{\"textValue\":\"Line #1\",\"numberValue\":123.12},{\"textValue\":\"Line #2\",\"numberValue\":100},{\"textValue\":\"Line #3\",\"numberValue\":50}]",
+        "payloadType": "json",
+        "topic": "rowFormatter",
+        "x": 250,
+        "y": 357,
+        "wires": [
+            [
+                "2e6a6379.742abc"
+            ]
+        ]
+    },
+    {
+        "id": "2403f929.df4006",
+        "type": "ui_button",
+        "z": "c4712650.59b5e8",
+        "name": "",
+        "group": "ff9fdb9a.7da098",
+        "order": 11,
+        "width": "4",
+        "height": "1",
+        "passthru": false,
+        "label": "inject Tooltips callback",
+        "tooltip": "cell.getColumn().getField() + \" - \" + cell.getValue();",
+        "color": "",
+        "bgcolor": "",
+        "icon": "",
+        "payload": "function(cell){return  cell.getColumn().getField() + \" - \" + cell.getValue(); },",
+        "payloadType": "str",
+        "topic": "tooltips",
+        "x": 270,
+        "y": 663,
+        "wires": [
+            [
+                "16664cef.5b26b3"
+            ]
+        ]
+    },
+    {
+        "id": "f6c68c45.58003",
+        "type": "ui_button",
+        "z": "c4712650.59b5e8",
+        "name": "",
+        "group": "ff9fdb9a.7da098",
+        "order": 12,
+        "width": "4",
+        "height": "1",
+        "passthru": false,
+        "label": "clear Tooltips callback",
+        "tooltip": "empty string is not possible! so use a single space",
+        "color": "",
+        "bgcolor": "",
+        "icon": "",
+        "payload": "{\"payload\":\"\"}",
+        "payloadType": "json",
+        "topic": "tooltips",
+        "x": 270,
+        "y": 697,
+        "wires": [
+            [
+                "16664cef.5b26b3"
+            ]
+        ]
+    },
+    {
+        "id": "d2b29dda.60a5a",
+        "type": "ui_button",
+        "z": "c4712650.59b5e8",
+        "name": "",
+        "group": "ff9fdb9a.7da098",
+        "order": 13,
+        "width": "4",
+        "height": "1",
+        "passthru": false,
+        "label": "reformat Number column",
+        "tooltip": "inject additional paramters to numberValue column",
+        "color": "",
+        "bgcolor": "",
+        "icon": "",
+        "payload": "[{\"field\":\"numberValue\",\"formatterParams\":{\"min\":0,\"max\":200,\"legend\":\"function (value) {     if (value<100) return \\\"<span style='color:#FF0000;'>\\\"+value+\\\"</span>\\\";     else return \\\"<span style='color:#000000;'>\\\"+value+\\\"</span>\\\";  }\",\"legendAlign\":\"center\"},\"formatter\":\"progress\",\"topCalc\":\"function(values, data, calcParams){     var total = 0;     var calc = 0;     var count = 0;     data.forEach(value => {         total+=Number(value.numberValue);         count++;     });     if (count>0) calc=(total/count).toFixed(2);     return `${calc} (avg)`; }\",\"headerTooltip\":\"avarage\"}]",
+        "payloadType": "json",
+        "topic": "columns",
+        "x": 280,
+        "y": 765,
+        "wires": [
+            [
+                "16664cef.5b26b3"
+            ]
+        ]
+    },
+    {
+        "id": "7b6490b3.cd9c7",
+        "type": "function",
+        "z": "c4712650.59b5e8",
+        "name": "callback function(s)",
+        "func": "// how to use the editor to write callback functions\n// DO NOT wire this into your flow!\n// copy / paste \"function( ... }\" into the correct calback parameter\n// use the \"debugger\" statement to debug your callback inside your browser\n\nvar topCalc = function(values, data, calcParams){\n    var total = 0;\n    var calc = 0;\n    var count = 0;\n    data.forEach(value => {\n        total+=Number(value.numberValue);\n        count++;\n    });\n    if (count>0) calc=(total/count).toFixed(2);\n    return `${calc} (avg)`;\n}\n\nvar legend = function (value) {\n    if (value<100) return \"<span style='color:#FF0000;'>\"+value+\"</span>\";\n    else return \"<span style='color:#000000;'>\"+value+\"</span>\"; \n}",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 600,
+        "y": 765,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "91506d4b.4956a",
+        "type": "comment",
+        "z": "c4712650.59b5e8",
+        "name": "Intentionally not wired into the flow!",
+        "info": "use the editor to write callback functions\n\nDO NOT wire this into your flow!\n\ncopy / paste `function( ... }` into the correct calback parameter\nuse the `debugger` statement to debug your callback inside your browser\n",
+        "x": 650,
+        "y": 731,
+        "wires": []
+    },
+    {
+        "id": "732afcea.f728f4",
+        "type": "ui_button",
+        "z": "c4712650.59b5e8",
+        "name": "",
+        "group": "ff9fdb9a.7da098",
+        "order": 14,
+        "width": "4",
+        "height": "1",
+        "passthru": false,
+        "label": "reset Number column",
+        "tooltip": "inject additional paramters to numberValue column",
+        "color": "",
+        "bgcolor": "",
+        "icon": "",
+        "payload": "[{\"field\":\"numberValue\",\"formatter\":\"plainText\",\"topCalc\":\"\",\"headerTooltip\":\"\"}]",
+        "payloadType": "json",
+        "topic": "columns",
+        "x": 270,
+        "y": 799,
+        "wires": [
+            [
+                "16664cef.5b26b3"
+            ]
+        ]
+    },
+    {
+        "id": "89cca7ea.7fc998",
+        "type": "ui_button",
+        "z": "c4712650.59b5e8",
+        "name": "",
+        "group": "ff9fdb9a.7da098",
+        "order": 15,
+        "width": "4",
+        "height": "1",
+        "passthru": false,
+        "label": "add/show id column",
+        "tooltip": "add a new column",
+        "color": "",
+        "bgcolor": "",
+        "icon": "",
+        "payload": "[{\"field\":\"id\",\"title\":\"id\",\"visible\":true,\"formatter\":\"plainText\"}]",
+        "payloadType": "json",
+        "topic": "columns",
+        "x": 270,
+        "y": 867,
+        "wires": [
+            [
+                "16664cef.5b26b3"
+            ]
+        ]
+    },
+    {
+        "id": "32a3c4ad.1b85fc",
+        "type": "ui_button",
+        "z": "c4712650.59b5e8",
+        "name": "",
+        "group": "ff9fdb9a.7da098",
+        "order": 16,
+        "width": "4",
+        "height": "1",
+        "passthru": false,
+        "label": "hide id column",
+        "tooltip": "hide id column (it is not possible to delete a existing column definition)",
+        "color": "",
+        "bgcolor": "",
+        "icon": "",
+        "payload": "[{\"field\":\"id\",\"title\":\"id\",\"visible\":false,\"formatter\":\"plainText\"}]",
+        "payloadType": "json",
+        "topic": "columns",
+        "x": 250,
+        "y": 901,
+        "wires": [
+            [
+                "16664cef.5b26b3"
+            ]
+        ]
+    },
+    {
+        "id": "25247f4b.cc7ec",
+        "type": "inject",
+        "z": "c4712650.59b5e8",
+        "name": "",
+        "topic": "",
+        "payload": "true",
+        "payloadType": "bool",
+        "repeat": "",
+        "crontab": "",
+        "once": true,
+        "onceDelay": 0.1,
+        "x": 101,
+        "y": 493,
+        "wires": [
+            [
+                "75207e8d.c54d4"
+            ]
+        ]
+    },
+    {
+        "id": "18ed8d27.bf00a3",
+        "type": "ui_button",
+        "z": "c4712650.59b5e8",
+        "name": "",
+        "group": "ff9fdb9a.7da098",
+        "order": 10,
+        "width": "4",
+        "height": "1",
+        "passthru": false,
+        "label": "reset Numbers > 100",
+        "tooltip": "using a rowFormatter callback function",
+        "color": "",
+        "bgcolor": "",
+        "icon": "",
+        "payload": "{\"payload\":\"\"}",
+        "payloadType": "json",
+        "topic": "rowFormatter",
+        "x": 270,
+        "y": 595,
+        "wires": [
+            [
+                "16664cef.5b26b3"
+            ]
+        ]
+    },
+    {
+        "id": "ff9fdb9a.7da098",
+        "type": "ui_group",
+        "z": "",
+        "name": "TEST",
+        "tab": "7dcc246f.ee661c",
+        "order": 1,
+        "disp": false,
+        "width": "8",
+        "collapse": false
+    },
+    {
+        "id": "7dcc246f.ee661c",
+        "type": "ui_tab",
+        "z": "",
+        "name": "TEST",
+        "icon": "dashboard",
+        "order": 12,
+        "disabled": false,
+        "hidden": false
+    }
+]
