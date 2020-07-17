@@ -185,6 +185,10 @@ module.exports = function (RED) {
                                     $scope.send({topic:cell.getField(), payload:cell.getData(), row:(cell.getRow()).getPosition()});
                                 };
                             }
+                            //turn autoColumns off if opts.columns is array with length > 0
+                            if (opts.columns && Array.isArray(opts.columns) && opts.columns.length>0) {
+                                opts.autoColumns = false;
+                            }
                             // console.log("createTabulator",opts);
                             $scope.table = new Tabulator(basediv, opts);
                         };
