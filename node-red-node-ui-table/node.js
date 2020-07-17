@@ -16,6 +16,35 @@
 
 var path = require('path');
 
+var mergeTabulator = function(target,source) {
+    if (typeof source === 'object') {
+        Object.keys(source).forEach(element => {
+            if (typeof source[element] !== "object") {
+                target[element] = source[element];
+            } else {
+                if (!target.hasOwnProperty(element)) {
+                    target[element] = (Array.isArray(source[element])) ? [] : {};
+                }
+                // handle the columns array to merge columns if the field property matches. Otherwise push a new column
+                if (element==='columns' && Array.isArray(source[element])){
+                    source[element].forEach(sourceElement => {
+                        let index = target[element].findIndex(targetElement => targetElement.field===sourceElement.field);
+                        if (index<0) { // add new column
+                            target[element].push({});
+                            index=target[element].length-1;
+                        }
+                        mergeTabulator(target[element][index],sourceElement);
+                    })
+                } else {
+                    mergeTabulator(target[element],source[element])
+                }
+            }
+        });
+    } else {
+        target=source;
+    }
+}
+
 module.exports = function (RED) {
     function checkConfig(node, conf) {
         if (!conf || !conf.hasOwnProperty('group')) {
@@ -64,10 +93,32 @@ module.exports = function (RED) {
                     group: config.group,
                     forwardInputMessages: false,
                     storeFrontEndInputAsState: false,
+
+                    // to make msg.ui_control work without msg.payload we have to send msg.payload=null.
+                    // we correct this here into undefined to get the last known payload form currentValues[opt.node.id].
+                    convert: function (value) {
+                        if (value===null) value=undefined;
+                        return value;
+                    },
+                    // merge new ui_control messages into config.ui_control
+                    // Help needed: use the already build in ui_control mechanism from ui.js
                     beforeEmit: function (msg, value) {
+                        // cache ui_control messages for new clients
+                        if (msg.hasOwnProperty('ui_control')) {
+                            if (!config.hasOwnProperty('ui_control')){
+                                config.ui_control={
+                                    "tabulator":{
+                                        "columns":config.columns
+                                    }};
+                            } 
+                            // instead of 
+                            // config.ui_control=Object.assign(config.ui_control,msg.ui_control);
+                            // use mergeTabulator to correctly merge columns arrays if field property matches
+                            mergeTabulator(config.ui_control,msg.ui_control);
+                        }
                         return {msg: {
                             payload: value, 
-                            ui_control: (msg.hasOwnProperty("ui_control")) ? msg.ui_control : undefined,
+                            ui_control: config.ui_control
                         }};
                     },
                     beforeSend: function (msg, orig) {
@@ -77,29 +128,47 @@ module.exports = function (RED) {
                         $scope.inited = false;
                         $scope.tabledata = [];
                         var tablediv;
+                        var mergeObject = function(target,source) {
+                            if (typeof source === 'object') {
+                                Object.keys(source).forEach(element => {
+                                    if (typeof source[element] !== "object") {
+                                        target[element] = source[element];
+                                    } else {
+                                        if (!target.hasOwnProperty(element)) {
+                                            target[element] = (Array.isArray(source[element])) ? [] : {};
+                                        }
+                                        mergeObject(target[element],source[element])
+                                    }
+                                });
+                            } else {
+                                target=source;
+                            }
+                        };
+
                         var createTable = function(basediv, tabledata, columndata, outputs, ui_control) {
+                            // add id field if not already exists
+                            if (tabledata.length>0 && tabledata[0] && typeof tabledata[0] === 'object' && !tabledata[0].hasOwnProperty('id')) {
+                                tabledata.map((row,index) => row.id = index);
+                            }
+                            var opts = {
+                                data: tabledata,
+                                layout: 'fitColumns',
+                                columns: columndata,
+                                autoColumns: columndata.length == 0,
+                                movableColumns: true,
+                            }
                             if (!ui_control || !ui_control.tabulator) {
                                 var y = (columndata.length === 0) ? 25 : 32;
-                                var opts = {
-                                    data: tabledata,
-                                    layout: 'fitColumns',
-                                    columns: columndata,
-                                    autoColumns: columndata.length == 0,
-                                    movableColumns: true,
-                                }
                                 if ($scope.height==2) { // auto height
                                     opts.height = (tabledata.length > 0 )? tabledata.length * y + 26 : $scope.height*(sizes.sy+sizes.cy);
                                 } else {
                                     opts.height = $scope.height*(sizes.sy+sizes.cy);
                                 }
                             } else { // configuration via ui_control
-                                var y = (ui_control.tabulator.columns.length > 0) ? 32 : 25;
-                                var opts = ui_control.tabulator;
-                                opts.data = tabledata;
-                                if (!ui_control.tabulator.layout) opts.layout = 'fitColumns';
-                                if (!ui_control.tabulator.movableColumns) opts.movableColumns = true;
-                                if (!ui_control.tabulator.columns) opts.columns = columndata;
-                                if (!ui_control.tabulator.autoColumns) autoColumns = columndata.length == 0;
+                                //as Object.assign is not supported by Internet Explorer 
+                                //opts = Object.assign(opts, ui_control.tabulator);
+                                mergeObject(opts,ui_control.tabulator);
+                                var y = (opts.columns && (opts.columns.length > 0)) ? 32 : 25;
                                 if (ui_control.customHeight) {
                                     opts.height= ui_control.customHeight * y + 26;
                                 } else { // 
@@ -111,12 +180,12 @@ module.exports = function (RED) {
                                 }
                             } // end of configuration via ui_control
 
-                            if (outputs > 0) {
+                            if ((outputs > 0) && !opts.hasOwnProperty('cellClick')) { // default cellClick if not already defined by ui_control
                                 opts.cellClick = function(e, cell) {
                                     $scope.send({topic:cell.getField(), payload:cell.getData(), row:(cell.getRow()).getPosition()});
                                 };
                             }
-
+                            // console.log("createTabulator",opts);
                             $scope.table = new Tabulator(basediv, opts);
                         };
                         $scope.init = function (config) {
