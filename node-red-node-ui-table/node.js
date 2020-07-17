@@ -97,11 +97,10 @@ module.exports = function (RED) {
                     // to make msg.ui_control work without msg.payload we have to send msg.payload=null.
                     // we correct this here into undefined to get the last known payload form currentValues[opt.node.id].
                     convert: function (value) {
-                        if (value===null) value=undefined;
+                        if (value===null) { value=undefined; }
                         return value;
                     },
                     // merge new ui_control messages into config.ui_control
-                    // Help needed: use the already build in ui_control mechanism from ui.js
                     beforeEmit: function (msg, value) {
                         // cache ui_control messages for new clients
                         if (msg.hasOwnProperty('ui_control')) {
@@ -116,7 +115,7 @@ module.exports = function (RED) {
                             // use mergeTabulator to correctly merge columns arrays if field property matches
                             mergeTabulator(config.ui_control,msg.ui_control);
                         }
-                        return {msg: {
+                        return { msg: {
                             payload: value, 
                             ui_control: config.ui_control
                         }};
@@ -141,7 +140,7 @@ module.exports = function (RED) {
                                     }
                                 });
                             } else {
-                                target=source;
+                                target = source;
                             }
                         };
 
@@ -164,14 +163,15 @@ module.exports = function (RED) {
                                 } else {
                                     opts.height = $scope.height*(sizes.sy+sizes.cy);
                                 }
-                            } else { // configuration via ui_control
+                            } 
+                            else { // configuration via ui_control
                                 //as Object.assign is not supported by Internet Explorer 
                                 //opts = Object.assign(opts, ui_control.tabulator);
                                 mergeObject(opts,ui_control.tabulator);
                                 var y = (opts.columns && (opts.columns.length > 0)) ? 32 : 25;
                                 if (ui_control.customHeight) {
                                     opts.height= ui_control.customHeight * y + 26;
-                                } else { // 
+                                } else {
                                     if ($scope.height==2) {  // auto height
                                         opts.height= (tabledata.length > 0 )? tabledata.length * y + 26 : $scope.height*(sizes.sy+sizes.cy);
                                     } else {
