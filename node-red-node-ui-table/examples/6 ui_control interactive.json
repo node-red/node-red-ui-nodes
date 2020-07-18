@@ -178,7 +178,7 @@
         "payloadType": "str",
         "topic": "rowFormatter",
         "x": 280,
-        "y": 561,
+        "y": 629,
         "wires": [
             [
                 "16664cef.5b26b3"
@@ -230,7 +230,7 @@
         "payloadType": "str",
         "topic": "tooltips",
         "x": 270,
-        "y": 663,
+        "y": 731,
         "wires": [
             [
                 "16664cef.5b26b3"
@@ -256,7 +256,7 @@
         "payloadType": "json",
         "topic": "tooltips",
         "x": 270,
-        "y": 697,
+        "y": 765,
         "wires": [
             [
                 "16664cef.5b26b3"
@@ -282,7 +282,7 @@
         "payloadType": "json",
         "topic": "columns",
         "x": 280,
-        "y": 765,
+        "y": 833,
         "wires": [
             [
                 "16664cef.5b26b3"
@@ -332,7 +332,7 @@
         "payloadType": "json",
         "topic": "columns",
         "x": 270,
-        "y": 799,
+        "y": 867,
         "wires": [
             [
                 "16664cef.5b26b3"
@@ -358,7 +358,7 @@
         "payloadType": "json",
         "topic": "columns",
         "x": 270,
-        "y": 867,
+        "y": 935,
         "wires": [
             [
                 "16664cef.5b26b3"
@@ -384,7 +384,7 @@
         "payloadType": "json",
         "topic": "columns",
         "x": 250,
-        "y": 901,
+        "y": 969,
         "wires": [
             [
                 "16664cef.5b26b3"
@@ -403,11 +403,12 @@
         "crontab": "",
         "once": true,
         "onceDelay": 0.1,
-        "x": 101,
+        "x": 84,
         "y": 493,
         "wires": [
             [
-                "75207e8d.c54d4"
+                "75207e8d.c54d4",
+                "bd3fd382.a2aa9"
             ]
         ]
     },
@@ -430,7 +431,38 @@
         "payloadType": "json",
         "topic": "rowFormatter",
         "x": 270,
-        "y": 595,
+        "y": 663,
+        "wires": [
+            [
+                "16664cef.5b26b3"
+            ]
+        ]
+    },
+    {
+        "id": "bd3fd382.a2aa9",
+        "type": "ui_switch",
+        "z": "c4712650.59b5e8",
+        "name": "headerVisible",
+        "label": "headerVisible",
+        "tooltip": "",
+        "group": "ff9fdb9a.7da098",
+        "order": 7,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "decouple": "false",
+        "topic": "headerVisible",
+        "style": "",
+        "onvalue": "true",
+        "onvalueType": "bool",
+        "onicon": "",
+        "oncolor": "",
+        "offvalue": "false",
+        "offvalueType": "bool",
+        "officon": "",
+        "offcolor": "",
+        "x": 250,
+        "y": 544,
         "wires": [
             [
                 "16664cef.5b26b3"

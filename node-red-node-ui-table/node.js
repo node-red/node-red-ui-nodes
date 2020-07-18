@@ -97,10 +97,12 @@ module.exports = function (RED) {
                     // to make msg.ui_control work without msg.payload we have to send msg.payload=null.
                     // we correct this here into undefined to get the last known payload form currentValues[opt.node.id].
                     convert: function (value) {
-                        if (value===null) { value=undefined; }
+                        if (value===null) value=undefined;
                         return value;
                     },
                     // merge new ui_control messages into config.ui_control
+                    // Help needed: use the already build in ui_control mechanism from ui.js
+
                     beforeEmit: function (msg, value) {
                         // cache ui_control messages for new clients
                         if (msg.hasOwnProperty('ui_control')) {
@@ -184,6 +186,11 @@ module.exports = function (RED) {
                                 opts.cellClick = function(e, cell) {
                                     $scope.send({topic:cell.getField(), payload:cell.getData(), row:(cell.getRow()).getPosition()});
                                 };
+                            }
+
+                            //turn autoColumns off if opts.columns is array with length > 0
+                            if (opts.columns && Array.isArray(opts.columns) && opts.columns.length>0) {
+                                opts.autoColumns = false;
                             }
                             // console.log("createTabulator",opts);
                             $scope.table = new Tabulator(basediv, opts);
