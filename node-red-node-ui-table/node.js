@@ -62,7 +62,7 @@ module.exports = function (RED) {
         var html = String.raw`
                 <link href='ui-table/css/tabulator`+mid+`.min.css' rel='stylesheet' type='text/css'>
                 <script type='text/javascript' src='ui-table/js/tabulator.js'></script>
-                <div id='ui_table-{{$id}}'></div>
+                <div id='ui_table-{{$id}}' style="background-color:unset; border:unset;"></div>
                 <input type='hidden' ng-init='init(` + configAsJson + `)'>
             `;
         return html;
@@ -148,7 +148,7 @@ module.exports = function (RED) {
 
                         var createTable = function(basediv, tabledata, columndata, outputs, ui_control) {
                             // add id field if not already exists
-                            if (tabledata.length>0 && tabledata[0] && typeof tabledata[0] === 'object' && !tabledata[0].hasOwnProperty('id')) {
+                            if (columndata.length>0 && tabledata.length>0 && tabledata[0] && typeof tabledata[0] === 'object' && !tabledata[0].hasOwnProperty('id')) {
                                 tabledata.map((row,index) => row.id = index);
                             }
                             var opts = {
