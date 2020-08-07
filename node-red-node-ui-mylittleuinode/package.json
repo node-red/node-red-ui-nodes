@@ -1,6 +1,6 @@
 {
   "name": "node-red-node-ui-mylittleuinode",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "A Node-RED dashboard ui node to help you create your own ui node.",
   "peerDependencies": {
       "node-red-dashboard": ">2.15.0"
