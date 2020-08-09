@@ -197,6 +197,9 @@
         label: function() {
             return this.name||"my little UI node";
         },
+        labelStyle: function() {
+            return this.name?"node_label_italic":"";
+        },
 //*********************************************************************************
 //*********************************************************************************
 // !!REQUIRED!!
@@ -241,11 +244,11 @@
 <!--
 ***********************************************************************************
 ** This setion must begin with:
-** <script type="text/x-red" data-template-name="ui_yournodenamehere">
+** <script type="text/html" data-template-name="ui_yournodenamehere">
 ** It should be the same name that you are registering with Node-RED (see line #26).
 ***********************************************************************************
 -->
-<script type="text/x-red" data-template-name="ui_my-little-ui-node">
+<script type="text/html" data-template-name="ui_my-little-ui-node">
     <!--***************************************************************************
     ** !!REQUIRED!!
     **
@@ -342,11 +345,11 @@
 ** The data-help-name must be the same name as you have registered this node with.
 **
 ** This setion must begin with:
-** <script type="text/x-red" data-template-name="ui_yournodenamehere">
+** <script type="text/html" data-template-name="ui_yournodenamehere">
 ** It should be the same name that you are registering with Node-RED (see line #26).
 ************************************************************************************
 -->
-<script type="text/x-red" data-help-name="ui_my-little-ui-node">
+<script type="text/html" data-help-name="ui_my-little-ui-node">
     <p>A Node-RED dashboard ui node to display text with a defined color on the dashboard.</p>
     <p>Use this node as a template for building your own ui node.</p>
 </script>
