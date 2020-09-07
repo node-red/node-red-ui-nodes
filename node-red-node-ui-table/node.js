@@ -15,7 +15,6 @@
  **/
 
 var path = require('path');
-const { serialize } = require('v8');
 
 var mergeTabulator = function(target,source) {
     if (typeof source === 'object') {
