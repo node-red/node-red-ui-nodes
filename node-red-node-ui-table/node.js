@@ -28,10 +28,9 @@ var mergeTabulator = function(target,source) {
                 // handle the columns array to merge columns if the field property matches. Otherwise push a new column
                 if (element==='columns' && Array.isArray(source[element])){
                     source[element].forEach(sourceElement => {
-                        let index = target[element].findIndex(targetElement => targetElement.field===sourceElement.field);
+                        let index = target[element].findIndex(targetElement => (targetElement.field && sourceElement.field && targetElement.field===sourceElement.field));
                         if (index<0) { // add new column
-                            target[element].push({});
-                            index=target[element].length-1;
+                            index=target[element].push({})-1;
                         }
                         mergeTabulator(target[element][index],sourceElement);
                     })
@@ -102,7 +101,6 @@ module.exports = function (RED) {
                     },
                     // merge new ui_control messages into config.ui_control
                     // Help needed: use the already build in ui_control mechanism from ui.js
-
                     beforeEmit: function (msg, value) {
                         // cache ui_control messages for new clients
                         if (msg.hasOwnProperty('ui_control')) {
@@ -187,7 +185,6 @@ module.exports = function (RED) {
                                     $scope.send({topic:cell.getField(), payload:cell.getData(), row:(cell.getRow()).getPosition()});
                                 };
                             }
-
                             //turn autoColumns off if opts.columns is array with length > 0
                             if (opts.columns && Array.isArray(opts.columns) && opts.columns.length>0) {
                                 opts.autoColumns = false;
