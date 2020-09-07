@@ -15,6 +15,7 @@
  **/
 
 var path = require('path');
+const { serialize } = require('v8');
 
 var mergeTabulator = function(target,source) {
     if (typeof source === 'object') {
@@ -28,10 +29,9 @@ var mergeTabulator = function(target,source) {
                 // handle the columns array to merge columns if the field property matches. Otherwise push a new column
                 if (element==='columns' && Array.isArray(source[element])){
                     source[element].forEach(sourceElement => {
-                        let index = target[element].findIndex(targetElement => targetElement.field===sourceElement.field);
+                        let index = target[element].findIndex(targetElement => (targetElement.field && sourceElement.field && targetElement.field===sourceElement.field));
                         if (index<0) { // add new column
-                            target[element].push({});
-                            index=target[element].length-1;
+                            index=target[element].push({})-1;
                         }
                         mergeTabulator(target[element][index],sourceElement);
                     })
