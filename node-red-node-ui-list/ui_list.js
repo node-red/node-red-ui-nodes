@@ -126,7 +126,7 @@ ${(allowMenu ? md_menu : "")}
                 // node-red-dashboard module.
                 ui = RED.require("node-red-dashboard")(RED);
             }
-            config.tcol = ui.getTheme()["group-textColor"].value;
+            config.tcol = ui.getTheme()["group-textColor"].value || "#1bbfff";
             // Initialize node
             RED.nodes.createNode(this, config);
             var done = null;
@@ -161,16 +161,16 @@ ${(allowMenu ? md_menu : "")}
                         return { msg: { items: value } };
                     },
                     beforeSend: function (msg, orig) {
-                        if (orig) { 
+                        if (orig) {
                             orig.msg.topic = config.topic;
-                            return orig.msg; 
+                            return orig.msg;
                         }
                     },
                     initController: function($scope, events) {
                         // initialize $scope.click to send clicked widget item
                         // used as ng-click="click(item, selected)"
                         $scope.click = function(item, selected) {
-                            if (selected) { item.selected = selected; }
+                            if (selected !== undefined) { item.selected = selected; }
                             if (item.hasOwnProperty("$$hashKey")) { delete item.$$hashKey; }
                             $scope.send({payload:item});
                         };
