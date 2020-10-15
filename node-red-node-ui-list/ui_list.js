@@ -53,8 +53,8 @@ module.exports = function(RED) {
         var line_class = line2class[config.lineType];
         var classes = line_class ? [line_class] : [];
         var click = String.raw`ng-click="click(item)"`;
-        var title = (allowHTML ? String.raw`<span ng-bind-html="item.title"></span>` : String.raw`{{item.title}}`);
-        var desc = (allowHTML ? String.raw`<span ng-bind-html="item.description"></span>` : String.raw`{{item.description}}`);
+        var title = (allowHTML ? String.raw`<span ng-bind-html="item.title | trusted"></span>` : String.raw`{{item.title}}`);
+        var desc = (allowHTML ? String.raw`<span ng-bind-html="item.description | trusted"></span>` : String.raw`{{item.description}}`);
         var icon = String.raw`
         <img src="{{item.icon}}" class="md-avatar" ng-if="(item.icon !== undefined) && (item.icon !== null)">
         <md-icon aria-label="{{item.desc}}" style="height:unset; margin-top:0px; margin-bottom:0px; color:`+config.tcol+String.raw`" ng-if="(item.icon === undefined) && (item.icon_name !== undefined)"><ui-icon icon="{{item.icon_name}}"></ui-icon></md-icon>
@@ -108,7 +108,7 @@ ${(allowMenu ? md_menu : "")}
 </md-list>
 `;
         return html;
-    };
+    }
 
     // Holds a reference to node-red-dashboard module.
     // Initialized at #1.
@@ -154,7 +154,7 @@ ${(allowMenu ? md_menu : "")}
                         // and map simple text array to object title
                         if (Array.isArray(value)) {
                             value = value.map(function(i) {
-                                if (typeof i === "string") { i = {title:i} };
+                                if (typeof i === "string") { i = {title:i} }
                                 return i;
                             });
                         }
