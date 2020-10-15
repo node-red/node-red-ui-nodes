@@ -28,7 +28,10 @@ var mergeTabulator = function(target,source) {
                 // handle the columns array to merge columns if the field property matches. Otherwise push a new column
                 if (element==='columns' && Array.isArray(source[element])){
                     source[element].forEach(sourceElement => {
-                        let index = target[element].findIndex(targetElement => (targetElement.field && sourceElement.field && targetElement.field===sourceElement.field));
+                        let index = target[element].findIndex(targetElement => (
+                            (targetElement.field && sourceElement.field && targetElement.field===sourceElement.field) ||    // normal column object
+                            (targetElement.title && sourceElement.title && targetElement.title===sourceElement.title)       // parent object with nested columns
+                        ));
                         if (index<0) { // add new column
                             index=target[element].push({})-1;
                         }
@@ -110,10 +113,16 @@ module.exports = function (RED) {
                                         "columns":config.columns
                                     }};
                             } 
-                            // instead of 
-                            // config.ui_control=Object.assign(config.ui_control,msg.ui_control);
                             // use mergeTabulator to correctly merge columns arrays if field property matches
                             mergeTabulator(config.ui_control,msg.ui_control);
+                         
+                            // delete column definitions by sending a empty columns array (requires page reload)
+                            if (msg.ui_control.tabulator && msg.ui_control.tabulator.columns && Array.isArray(msg.ui_control.tabulator.columns) &&
+                                msg.ui_control.tabulator.columns.length==0) {
+                            
+                                config.ui_control.tabulator.columns=[];
+                                config.ui_control.tabulator.autoColumns=true;
+                            }
                         }
                         return { msg: {
                             payload: value, 
