@@ -264,7 +264,9 @@ module.exports = function(RED) {
                         function countdownSnap(c) {
                             if (c === 0) {
                                 $("#ui_webcam_playback_container_"+$scope.$id+" .ui-webcam-count").text("")
-                                return takePhoto();
+                                var imgSrc = takePhoto();
+                                $scope.send({payload:imgSrc});
+                                return;
                             }
                             $("#ui_webcam_playback_container_"+$scope.$id+" .ui-webcam-count").text(c)
                             activeTimeout = setTimeout(function() {
