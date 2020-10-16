@@ -168,6 +168,10 @@ module.exports = function(RED) {
                      */
                     initController: function($scope) {
 
+                        $scope.$on('$destroy', function() {
+                            stopActiveTracks();
+                        });
+
                         $scope.init = function (config) {
                             console.log("ui_webcam: initialised config:",config);
                             $scope.config = config;
@@ -239,6 +243,7 @@ module.exports = function(RED) {
                                     $("#webcam_"+$scope.$id).addClass("active")
                                     var playbackEl = document.querySelector("video#ui_webcam_playback_"+$scope.$id);
                                     playbackEl.srcObject = stream;
+                                    $scope.data.stream = stream;
                                     $("#ui_webcam_toolbar_"+$scope.$id).show();
                                     if (activeCamera === null) {
                                         activeCamera = stream.getTracks()[0].getSettings().deviceId;
@@ -246,15 +251,20 @@ module.exports = function(RED) {
                                 }).catch(handleError);
                             }
                         }
-                        $scope.disableCamera = function() {
-                            var playbackEl = document.querySelector("video#ui_webcam_playback_"+$scope.$id);
-                            if (playbackEl.srcObject) {
-                                var tracks = playbackEl.srcObject.getTracks();
+                        function stopActiveTracks() {
+                            if ($scope.data.stream) {
+                                var tracks = $scope.data.stream.getTracks();
                                 tracks.forEach(function(track) {
                                     track.stop();
                                 });
                             }
+                            $scope.data.stream = null;
+                        }
+                        $scope.disableCamera = function() {
+                            stopActiveTracks();
+                            var playbackEl = document.querySelector("video#ui_webcam_playback_"+$scope.$id);
                             playbackEl.srcObject = null;
+
                             active = false;
                             $("#ui_webcam_btn_enable_"+$scope.$id).show();
                             $("#ui_webcam_toolbar_"+$scope.$id).hide();
