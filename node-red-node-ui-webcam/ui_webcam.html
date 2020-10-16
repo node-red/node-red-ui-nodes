@@ -1,0 +1,120 @@
+<!--
+  Copyright 2020 OpenJS Foundation
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+  http://www.apache.org/licenses/LICENSE-2.0
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+
+<script type="text/javascript">
+    RED.nodes.registerType('ui_webcam',{
+        category: 'dashboard',
+        color: 'rgb( 63, 173, 181)',
+        defaults: {
+            group: {type: 'ui_group', required:true},
+            order: {value: 0},
+            width: {
+                value: 0,
+                validate: function(v) {
+                    var valid = true
+                    var width = v||0;
+                    var currentGroup = $('#node-input-group').val()|| this.group;
+                    var groupNode = RED.nodes.node(currentGroup);
+                    valid = !groupNode || +width <= +groupNode.width;
+                    $("#node-input-size").toggleClass("input-error",!valid);
+                    return valid;
+                }},
+            height: {value: 0},
+            name: {value: ''},
+            countdown: { value: false },
+            autoStart: { value: false },
+            format: { value:"png" }
+        },
+        inputs:1,
+        outputs:1,
+        icon: "font-awesome/fa-camera",
+        paletteLabel: "webcam",
+        label: function() {
+            return this.name||"webcam";
+        },
+        labelStyle: function() {
+            return this.name?"node_label_italic":"";
+        },
+        oneditprepare: function() {
+            $("#node-input-size").elementSizer({
+                width: "#node-input-width",
+                height: "#node-input-height",
+                group: "#node-input-group"
+            });
+        },
+        oneditsave: function() {
+            // var ts = $("#node-input-select-timeslice").val();
+            // if (ts === 'once') {
+            //     $("#node-input-timeslice").val("")
+            // }
+        }
+    });
+</script>
+
+<script type="text/x-red" data-template-name="ui_webcam">
+    <div class="form-row" id="template-row-group">
+        <label for="node-input-group"><i class="fa fa-table"></i> Group</span></label>
+        <input type="text" id="node-input-group">
+    </div>
+    <div class="form-row" id="template-row-size">
+        <label><i class="fa fa-object-group"></i> Size</span></label>
+        <input type="hidden" id="node-input-width">
+        <input type="hidden" id="node-input-height">
+        <button class="editor-button" id="node-input-size"></button>
+    </div>
+    <br />
+    <div class="form-row" style="min-width: 470px">
+        <label style="vertical-align: top"><i class="fa fa-cog"></i> Options</label>
+        <div style="display: inline-block; min-width: 350px; width: calc(100% - 120px);">
+            <div class="form-row">
+                <label style="width: auto" for="node-input-autoStart">
+                    <input style="width:auto; margin: 0" type="checkbox" id="node-input-autoStart"> Start webcam automatically
+                </label>
+            </div>
+            <div class="form-row">
+                <label style="width: auto" for="node-input-countdown">
+                    <input style="width:auto; margin: 0" type="checkbox" id="node-input-countdown"> Use 5 second countdown when triggered
+                </label>
+            </div>
+            <div class="form-row">
+                <label for="node-input-format">Image format </label>
+                <select id="node-input-format">
+                    <option value="png">png</option>
+                    <option value="jpeg">jpeg</option>
+                </select>
+            </div>
+        </div>
+
+    </div>
+    <div class="form-row">
+        <label for="node-input-name"><i class="icon-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+</script>
+
+<script type="text/x-red" data-help-name="ui_webcam">
+    <p>A Node Red dashboard ui node to capture images from the browser's webcam.</p>
+    <h3>Inputs</h3>
+    <dl class="message-properties">
+        <dt>capture</dt>
+        <dd>If set, this will trigger the webcam to capture an image. The webcam must
+            have been activated on the dashboard first.</dd>
+    </dl>
+    <h3>Outputs</h3>
+    <dl class="message-properties">
+        <dt>payload<span class="property-type">Buffer</span></dt>
+        <dd>The captured image as a png.</dd>
+    </dl>
+    <h3>Details</h3>
+    <p></p>
+</script>

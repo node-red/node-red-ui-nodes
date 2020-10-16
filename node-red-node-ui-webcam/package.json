@@ -1,0 +1,25 @@
+{
+    "name": "node-red-node-ui-webcam",
+    "version": "0.1.0",
+    "description": "A Node-RED ui node to capture images from a webcam.",
+    "author": "Nick O'Leary",
+    "license": "Apache-2.0",
+    "keywords": [
+        "node-red",
+        "node-red-dashboard",
+        "webcam"
+    ],
+    "bugs": {
+        "url": "https://github.com/node-red/node-red-ui-nodes/issues"
+    },
+    "homepage": "https://github.com/node-red/node-red-ui-nodes/node-red-node-ui-webcam",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/node-red/node-red-ui-nodes.git"
+    },
+    "node-red": {
+        "nodes": {
+            "ui_webcam": "ui_webcam.js"
+        }
+    }
+}
