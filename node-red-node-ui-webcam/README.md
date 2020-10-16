@@ -15,7 +15,7 @@ The node provides UI widget that will display a live image from the web camera
 on the device running the dashboard.
 
 The user can click a button to capture an image which is then sent by the node
-as a Buffer object contain the image in png format.
+as a Buffer object contain the image in png or jpeg format.
 
 If a message is passed to the `ui_webcam` node with the `capture` property set,
 and if the webcam has been activated on the dashboard, it will capture an image

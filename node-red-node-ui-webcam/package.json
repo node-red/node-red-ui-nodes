@@ -1,6 +1,6 @@
 {
     "name": "node-red-node-ui-webcam",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "description": "A Node-RED ui node to capture images from a webcam.",
     "author": "Nick O'Leary",
     "license": "Apache-2.0",
