@@ -155,9 +155,8 @@ module.exports = function(RED) {
                     },
                     beforeSend: function (msg, orig) {
                         if (orig) {
-                            if (/^data:image\/png;base64,/.test(orig.msg.payload)) {
-                                orig.msg.payload = Buffer.from(orig.msg.payload.substring(22),'base64')
-                            }
+                            var urlPreamble = "data:image/"+(config.format||"png")+";base64,";
+                            orig.msg.payload = Buffer.from(orig.msg.payload.substring(urlPreamble.length),'base64')
                             return orig.msg;
                         }
                     },
@@ -173,7 +172,7 @@ module.exports = function(RED) {
                         });
 
                         $scope.init = function (config) {
-                            console.log("ui_webcam: initialised config:",config);
+                            // console.log("ui_webcam: initialised config:",config);
                             $scope.config = config;
                             if ($scope.config.autoStart) {
                                 setTimeout(function() {
@@ -303,7 +302,7 @@ module.exports = function(RED) {
                             canvas.height = playbackEl.videoHeight;
                             canvas.getContext('2d').drawImage(playbackEl, 0, 0);
                             var img = document.querySelector("img#ui_webcam_image_"+$scope.$id);
-                            img.src = canvas.toDataURL('image/png');
+                            img.src = canvas.toDataURL('image/'+($scope.config.format||'png'));
                             img.style.display = "block";
                             setTimeout(function() {
                                 img.style.display = "none";
@@ -314,7 +313,6 @@ module.exports = function(RED) {
                         function handleError(err) {
                             console.warn("Failed to access webcam:",err);
                             if (oldActiveCamera) {
-                                console.log("Going back to old");
                                 activeCamera = oldActiveCamera;
                                 oldActiveCamera = null;
                                 $scope.disableCamera();

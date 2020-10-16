@@ -32,7 +32,8 @@
             height: {value: 0},
             name: {value: ''},
             countdown: { value: false },
-            autoStart: { value: false }
+            autoStart: { value: false },
+            format: { value:"png" }
         },
         inputs:1,
         outputs:1,
@@ -84,6 +85,13 @@
                 <label style="width: auto" for="node-input-countdown">
                     <input style="width:auto; margin: 0" type="checkbox" id="node-input-countdown"> Use 5 second countdown when triggered
                 </label>
+            </div>
+            <div class="form-row">
+                <label for="node-input-format">Image format </label>
+                <select id="node-input-format">
+                    <option value="png">png</option>
+                    <option value="jpeg">jpeg</option>
+                </select>
             </div>
         </div>
 
