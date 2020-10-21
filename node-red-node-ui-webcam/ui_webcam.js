@@ -151,12 +151,20 @@ module.exports = function(RED) {
                         return value;
                     },
                     beforeEmit: function(msg) {
+                        if (Buffer.isBuffer(msg.payload)) {
+                            msg.payload = msg.payload.toString('base64');
+                        }
                         return { msg: msg };
                     },
                     beforeSend: function (msg, orig) {
                         if (orig) {
+                            // if (orig.msg.status) {
+                            //     node.status(orig.msg.status);
+                            //     return null;
+                            // }
                             var urlPreamble = "data:image/"+(config.format||"png")+";base64,";
                             orig.msg.payload = Buffer.from(orig.msg.payload.substring(urlPreamble.length),'base64')
+                            delete orig.msg.capture;
                             return orig.msg;
                         }
                     },
@@ -174,6 +182,20 @@ module.exports = function(RED) {
                         $scope.init = function (config) {
                             // console.log("ui_webcam: initialised config:",config);
                             $scope.config = config;
+                            if ($scope.config.showImage === undefined) {
+                                $scope.config.showImageTimeout = 2000;
+                                $scope.config.showImage = true;
+                            } else if ($scope.config.showImage === -1) {
+                                $scope.config.showImage = false;
+                            } else {
+                                $scope.config.showImageTimeout = parseFloat($scope.config.showImage)*1000;
+                                $scope.config.showImage = true;
+                            }
+                            if ($scope.config.hideCaptureButton) {
+                                setTimeout(function() {
+                                    $("#ui_webcam_btn_trigger_"+$scope.$id).hide();
+                                },100);
+                            }
                             if ($scope.config.autoStart) {
                                 setTimeout(function() {
                                     $scope.enableCamera();
@@ -188,6 +210,8 @@ module.exports = function(RED) {
                         var activeTimeout;
                         var activeCamera = null;
                         var oldActiveCamera = null;
+
+
 
                         $scope.changeCamera = function(deviceId) {
                             oldActiveCamera = activeCamera;
@@ -239,6 +263,7 @@ module.exports = function(RED) {
                                 }
 
                                 navigator.mediaDevices.getUserMedia(constraint).then(function(stream) {
+                                    // $scope.send({status:{shape:"dot",fill:"green",text:"active"}})
                                     $("#webcam_"+$scope.$id).addClass("active")
                                     var playbackEl = document.querySelector("video#ui_webcam_playback_"+$scope.$id);
                                     playbackEl.srcObject = stream;
@@ -263,7 +288,7 @@ module.exports = function(RED) {
                             stopActiveTracks();
                             var playbackEl = document.querySelector("video#ui_webcam_playback_"+$scope.$id);
                             playbackEl.srcObject = null;
-
+                            // $scope.send({status:{shape:"ring",fill:"red",text:"inactive"}})
                             active = false;
                             $("#ui_webcam_btn_enable_"+$scope.$id).show();
                             $("#ui_webcam_toolbar_"+$scope.$id).hide();
@@ -303,10 +328,14 @@ module.exports = function(RED) {
                             canvas.getContext('2d').drawImage(playbackEl, 0, 0);
                             var img = document.querySelector("img#ui_webcam_image_"+$scope.$id);
                             img.src = canvas.toDataURL('image/'+($scope.config.format||'png'));
-                            img.style.display = "block";
-                            setTimeout(function() {
-                                img.style.display = "none";
-                            },2000);
+                            if ($scope.config.showImage) {
+                                img.style.display = "block";
+                                if ($scope.config.showImageTimeout) {
+                                    activeTimeout = setTimeout(function() {
+                                        img.style.display = "none";
+                                    },$scope.config.showImageTimeout);
+                                }
+                            }
                             return img.src;
                         }
 
@@ -344,9 +373,18 @@ module.exports = function(RED) {
                             if (!active) {
                                 return;
                             }
+                            var img = document.querySelector("img#ui_webcam_image_"+$scope.$id);
                             if (msg.capture) {
                                 msg.payload = takePhoto();
                                 $scope.send(msg);
+                            } else if (typeof msg.payload === 'string') {
+                                clearTimeout(activeTimeout);
+                                if (msg.payload === "") {
+                                    img.style.display = "none";
+                                } else {
+                                    img.src = "data:image/"+($scope.config.format||"png")+";base64,"+msg.payload;
+                                    img.style.display = "block";
+                                }
                             }
                         });
                     }
