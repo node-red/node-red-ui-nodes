@@ -42,6 +42,8 @@ module.exports = function(RED) {
         position: absolute;
         width: 100%;
         height: 100%;
+        -webkit-transform: scaleX(-1);
+        transform: scaleX(-1);
     }
     .ui-webcam-playback-container {
         width: 100%;
@@ -211,8 +213,6 @@ module.exports = function(RED) {
                         var activeCamera = null;
                         var oldActiveCamera = null;
 
-
-
                         $scope.changeCamera = function(deviceId) {
                             oldActiveCamera = activeCamera;
                             activeCamera = $scope.data.cameras[deviceId].deviceId;
@@ -325,7 +325,10 @@ module.exports = function(RED) {
                             var canvas = document.querySelector("canvas#ui_webcam_canvas_"+$scope.$id);
                             canvas.width = playbackEl.videoWidth;
                             canvas.height = playbackEl.videoHeight;
-                            canvas.getContext('2d').drawImage(playbackEl, 0, 0);
+                            var ctx = canvas.getContext('2d');
+                            ctx.translate(playbackEl.videoWidth, 0);
+                            ctx.scale(-1, 1);
+                            ctx.drawImage(playbackEl, 0, 0);
                             var img = document.querySelector("img#ui_webcam_image_"+$scope.$id);
                             img.src = canvas.toDataURL('image/'+($scope.config.format||'png'));
                             if ($scope.config.showImage) {
