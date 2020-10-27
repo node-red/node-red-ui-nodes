@@ -18,13 +18,15 @@
 const path = require('path');
 
 module.exports = function(RED) {
-
     function HTML(config) {
         var configAsJson = JSON.stringify(config);
-        var html = String.raw`
-        <input type='hidden' ng-init='init(` + configAsJson + `)'>
-        <md-button aria-label="capture audio" id="microphone_control_{{$id}}" class="nr-ui-microphone-button" ng-disabled="!enabled" ng-click="toggleMicrophone()"><i class="fa fa-2x fa-microphone"></i></md-button>
-        `;
+        var html = String.raw`<input type='hidden' ng-init='init(` + configAsJson + `)'>`;
+        if (config.press && config.press === "press") {
+            html += String.raw`<md-button aria-label="capture audio" id="microphone_control_{{$id}}" class="nr-ui-microphone-button" ng-disabled="!enabled" ng-mousedown="toggleMicrophone()" ng-mouseup="toggleMicrophone()"><i class="fa fa-2x fa-microphone"></i></md-button>`;
+        }
+        else {
+            html += String.raw`<md-button aria-label="capture audio" id="microphone_control_{{$id}}" class="nr-ui-microphone-button" ng-disabled="!enabled" ng-click="toggleMicrophone()"><i class="fa fa-2x fa-microphone"></i></md-button>`;
+        }
         return html;
     }
 
@@ -151,10 +153,10 @@ module.exports = function(RED) {
                             // if (timeslice) {
                             //     mediaRecorder.start(timeslice);
                             // } else {
-                                mediaRecorder.start();
+                            mediaRecorder.start();
                             // }
 
-                            if ($scope.config && $scope.config.maxLength) {
+                            if ($scope.config && $scope.config.maxLength && ($scope.config.press !== "press")) {
                                 stopTimeout = setTimeout(function() {
                                     if (active) {
                                         mediaRecorder.stop();
@@ -189,11 +191,11 @@ module.exports = function(RED) {
                                 worker.postMessage({ command: 'clear' });
                             };
                             worker.postMessage({
-                              command: 'record',
-                              buffer: [
-                                buffer.getChannelData(0),
-                                buffer.getChannelData(0)
-                              ]
+                                command: 'record',
+                                buffer: [
+                                    buffer.getChannelData(0),
+                                    buffer.getChannelData(0)
+                                ]
                             });
                             worker.postMessage({ command: 'exportMonoWAV', type: 'audio/wav' });
                         }
