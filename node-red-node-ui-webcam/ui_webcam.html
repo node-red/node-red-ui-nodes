@@ -16,6 +16,7 @@
         category: 'dashboard',
         color: 'rgb( 63, 173, 181)',
         defaults: {
+            name: {value: ''},
             group: {type: 'ui_group', required:true},
             order: {value: 0},
             width: {
@@ -29,8 +30,7 @@
                     $("#node-input-size").toggleClass("input-error",!valid);
                     return valid;
                 }},
-            height: {value: 0},
-            name: {value: ''},
+            height: {value: 5},
             countdown: { value: false },
             autoStart: { value: false },
             hideCaptureButton: { value: false },
@@ -87,7 +87,6 @@
             })
 
             $("#node-input-showImage-enable").trigger("change");
-
         },
         oneditsave: function() {
             var showImageEnable = $("#node-input-showImage-enable")[0].checked;
@@ -101,7 +100,6 @@
             } else {
                 this.showImage = showImageTime;
             }
-
         }
     });
 </script>
@@ -154,7 +152,6 @@
                 </select>
             </div>
         </div>
-
     </div>
     <div class="form-row">
         <label for="node-input-name"><i class="icon-tag"></i> Name</label>
