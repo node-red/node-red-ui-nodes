@@ -112,21 +112,22 @@ module.exports = function (RED) {
                                     "tabulator":{
                                         "columns":config.columns
                                     }};
-                            } 
+                            }
                             // use mergeTabulator to correctly merge columns arrays if field property matches
                             mergeTabulator(config.ui_control,msg.ui_control);
-                         
+
                             // delete column definitions by sending a empty columns array (requires page reload)
                             if (msg.ui_control.tabulator && msg.ui_control.tabulator.columns && Array.isArray(msg.ui_control.tabulator.columns) &&
                                 msg.ui_control.tabulator.columns.length==0) {
-                            
+
                                 config.ui_control.tabulator.columns=[];
                                 config.ui_control.tabulator.autoColumns=true;
                             }
                         }
                         return { msg: {
-                            payload: value, 
-                            ui_control: config.ui_control
+                            payload: value,
+                            ui_control: config.ui_control,
+                            socketid: msg.socketid
                         }};
                     },
                     beforeSend: function (msg, orig) {
@@ -172,9 +173,9 @@ module.exports = function (RED) {
                                 } else {
                                     opts.height = $scope.height*(sizes.sy+sizes.cy);
                                 }
-                            } 
+                            }
                             else { // configuration via ui_control
-                                //as Object.assign is not supported by Internet Explorer 
+                                //as Object.assign is not supported by Internet Explorer
                                 //opts = Object.assign(opts, ui_control.tabulator);
                                 mergeObject(opts,ui_control.tabulator);
                                 var y = (opts.columns && (opts.columns.length > 0)) ? 32 : 25;
@@ -282,9 +283,9 @@ module.exports = function (RED) {
                                     }
                                     return;
                                 } // end of commands to tabulator via msg.payload object
-                                
+
                             }
-                            
+
                             if ($scope.inited == false) {
                                 return;
                             } else {

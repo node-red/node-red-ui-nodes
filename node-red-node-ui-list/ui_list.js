@@ -158,7 +158,7 @@ ${(allowMenu ? md_menu : "")}
                                 return i;
                             });
                         }
-                        return { msg: { items: value } };
+                        return { msg: { items:value, socketid:msg.socketid } };
                     },
                     beforeSend: function (msg, orig) {
                         if (orig) {
