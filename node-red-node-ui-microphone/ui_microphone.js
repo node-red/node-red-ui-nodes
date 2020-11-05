@@ -107,7 +107,7 @@ module.exports = function(RED) {
                             if (!$scope.enabled) return;
                             if (!active) {
                                 active = true;
-                                $("#microphone_control_"+$scope.$id+" i").removeClass("fa-microphone fa-2x").addClass("fa-circle-o-notch fa-spin");
+                                $("#microphone_control_"+$scope.$id+" i").removeClass("fa-microphone fa-2x").addClass("fa-rotate-right fa-2x fa-spin");
                                 navigator.mediaDevices.getUserMedia({ audio: true, video: false }).then(handleSuccess).catch(handleError);
                             } else {
                                 if (mediaRecorder) {
@@ -123,7 +123,7 @@ module.exports = function(RED) {
                         var handleError = function(err) {
                             console.warn("Failed to access microphone:",err);
                             active = false;
-                            $("#microphone_control_"+$scope.$id+" i").addClass("fa-microphone fa-2x").removeClass("fa-circle-o-notch fa-spin");
+                            $("#microphone_control_"+$scope.$id+" i").addClass("fa-microphone fa-2x").removeClass("fa-rotate-right fa-2x fa-spin");
                         }
                         var handleSuccess = function(stream) {
                             mediaRecorder = new MediaRecorder(stream,  {mimeType: 'audio/webm'});
@@ -136,7 +136,7 @@ module.exports = function(RED) {
                             mediaRecorder.onstop = function() {
                                 if (active) {
                                     active = false;
-                                    $("#microphone_control_"+$scope.$id+" i").addClass("fa-microphone fa-2x").removeClass("fa-circle-o-notch fa-spin");
+                                    $("#microphone_control_"+$scope.$id+" i").addClass("fa-microphone fa-2x").removeClass("fa-rotate-right fa-spin");
                                     if (stopTimeout) {
                                         clearTimeout(stopTimeout);
                                         stopTimeout = null;
