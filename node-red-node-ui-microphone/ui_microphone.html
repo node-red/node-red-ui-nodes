@@ -16,6 +16,7 @@
         category: 'dashboard',
         color: 'rgb( 63, 173, 181)',
         defaults: {
+            name: {value: ''},
             group: {type: 'ui_group', required:true},
             order: {value: 0},
             width: {
@@ -30,9 +31,9 @@
                     return valid;
                 }},
             height: {value: 0},
-            name: {value: ''},
             maxLength: { value: 5 },
-            timeslice: { value: 0 }
+            timeslice: { value: 0 },
+            press : { value: "click" }
         },
         inputs:0,
         outputs:1,
@@ -45,6 +46,17 @@
             return this.name?"node_label_italic":"";
         },
         oneditprepare: function() {
+            if (this.press === undefined) {
+                $("#node-input-press").val("click");
+            }
+            $("#node-input-press").change( function() {
+                if ($("#node-input-press").val() === "press") {
+                    $("#node-rec-max-length").hide();
+                }
+                else {
+                    $("#node-rec-max-length").show();
+                }
+            });
             $("#node-input-size").elementSizer({
                 width: "#node-input-width",
                 height: "#node-input-height",
@@ -78,7 +90,7 @@
     });
 </script>
 
-<script type="text/x-red" data-template-name="ui_microphone">
+<script type="text/html" data-template-name="ui_microphone">
     <div class="form-row" id="template-row-group">
         <label for="node-input-group"><i class="fa fa-table"></i> Group</span></label>
         <input type="text" id="node-input-group">
@@ -89,20 +101,16 @@
         <input type="hidden" id="node-input-height">
         <button class="editor-button" id="node-input-size"></button>
     </div>
-    <br />
-    <div class="form-row" style="min-width: 470px">
-        <label style="vertical-align: top"><i class="fa fa-cog"></i> Options</label>
-        <div style="display: inline-block; min-width: 350px; width: calc(100% - 120px);">
-        <ul>
-            <li style="margin: 0 0 8px">Click button to start recording</li>
-            <li style="margin: 8px 0 4px">Click again to stop recording</li>
-            <li style="margin: 4px 0 4px">Maximum length of recording: <input style="width: 50px" type="text" id="node-input-maxLength"> seconds
-            <!-- <li style="margin: 4px 0 4px">Send message <select style="width: auto" id="node-input-select-timeslice"><option value="once">once recording stops</option><option value="interval">at regular interval of</option></select>
-                <div id="node-input-row-timeslice"><input style="margin-left: 20px; width: 50px" type="text" id="node-input-timeslice"> seconds</div>
-            </li> -->
-        </ul>
-        </div>
-
+    <div class="form-row" style="min-width:470px">
+        <label><i class="fa fa-cog"></i> Record</label>
+        <select type="text" id="node-input-press" style="width:70%;">
+            <option value="click">Click to start, click to stop</option>
+            <option value="press">Press to start, release to stop</option>
+        </select>
+    </div>
+    <div class="form-row" id="node-rec-max-length">
+        <label></labeL>
+        Maximum length of recording: <input style="width:50px" type="text" id="node-input-maxLength"> seconds
     </div>
     <div class="form-row">
         <label for="node-input-name"><i class="icon-tag"></i> Name</label>
@@ -110,7 +118,7 @@
     </div>
 </script>
 
-<script type="text/x-red" data-help-name="ui_microphone">
+<script type="text/html" data-help-name="ui_microphone">
     <p>A Node Red dashboard ui node to capture audio from the brower's microphone.</p>
     <h3>Outputs</h3>
     <dl class="message-properties">
@@ -118,10 +126,11 @@
         <dd>The captured audio in the required format.</dd>
     </dl>
     <h3>Details</h3>
-    <p>This node provides a single button widget in the dashboard that, when pressed,
-        will begin to capture audio. It will continue to capture audio until the button
-        is pressed again , or it reaches its configured maximum duration.</p>
-    <p>The audio is captured in WAV format and published by the node as a Buffer
-        object.</p>
+    <p>This node provides a single button widget in the dashboard.
+    The audio is captured in WAV format and published by the node as a Buffer object.</p>
+    <p>The button can be configured in two modes. Either click begin to capture audio, and then
+    continue to capture audio until the button is pressed again, or it reaches its configured
+    maximum duration. Or the button can be configured to record only while the button is pressed.</p>
+    <p></p>
     <p></p>
 </script>
