@@ -1,6 +1,6 @@
 {
     "name": "node-red-node-ui-microphone",
-    "version": "0.2.0",
+    "version": "0.2.1",
     "description": "A Node-RED ui node to record audio on a dashboard.",
     "author": "Nick O'Leary",
     "license": "Apache-2.0",
