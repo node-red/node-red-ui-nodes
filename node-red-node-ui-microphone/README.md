@@ -14,8 +14,11 @@ Either use the Editor - Menu - Manage Palette - Install option, or run the follo
 The node provides a single button that, when clicked, will begin to capture audio.
 
 This node provides a single button widget in the dashboard that, when pressed,
-will begin to capture audio. It will continue to capture audio until the button
-is pressed again, or it reaches its configured maximum duration.
+will begin to capture audio.
+The button can be configured in two modes.
+
+ - Click begins to capture audio, and then continues to capture audio until the button is pressed again, or it reaches its configured maximum duration.
+ - Or the button can be configured to record only while the button is pressed.
 
 The audio is captured in WAV format and published by the node as a Buffer object.
 This can be written straight to a file or passed to any other node that expects

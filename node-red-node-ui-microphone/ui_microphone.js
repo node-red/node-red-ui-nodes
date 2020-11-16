@@ -18,13 +18,15 @@
 const path = require('path');
 
 module.exports = function(RED) {
-
     function HTML(config) {
         var configAsJson = JSON.stringify(config);
-        var html = String.raw`
-        <input type='hidden' ng-init='init(` + configAsJson + `)'>
-        <md-button aria-label="capture audio" id="microphone_control_{{$id}}" class="nr-ui-microphone-button" ng-disabled="!enabled" ng-click="toggleMicrophone()"><i class="fa fa-2x fa-microphone"></i></md-button>
-        `;
+        var html = String.raw`<input type='hidden' ng-init='init(` + configAsJson + `)'>`;
+        if (config.press && config.press === "press") {
+            html += String.raw`<md-button aria-label="capture audio" id="microphone_control_{{$id}}" class="nr-ui-microphone-button" ng-disabled="!enabled" ng-mousedown="toggleMicrophone(true)" ng-mouseup="toggleMicrophone()"><i class="fa fa-2x fa-microphone"></i></md-button>`;
+        }
+        else {
+            html += String.raw`<md-button aria-label="capture audio" id="microphone_control_{{$id}}" class="nr-ui-microphone-button" ng-disabled="!enabled" ng-click="toggleMicrophone()"><i class="fa fa-2x fa-microphone"></i></md-button>`;
+        }
         return html;
     }
 
@@ -82,7 +84,7 @@ module.exports = function(RED) {
                     initController: function($scope) {
 
                         $scope.init = function (config) {
-                            console.log("ui_microphone: initialised config:",config);
+                            //console.log("ui_microphone: initialised config:",config);
                             $scope.config = config;
                         }
 
@@ -101,11 +103,12 @@ module.exports = function(RED) {
                         var active = false;
 
                         var button = $("#microphone_control_"+$scope.$id);
-                        $scope.toggleMicrophone = function() {
+                        $scope.toggleMicrophone = function(e) {
+                            if (e === true) { active = false; }
                             if (!$scope.enabled) return;
                             if (!active) {
                                 active = true;
-                                $("#microphone_control_"+$scope.$id+" i").removeClass("fa-microphone fa-2x").addClass("fa-circle-o-notch fa-spin");
+                                $("#microphone_control_"+$scope.$id+" i").removeClass("fa-microphone fa-2x").addClass("fa-rotate-right fa-2x fa-spin");
                                 navigator.mediaDevices.getUserMedia({ audio: true, video: false }).then(handleSuccess).catch(handleError);
                             } else {
                                 if (mediaRecorder) {
@@ -121,7 +124,7 @@ module.exports = function(RED) {
                         var handleError = function(err) {
                             console.warn("Failed to access microphone:",err);
                             active = false;
-                            $("#microphone_control_"+$scope.$id+" i").addClass("fa-microphone fa-2x").removeClass("fa-circle-o-notch fa-spin");
+                            $("#microphone_control_"+$scope.$id+" i").addClass("fa-microphone fa-2x").removeClass("fa-rotate-right fa-2x fa-spin");
                         }
                         var handleSuccess = function(stream) {
                             mediaRecorder = new MediaRecorder(stream,  {mimeType: 'audio/webm'});
@@ -134,7 +137,7 @@ module.exports = function(RED) {
                             mediaRecorder.onstop = function() {
                                 if (active) {
                                     active = false;
-                                    $("#microphone_control_"+$scope.$id+" i").addClass("fa-microphone fa-2x").removeClass("fa-circle-o-notch fa-spin");
+                                    $("#microphone_control_"+$scope.$id+" i").addClass("fa-microphone fa-2x").removeClass("fa-rotate-right fa-spin");
                                     if (stopTimeout) {
                                         clearTimeout(stopTimeout);
                                         stopTimeout = null;
@@ -151,10 +154,10 @@ module.exports = function(RED) {
                             // if (timeslice) {
                             //     mediaRecorder.start(timeslice);
                             // } else {
-                                mediaRecorder.start();
+                            mediaRecorder.start();
                             // }
 
-                            if ($scope.config && $scope.config.maxLength) {
+                            if ($scope.config && $scope.config.maxLength && ($scope.config.press !== "press")) {
                                 stopTimeout = setTimeout(function() {
                                     if (active) {
                                         mediaRecorder.stop();
@@ -189,11 +192,11 @@ module.exports = function(RED) {
                                 worker.postMessage({ command: 'clear' });
                             };
                             worker.postMessage({
-                              command: 'record',
-                              buffer: [
-                                buffer.getChannelData(0),
-                                buffer.getChannelData(0)
-                              ]
+                                command: 'record',
+                                buffer: [
+                                    buffer.getChannelData(0),
+                                    buffer.getChannelData(0)
+                                ]
                             });
                             worker.postMessage({ command: 'exportMonoWAV', type: 'audio/wav' });
                         }

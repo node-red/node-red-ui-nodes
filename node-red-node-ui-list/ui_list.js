@@ -53,8 +53,8 @@ module.exports = function(RED) {
         var line_class = line2class[config.lineType];
         var classes = line_class ? [line_class] : [];
         var click = String.raw`ng-click="click(item)"`;
-        var title = (allowHTML ? String.raw`<span ng-bind-html="item.title"></span>` : String.raw`{{item.title}}`);
-        var desc = (allowHTML ? String.raw`<span ng-bind-html="item.description"></span>` : String.raw`{{item.description}}`);
+        var title = (allowHTML ? String.raw`<span ng-bind-html="item.title | trusted"></span>` : String.raw`{{item.title}}`);
+        var desc = (allowHTML ? String.raw`<span ng-bind-html="item.description | trusted"></span>` : String.raw`{{item.description}}`);
         var icon = String.raw`
         <img src="{{item.icon}}" class="md-avatar" ng-if="(item.icon !== undefined) && (item.icon !== null)">
         <md-icon aria-label="{{item.desc}}" style="height:unset; margin-top:0px; margin-bottom:0px; color:`+config.tcol+String.raw`" ng-if="(item.icon === undefined) && (item.icon_name !== undefined)"><ui-icon icon="{{item.icon_name}}"></ui-icon></md-icon>
@@ -108,7 +108,7 @@ ${(allowMenu ? md_menu : "")}
 </md-list>
 `;
         return html;
-    };
+    }
 
     // Holds a reference to node-red-dashboard module.
     // Initialized at #1.
@@ -126,7 +126,7 @@ ${(allowMenu ? md_menu : "")}
                 // node-red-dashboard module.
                 ui = RED.require("node-red-dashboard")(RED);
             }
-            config.tcol = ui.getTheme()["group-textColor"].value;
+            config.tcol = ui.getTheme()["group-textColor"].value || "#1bbfff";
             // Initialize node
             RED.nodes.createNode(this, config);
             var done = null;
@@ -154,23 +154,23 @@ ${(allowMenu ? md_menu : "")}
                         // and map simple text array to object title
                         if (Array.isArray(value)) {
                             value = value.map(function(i) {
-                                if (typeof i === "string") { i = {title:i} };
+                                if (typeof i === "string") { i = {title:i} }
                                 return i;
                             });
                         }
-                        return { msg: { items: value } };
+                        return { msg: { items:value, socketid:msg.socketid } };
                     },
                     beforeSend: function (msg, orig) {
-                        if (orig) { 
+                        if (orig) {
                             orig.msg.topic = config.topic;
-                            return orig.msg; 
+                            return orig.msg;
                         }
                     },
                     initController: function($scope, events) {
                         // initialize $scope.click to send clicked widget item
                         // used as ng-click="click(item, selected)"
                         $scope.click = function(item, selected) {
-                            if (selected) { item.selected = selected; }
+                            if (selected !== undefined) { item.selected = selected; }
                             if (item.hasOwnProperty("$$hashKey")) { delete item.$$hashKey; }
                             $scope.send({payload:item});
                         };

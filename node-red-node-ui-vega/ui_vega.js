@@ -46,7 +46,7 @@ function loadScripts(list, callback) {
         script.onload = script.onreadystatechange = function() {
             if (!done) {
                 if (!this.readyState ||
-                    (this.readyState === "loaded") || 
+                    (this.readyState === "loaded") ||
                     (this.readyState === "complete")) {
                     done = true;
                     loadScripts(list, callback);
@@ -63,15 +63,15 @@ function loadScripts(list, callback) {
 }
 
 function showVega(spec) {
-    vegaEmbed('#${vid}', spec, 
+    vegaEmbed('#${vid}', spec,
               {
                   actions: false
               });
 }
 
-loadScripts(["https://cdn.jsdelivr.net/npm/vega@5.4.0", 
-             "https://cdn.jsdelivr.net/npm/vega-lite@4.0.0-beta.0", 
-             "https://cdn.jsdelivr.net/npm/vega-embed@4.2.1"], 
+loadScripts(["https://cdn.jsdelivr.net/npm/vega@5.4.0",
+             "https://cdn.jsdelivr.net/npm/vega-lite@4.0.0-beta.0",
+             "https://cdn.jsdelivr.net/npm/vega-embed@4.2.1"],
     function() {
 `+
             "var vegaSpec = " +vegaSpec +";" +
@@ -107,32 +107,32 @@ loadScripts(["https://cdn.jsdelivr.net/npm/vega@5.4.0",
             RED.nodes.createNode(this, config);
             var done = null;
             if (checkConfig(node, config)) {
-            var html = HTML(config);
-            done = ui.addWidget({
-                node: node,
-                order: config.order,
-                group: config.group,
-                width: config.width,
-                height: config.height,
-                format: html,
-                templateScope: "local",
-                emitOnlyNewValues: false,
-                forwardInputMessages: false,
-                storeFrontEndInputAsState: true,
-                convertBack: function (value) {
-                    return value;
-                },
-                beforeEmit: function(msg, value) {
-                    return { msg: { payload: value } };
-                },
-                beforeSend: function (msg, orig) {
-                    if (orig) {
-                        return orig.msg;
+                var html = HTML(config);
+                done = ui.addWidget({
+                    node: node,
+                    order: config.order,
+                    group: config.group,
+                    width: config.width,
+                    height: config.height,
+                    format: html,
+                    templateScope: "local",
+                    emitOnlyNewValues: false,
+                    forwardInputMessages: false,
+                    storeFrontEndInputAsState: true,
+                    convertBack: function (value) {
+                        return value;
+                    },
+                    beforeEmit: function(msg, value) {
+                        return { msg: { payload:value, socketid:msg.socketid } };
+                    },
+                    beforeSend: function (msg, orig) {
+                        if (orig) {
+                            return orig.msg;
+                        }
+                    },
+                    initController: function($scope, events) {
                     }
-                },
-                initController: function($scope, events) {
-                }
-            });
+                });
             }
         }
         catch (e) {

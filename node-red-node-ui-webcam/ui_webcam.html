@@ -1,0 +1,181 @@
+<!--
+  Copyright 2020 OpenJS Foundation
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+  http://www.apache.org/licenses/LICENSE-2.0
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+
+<script type="text/javascript">
+    RED.nodes.registerType('ui_webcam',{
+        category: 'dashboard',
+        color: 'rgb( 63, 173, 181)',
+        defaults: {
+            name: {value: ''},
+            group: {type: 'ui_group', required:true},
+            order: {value: 0},
+            width: {
+                value: 0,
+                validate: function(v) {
+                    var valid = true
+                    var width = v||0;
+                    var currentGroup = $('#node-input-group').val()|| this.group;
+                    var groupNode = RED.nodes.node(currentGroup);
+                    valid = !groupNode || +width <= +groupNode.width;
+                    $("#node-input-size").toggleClass("input-error",!valid);
+                    return valid;
+                }},
+            height: {value: 5},
+            countdown: { value: false },
+            autoStart: { value: false },
+            hideCaptureButton: { value: false },
+            showImage: { value: 2 },
+            format: { value:"png" }
+        },
+        inputs:1,
+        outputs:1,
+        icon: "font-awesome/fa-camera",
+        paletteLabel: "webcam",
+        label: function() {
+            return this.name||"webcam";
+        },
+        labelStyle: function() {
+            return this.name?"node_label_italic":"";
+        },
+        oneditprepare: function() {
+            $("#node-input-size").elementSizer({
+                width: "#node-input-width",
+                height: "#node-input-height",
+                group: "#node-input-group"
+            });
+
+            var showImage = this.showImage === undefined ? 2 : this.showImage;
+            if (showImage === 0) {
+                // Show image without clearing
+                $("#node-input-showImage-enable").attr("checked",true)
+                $("#node-input-showImage-timeout").attr("checked",false)
+                $("#node-input-showImage-time").val("2")
+            } else if (showImage === -1) {
+                // Don't show image
+                $("#node-input-showImage-enable").attr("checked",false)
+                $("#node-input-showImage-timeout").attr("checked",false)
+                $("#node-input-showImage-time").val("2")
+            } else {
+                // Show image with clear
+                $("#node-input-showImage-enable").attr("checked",true)
+                $("#node-input-showImage-timeout").attr("checked",true)
+                $("#node-input-showImage-time").val(showImage)
+            }
+
+            $("#node-input-showImage-enable").on("change", function() {
+                $("#node-input-showImage-timeout").attr("disabled",!this.checked)
+                if (!this.checked) {
+                    $(".node-row-ui-webcam-showImage-timeout").css("opacity",0.6);
+                    $("#node-input-showImage-time").attr("disabled",true)
+                } else {
+                    $("#node-input-showImage-time").attr("disabled",!$("#node-input-showImage-timeout")[0].checked)
+                    $(".node-row-ui-webcam-showImage-timeout").css("opacity",1);
+                }
+            })
+            $("#node-input-showImage-timeout").on("change", function() {
+                $("#node-input-showImage-time").attr("disabled",!this.checked)
+            })
+
+            $("#node-input-showImage-enable").trigger("change");
+        },
+        oneditsave: function() {
+            var showImageEnable = $("#node-input-showImage-enable")[0].checked;
+            var showImageTimeout = $("#node-input-showImage-timeout")[0].checked;
+            var showImageTime = $("#node-input-showImage-time").val();
+
+            if (!showImageEnable) {
+                this.showImage = -1;
+            } else if (!showImageTimeout) {
+                this.showImage = 0;
+            } else {
+                this.showImage = showImageTime;
+            }
+        }
+    });
+</script>
+
+<script type="text/html" data-template-name="ui_webcam">
+    <div class="form-row" id="template-row-group">
+        <label for="node-input-group"><i class="fa fa-table"></i> Group</span></label>
+        <input type="text" id="node-input-group">
+    </div>
+    <div class="form-row" id="template-row-size">
+        <label><i class="fa fa-object-group"></i> Size</span></label>
+        <input type="hidden" id="node-input-width">
+        <input type="hidden" id="node-input-height">
+        <button class="editor-button" id="node-input-size"></button>
+    </div>
+    <br />
+    <div class="form-row" style="min-width: 470px">
+        <label style="vertical-align: top"><i class="fa fa-cog"></i> Options</label>
+        <div style="display: inline-block; min-width: 350px; width: calc(100% - 120px);">
+            <div class="form-row">
+                <label style="width: auto" for="node-input-autoStart">
+                    <input style="width:auto; margin: 0" type="checkbox" id="node-input-autoStart"> Start webcam automatically
+                </label>
+            </div>
+            <div class="form-row">
+                <label style="width: auto" for="node-input-showImage-enable">
+                    <input style="width:auto; margin: 0" type="checkbox" id="node-input-showImage-enable"> Show image after capture
+                </label>
+                <div class="node-row-ui-webcam-showImage-timeout">
+                    <label style="margin-bottom: 0; margin-left: 20px; width: auto" for="node-input-showImage-timeout">
+                        <input style="width:auto; margin: 0" type="checkbox" id="node-input-showImage-timeout"> Clear image after <input style="width:60px; margin: 0" type="text" id="node-input-showImage-time"> seconds
+                    </label>
+                </div>
+            </div>
+            <div class="form-row">
+                <label style="width: auto" for="node-input-hideCaptureButton">
+                    <input style="width:auto; margin: 0" type="checkbox" id="node-input-hideCaptureButton"> Hide capture button
+                </label>
+            </div>
+            <div class="form-row">
+                <label style="width: auto" for="node-input-countdown">
+                    <input style="width:auto; margin: 0" type="checkbox" id="node-input-countdown"> Use 5 second countdown when triggered
+                </label>
+            </div>
+            <div class="form-row">
+                <label for="node-input-format">Image format </label>
+                <select id="node-input-format">
+                    <option value="png">png</option>
+                    <option value="jpeg">jpeg</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="form-row">
+        <label for="node-input-name"><i class="icon-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+</script>
+
+<script type="text/html" data-help-name="ui_webcam">
+    <p>A Node Red dashboard ui node to capture images from the browser's webcam.</p>
+    <h3>Inputs</h3>
+    <dl class="message-properties">
+        <dt>payload<span class="property-type">Buffer | Boolean</span></dt>
+        <dd>If set to a Buffer containing an image, it will be displayed in
+            the place of the webcam view on the dashboard. If set to <code>null</code>
+            or <code>false</code>, the displayed image will be cleared.</dd>
+        <dt>capture</dt>
+        <dd>If set, this will trigger the webcam to capture an image. The webcam must
+            have been activated on the dashboard first.</dd>
+    </dl>
+    <h3>Outputs</h3>
+    <dl class="message-properties">
+        <dt>payload<span class="property-type">Buffer</span></dt>
+        <dd>The captured image as a png or jpeg.</dd>
+    </dl>
+    <h3>Details</h3>
+    <p></p>
+</script>
