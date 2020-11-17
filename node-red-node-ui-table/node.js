@@ -200,6 +200,9 @@ module.exports = function (RED) {
                                 opts.autoColumns = false;
                             }
                             // console.log("createTabulator",opts);
+                            if($scope.table !== undefined) {
+                                $scope.table.destroy();
+                            }
                             $scope.table = new Tabulator(basediv, opts);
                         };
                         $scope.init = function (config) {
