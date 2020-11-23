@@ -22,10 +22,10 @@ module.exports = function(RED) {
         var configAsJson = JSON.stringify(config);
         var html = String.raw`<input type='hidden' ng-init='init(` + configAsJson + `)'>`;
         if (config.press && config.press === "press") {
-            html += String.raw`<md-button aria-label="capture audio" id="microphone_control_{{$id}}" class="nr-ui-microphone-button" ng-disabled="!enabled" ng-mousedown="toggleMicrophone(true)" ng-mouseup="toggleMicrophone()"><i class="fa fa-2x fa-microphone"></i></md-button>`;
+            html += String.raw`<md-button aria-label="capture audio" id="microphone_control_{{$id}}" class="nr-ui-microphone-button" style="height:100% !important;" ng-disabled="!enabled" ng-mousedown="toggleMicrophone(true)" ng-mouseup="toggleMicrophone()"><i class="fa fa-2x fa-microphone"></i></md-button>`;
         }
         else {
-            html += String.raw`<md-button aria-label="capture audio" id="microphone_control_{{$id}}" class="nr-ui-microphone-button" ng-disabled="!enabled" ng-click="toggleMicrophone()"><i class="fa fa-2x fa-microphone"></i></md-button>`;
+            html += String.raw`<md-button aria-label="capture audio" id="microphone_control_{{$id}}" class="nr-ui-microphone-button" style="height:100% !important;" ng-disabled="!enabled" ng-click="toggleMicrophone()"><i class="fa fa-2x fa-microphone"></i></md-button>`;
         }
         return html;
     }
