@@ -22,10 +22,10 @@ module.exports = function(RED) {
         var configAsJson = JSON.stringify(config);
         var html = String.raw`<input type='hidden' ng-init='init(` + configAsJson + `)'>`;
         if (config.press && config.press === "press") {
-            html += String.raw`<md-button aria-label="capture audio" id="microphone_control_{{$id}}" class="nr-ui-microphone-button" style="height:100% !important;" ng-disabled="!enabled" ng-mousedown="toggleMicrophone(true)" ng-mouseup="toggleMicrophone()"><i class="fa fa-2x fa-microphone"></i></md-button>`;
+            html += String.raw`<md-button aria-label="capture audio" id="microphone_control_{{$id}}" class="nr-ui-microphone-button" style="height:100% !important;" ng-disabled="!enabled" ng-mousedown="toggleMicrophone(true)" ng-mouseup="toggleMicrophone()"><i class="fa fa-microphone"></i></md-button>`;
         }
         else {
-            html += String.raw`<md-button aria-label="capture audio" id="microphone_control_{{$id}}" class="nr-ui-microphone-button" style="height:100% !important;" ng-disabled="!enabled" ng-click="toggleMicrophone()"><i class="fa fa-2x fa-microphone"></i></md-button>`;
+            html += String.raw`<md-button aria-label="capture audio" id="microphone_control_{{$id}}" class="nr-ui-microphone-button" style="height:100% !important;" ng-disabled="!enabled" ng-click="toggleMicrophone()"><i class="fa fa-microphone"></i></md-button>`;
         }
         return html;
     }
@@ -86,6 +86,15 @@ module.exports = function(RED) {
                         $scope.init = function (config) {
                             //console.log("ui_microphone: initialised config:",config);
                             $scope.config = config;
+                            var fac = "fa-2x"; // default
+                            if (parseInt(config.width || 0) !== 1) { // don't scale it if it;s only 1 wide
+                                fac = parseInt(config.height || 0) + 1;
+                                if (fac < 2) { fac = 2; } // 2 as the minimum... unless 1x1
+                                if (fac > 5) { fac = 5; } // Can't be larger than 5x
+                                fac = "fa-"+fac+"x";
+                            }
+                            else if (parseInt(config.width || 0) === 1) { fac = "fa-lg"; } // shrink if it's 1x1
+                            setTimeout(function() { $("#microphone_control_"+$scope.$id+" i").addClass(fac); }, 0);
                         }
 
                         $scope.enabled =  !!navigator.mediaDevices;
@@ -102,13 +111,14 @@ module.exports = function(RED) {
                         var stopTimeout;
                         var active = false;
 
-                        var button = $("#microphone_control_"+$scope.$id);
+                        //var button = $("#microphone_control_"+$scope.$id);
+
                         $scope.toggleMicrophone = function(e) {
                             if (e === true) { active = false; }
                             if (!$scope.enabled) return;
                             if (!active) {
                                 active = true;
-                                $("#microphone_control_"+$scope.$id+" i").removeClass("fa-microphone fa-2x").addClass("fa-rotate-right fa-2x fa-spin");
+                                $("#microphone_control_"+$scope.$id+" i").removeClass("fa-microphone").addClass("fa-rotate-right fa-spin");
                                 navigator.mediaDevices.getUserMedia({ audio: true, video: false }).then(handleSuccess).catch(handleError);
                             } else {
                                 if (mediaRecorder) {
@@ -116,16 +126,19 @@ module.exports = function(RED) {
                                 }
                             }
                         }
+
                         $scope.stop = function() {
                             if (active) {
                                 mediaRecorder.stop();
                             }
                         }
+
                         var handleError = function(err) {
                             console.warn("Failed to access microphone:",err);
                             active = false;
-                            $("#microphone_control_"+$scope.$id+" i").addClass("fa-microphone fa-2x").removeClass("fa-rotate-right fa-2x fa-spin");
+                            $("#microphone_control_"+$scope.$id+" i").addClass("fa-microphone").removeClass("fa-rotate-right fa-spin");
                         }
+
                         var handleSuccess = function(stream) {
                             mediaRecorder = new MediaRecorder(stream,  {mimeType: 'audio/webm'});
                             mediaRecorder.ondataavailable = function(evt) {
@@ -137,7 +150,7 @@ module.exports = function(RED) {
                             mediaRecorder.onstop = function() {
                                 if (active) {
                                     active = false;
-                                    $("#microphone_control_"+$scope.$id+" i").addClass("fa-microphone fa-2x").removeClass("fa-rotate-right fa-spin");
+                                    $("#microphone_control_"+$scope.$id+" i").addClass("fa-microphone").removeClass("fa-rotate-right fa-spin");
                                     if (stopTimeout) {
                                         clearTimeout(stopTimeout);
                                         stopTimeout = null;
