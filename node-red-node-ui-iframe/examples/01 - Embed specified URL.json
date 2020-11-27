@@ -1,0 +1,38 @@
+[
+    {
+        "id": "a56e0b80.447068",
+        "type": "ui_iframe",
+        "z": "d6719681.4aae68",
+        "group": "d6607ab5.ccd6e8",
+        "name": "",
+        "order": 0,
+        "width": "20",
+        "height": "13",
+        "url": "https://nodered.org/",
+        "origin": "*",
+        "x": 310,
+        "y": 120,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "d6607ab5.ccd6e8",
+        "type": "ui_group",
+        "z": "",
+        "name": "IFrame00",
+        "tab": "eddb36be.1cf578",
+        "disp": true,
+        "width": "20",
+        "collapse": false
+    },
+    {
+        "id": "eddb36be.1cf578",
+        "type": "ui_tab",
+        "z": "",
+        "name": "IFrame00",
+        "icon": "dashboard",
+        "disabled": false,
+        "hidden": false
+    }
+]

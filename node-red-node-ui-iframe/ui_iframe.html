@@ -1,0 +1,91 @@
+<!--
+  Copyright JS Foundation and other contributors, http://js.foundation
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+
+<script type="text/x-red" data-template-name="ui_iframe">
+    <div class="form-row" id="template-row-group">
+        <label for="node-input-group"><i class="fa fa-table"></i> <span data-i18n="ui_iframe.label.group"></span></label>
+        <input type="text" id="node-input-group">
+    </div>
+    <div class="form-row" id="template-row-size">
+        <label><i class="fa fa-object-group"></i> <span data-i18n="ui_iframe.label.size"></span></label>
+        <input type="hidden" id="node-input-width">
+        <input type="hidden" id="node-input-height">
+        <button class="editor-button" id="node-input-size"></button>
+    </div>
+    <div class="form-row">
+        <label for="node-input-url"><i class="fa fa-external-link"></i> <span data-i18n="ui_iframe.label.url"></span></label>
+        <input type="text" id="node-input-url">
+    </div>
+    <div class="form-row">
+        <label for="node-input-origin"><i class="fa fa-external-link"></i> <span data-i18n="ui_iframe.label.origin"></span></label>
+        <input type="text" id="node-input-origin">
+    </div>
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> <span data-i18n="ui_iframe.label.name"></span></label>
+        <input type="text" id="node-input-name">
+    </div>
+</script>
+
+<script type="text/javascript">
+    function mk_conf(NAME) {
+
+        var ICON = "icon.png";
+
+        var conf = {
+            category: 'dashboard',
+            color: 'rgb( 63, 173, 181)',
+            defaults: {
+                group: {type: 'ui_group', required:true},
+                name: {value: ''},
+                order: {value: 0},
+                width: {
+                    value: 0,
+                    validate: function(v) {
+                        var valid = true
+                        var width = v||0;
+                        var currentGroup = $('#node-input-group').val()|| this.group;
+                        var groupNode = RED.nodes.node(currentGroup);
+                        valid = !groupNode || +width <= +groupNode.width;
+                        $("#node-input-size").toggleClass("input-error",!valid);
+                        return valid;
+                    }},
+                height: {value: 0},
+                url: {valuie: ""},
+                origin: {value: "*"}
+            },
+            inputs:1,
+            outputs:1,
+            icon: ICON,
+            align: "right",
+            paletteLabel: NAME,
+            label: function() { return this.name || NAME; },
+            oneditprepare: function() {
+                $("#node-input-size").elementSizer({
+                    width: "#node-input-width",
+                    height: "#node-input-height",
+                    group: "#node-input-group"
+                });
+            },
+            oneditsave: function() {
+            },
+            oneditresize: function(size) {
+            }
+        };
+        return conf;
+    };
+
+    RED.nodes.registerType("ui_iframe", mk_conf("iframe"));
+</script>

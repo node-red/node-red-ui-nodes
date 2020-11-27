@@ -1,0 +1,10 @@
+{
+    "ui_iframe" : {
+        "label" : {
+            "group" : "グループ",
+            "size" : "サイズ",
+            "name" : "名前",
+            "origin": "オリジン"
+        }
+    }
+}

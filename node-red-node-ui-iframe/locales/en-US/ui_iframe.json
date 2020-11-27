@@ -1,0 +1,11 @@
+{
+    "ui_iframe" : {
+        "label" : {
+            "group" : "Group",
+            "size" : "Size",
+            "name" : "Name",
+            "url" : "URL",
+            "origin": "Origin"
+        }
+    }
+}
