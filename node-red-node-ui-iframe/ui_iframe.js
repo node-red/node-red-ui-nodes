@@ -23,9 +23,12 @@ module.exports = function(RED) {
         var allow = "autoplay";
         var origin = config.origin ? config.origin : "*";
         var html = String.raw`
-<div style="width:98%; height:98%; display:inline-block; margin:0,auto;">
-    <iframe id="${id}" src="${url}" allow="${allow}" style="width:100%; height:100%;">
-      Failed to load Web page
+<style>
+.nr-dashboard-ui_iframe { padding:0 !important; }
+</style>
+<div style="width:100%; height:100%; display:inline-block;">
+    <iframe id="${id}" src="${url}" allow="${allow}" style="width:100%; height:100%; overflow:hidden; border:0">
+        Failed to load Web page
     </iframe>
 </div>
 <script>
@@ -53,13 +56,13 @@ module.exports = function(RED) {
 </script>
 `;
         return html;
-    };
+    }
 
     var ui = undefined;
     function IFrameNode(config) {
         try {
             var node = this;
-            if(ui === undefined) {
+            if (ui === undefined) {
                 ui = RED.require("node-red-dashboard")(RED);
             }
             RED.nodes.createNode(this, config);
