@@ -80,15 +80,7 @@ module.exports = function(RED) {
                     return value;
                 },
                 beforeEmit: function(msg, value) {
-                    var obj = {
-                        payload: value
-                    };
-                    if (msg.url) {
-                        obj.url = msg.url;
-                    }
-                    return {
-                        msg: obj
-                    };
+                    return { msg:msg };
                 },
                 beforeSend: function (msg, orig) {
                     if (orig) {
