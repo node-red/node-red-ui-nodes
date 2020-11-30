@@ -1,0 +1,35 @@
+{
+    "name": "node-red-node-ui-iframe",
+    "version": "0.1.0",
+    "description": "Node-RED UI widget node for embedding web page",
+    "author": "Hiroyasu Nishiyama",
+    "contributors": [
+    ],
+    "license": "Apache-2.0",
+    "main": "ui_iframe.js",
+    "node-red": {
+        "nodes": {
+            "ui_iframe": "ui_iframe.js"
+        }
+    },
+    "peerDependencies": {
+        "node-red-dashboard": ">2.15.0"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/node-red/node-red-ui-nodes.git"
+    },
+    "bugs": {
+      "url": "https://github.com/node-red/node-red-ui-nodes/issues"
+    },
+    "homepage": "https://github.com/node-red/node-red-ui-nodes/blob/master/node-red-node-ui-iframe/README.md",
+    "keywords": [
+        "node-red",
+        "node-red-dashboard",
+        "dashboard",
+        "iframe",
+        "Web Messaging API"
+    ],
+    "dependencies": {
+    }
+}

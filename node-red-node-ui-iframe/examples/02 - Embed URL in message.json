@@ -1,0 +1,143 @@
+[
+    {
+        "id": "8b8f9d03.316b9",
+        "type": "ui_button",
+        "z": "d6719681.4aae68",
+        "name": "",
+        "group": "4288cd38.5e0304",
+        "order": 1,
+        "width": "2",
+        "height": "1",
+        "passthru": false,
+        "label": "Blog",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "icon": "",
+        "payload": "https://nodered.org/blog/",
+        "payloadType": "str",
+        "topic": "",
+        "x": 150,
+        "y": 240,
+        "wires": [
+            [
+                "abaf7c31.0b001"
+            ]
+        ]
+    },
+    {
+        "id": "b304e0cf.5dc75",
+        "type": "ui_button",
+        "z": "d6719681.4aae68",
+        "name": "",
+        "group": "4288cd38.5e0304",
+        "order": 2,
+        "width": "2",
+        "height": "1",
+        "passthru": false,
+        "label": "Docs",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "icon": "",
+        "payload": "https://nodered.org/docs/",
+        "payloadType": "str",
+        "topic": "",
+        "x": 150,
+        "y": 300,
+        "wires": [
+            [
+                "abaf7c31.0b001"
+            ]
+        ]
+    },
+    {
+        "id": "2101dcca.d631f4",
+        "type": "ui_iframe",
+        "z": "d6719681.4aae68",
+        "group": "4288cd38.5e0304",
+        "name": "",
+        "order": 4,
+        "width": "20",
+        "height": "13",
+        "url": "",
+        "origin": "*",
+        "x": 490,
+        "y": 240,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "53cc8788.e59c18",
+        "type": "ui_button",
+        "z": "d6719681.4aae68",
+        "name": "",
+        "group": "4288cd38.5e0304",
+        "order": 3,
+        "width": "2",
+        "height": "1",
+        "passthru": false,
+        "label": "Flows",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "icon": "",
+        "payload": "https://flows.nodered.org/",
+        "payloadType": "str",
+        "topic": "",
+        "x": 150,
+        "y": 360,
+        "wires": [
+            [
+                "abaf7c31.0b001"
+            ]
+        ]
+    },
+    {
+        "id": "abaf7c31.0b001",
+        "type": "change",
+        "z": "d6719681.4aae68",
+        "name": "set URL",
+        "rules": [
+            {
+                "t": "set",
+                "p": "url",
+                "pt": "msg",
+                "to": "payload",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 320,
+        "y": 240,
+        "wires": [
+            [
+                "2101dcca.d631f4"
+            ]
+        ]
+    },
+    {
+        "id": "4288cd38.5e0304",
+        "type": "ui_group",
+        "z": "",
+        "name": "IFrame01",
+        "tab": "2d9c4ef6.b97082",
+        "disp": true,
+        "width": "20",
+        "collapse": false
+    },
+    {
+        "id": "2d9c4ef6.b97082",
+        "type": "ui_tab",
+        "z": "",
+        "name": "IFrame01",
+        "icon": "dashboard",
+        "disabled": false,
+        "hidden": false
+    }
+]

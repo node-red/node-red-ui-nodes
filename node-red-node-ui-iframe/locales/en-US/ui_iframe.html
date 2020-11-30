@@ -1,0 +1,25 @@
+<script type="text/x-red" data-help-name="ui_iframe">
+    <p>Node-RED widget node for embedding a Web page</p>
+
+    <h3>Inputs</h3>
+    <dl class="message-properties">
+        <dt>payload<span class="property-type">object</span></dt>
+        <dd>Data sent to embedded Web page using Web messaging API</dd>
+    </dl>
+    <dl class="message-properties">
+        <dt>url<span class="property-type">object</span></dt>
+        <dd>URL of target Web page</dd>
+    </dl>
+    
+    <h3>Outputs</h3>
+    <dl class="message-properties">
+        <dt>payload<span class="property-type">object</span></dt>
+        <dd>Received data from embedded Web page using Web messaging API</dd>
+    </dl>
+
+    <h3>Details</h3>
+    <p>UI widget for embedding a Web page using IFrame.</p>
+    <p>URL setting item or <code>url</code> property of an input message specifies the URL of embedded web page on Node-RED dashboard</p>
+    <p>Origin setting item specifies origin of message for sending
+  message.  Default value of the origin is '<code>*</code>' (no limitation).。</p>
+</script>
