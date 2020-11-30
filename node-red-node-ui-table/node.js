@@ -62,6 +62,7 @@ module.exports = function (RED) {
         var configAsJson = JSON.stringify(config);
         var mid = (dark) ? "_midnight" : "";
         var html = String.raw`
+                <style>.nr-dashboard-ui_table { padding:0; }</style>
                 <link href='ui-table/css/tabulator`+mid+`.min.css' rel='stylesheet' type='text/css'>
                 <script type='text/javascript' src='ui-table/js/tabulator.js'></script>
                 <div id='ui_table-{{$id}}' style="background-color:unset; border:unset;"></div>
