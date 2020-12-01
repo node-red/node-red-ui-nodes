@@ -18,7 +18,7 @@ module.exports = function(RED) {
     var count = 0;
     function HTML(config) {
         count++;
-        var id = "if"+count;
+        var id = "nr-db-if"+count;
         var url = config.url ? config.url : "";
         var allow = "autoplay";
         var origin = config.origin ? config.origin : "*";
@@ -83,9 +83,7 @@ module.exports = function(RED) {
                     return { msg:msg };
                 },
                 beforeSend: function (msg, orig) {
-                    if (orig) {
-                        return orig.msg;
-                    }
+                    if (orig) { return orig.msg; }
                 },
                 initController: function($scope, events) {
                 }

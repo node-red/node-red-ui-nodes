@@ -26,8 +26,8 @@ menu or `url` property of an input message.
 
 `payload` property of input message specifies a data sent to the
 embedded page using Web messaging API.  If a data from the embedded
-Web page is received via Web messaging API, it is outputted as
-`payload` value  of outgoing message.
+Web page is received via Web messaging API, it is output as the
+`payload` value the of outgoing message.
 
 Example
 -------
