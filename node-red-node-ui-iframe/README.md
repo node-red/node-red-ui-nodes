@@ -22,7 +22,7 @@ The `ui-iframe` node is a UI widget that can be used to embed an external Web pa
 
 The URL of a web page to embed can be specified in the settings menu or by the `url` property of an input message.
 
-The `payload` property of the input message specifies data to send to the embedded page using the Web messaging API (postMessage). This allows commands to be sent to the embedded page. This is not supported by all browsers (like IE). If data from the embedded web page is received via the Web messaging API, it is output as the `payload` value the of the outgoing message.
+The `payload` property of the input message specifies data to send to the embedded page using the Web messaging API (postMessage). This allows commands to be sent to the embedded page. If data from the embedded web page is received via the Web messaging API, it is output as the `payload` value the of the outgoing message.
 
 Example
 -------
