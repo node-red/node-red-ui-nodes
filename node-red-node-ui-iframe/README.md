@@ -18,16 +18,11 @@ run the following command in your Node-RED user directory - typically `~/.node-r
 Usage
 -----
 
-`ui-iframe` node is a UI widget that can be used to embed an external
-Web page in a Node-RED dashboard.
+The `ui-iframe` node is a UI widget that can be used to embed an external Web page in a Node-RED dashboard.
 
-The URL of embedded Web page can be specified by URL item of settings
-menu or `url` property of an input message.
+The URL of a web page to embed can be specified in the settings menu or by the `url` property of an input message.
 
-`payload` property of input message specifies a data sent to the
-embedded page using Web messaging API.  If a data from the embedded
-Web page is received via Web messaging API, it is output as the
-`payload` value the of outgoing message.
+The `payload` property of the input message specifies data to send to the embedded page using the Web messaging API (postMessage). This allows commands to be sent to the embedded page. This is not supported by all browsers (like IE). If data from the embedded web page is received via the Web messaging API, it is output as the `payload` value the of the outgoing message.
 
 Example
 -------
