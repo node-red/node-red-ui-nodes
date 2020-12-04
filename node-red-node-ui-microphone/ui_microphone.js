@@ -20,7 +20,7 @@ const path = require('path');
 module.exports = function(RED) {
     function HTML(config) {
         var configAsJson = JSON.stringify(config);
-        var html = String.raw`<input type='hidden' ng-init='init(` + configAsJson + `)'>`;
+        var html = String.raw`<style>.nr-dashboard-ui_microphone{padding:0;}</style><input type='hidden' ng-init='init(` + configAsJson + `)'>`;
         if (config.press && config.press === "press") {
             html += String.raw`<md-button aria-label="capture audio" id="microphone_control_{{$id}}" class="nr-ui-microphone-button" style="height:100% !important;" ng-disabled="!enabled" ng-mousedown="toggleMicrophone(true)" ng-mouseup="toggleMicrophone()"><i class="fa fa-microphone"></i></md-button>`;
         }
