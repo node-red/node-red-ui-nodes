@@ -23,6 +23,9 @@ module.exports = function(RED) {
         var configAsJson = JSON.stringify(config);
         var html = String.raw`
 <style>
+    .nr-dashboard-ui_webcam {
+        padding:0;
+    }
     .ui-webcam {
         position: relative;
     }
