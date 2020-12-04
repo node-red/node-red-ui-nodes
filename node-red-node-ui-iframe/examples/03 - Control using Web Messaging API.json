@@ -1,25 +1,8 @@
 [
     {
-        "id": "15efa5a.0fab85a",
-        "type": "ui_iframe",
-        "z": "d6719681.4aae68",
-        "group": "6cf5d89f.dd2348",
-        "name": "",
-        "order": 2,
-        "width": "10",
-        "height": "6",
-        "url": "https://www.youtube.com/embed/rnM5sfb2qoY?enablejsapi=1",
-        "origin": "*",
-        "x": 570,
-        "y": 480,
-        "wires": [
-            []
-        ]
-    },
-    {
         "id": "c795ad22.d738a",
         "type": "change",
-        "z": "d6719681.4aae68",
+        "z": "2f068a9b.c29d36",
         "name": "set YouTube command",
         "rules": [
             {
@@ -36,17 +19,17 @@
         "to": "",
         "reg": false,
         "x": 380,
-        "y": 480,
+        "y": 600,
         "wires": [
             [
-                "15efa5a.0fab85a"
+                "620fe37a.a0eb1c"
             ]
         ]
     },
     {
         "id": "67f31c42.9f6da4",
         "type": "ui_button",
-        "z": "d6719681.4aae68",
+        "z": "2f068a9b.c29d36",
         "name": "",
         "group": "6cf5d89f.dd2348",
         "order": 1,
@@ -62,7 +45,7 @@
         "payloadType": "str",
         "topic": "",
         "x": 150,
-        "y": 480,
+        "y": 600,
         "wires": [
             [
                 "c795ad22.d738a"
@@ -72,7 +55,7 @@
     {
         "id": "6f0dad3b.63db94",
         "type": "ui_button",
-        "z": "d6719681.4aae68",
+        "z": "2f068a9b.c29d36",
         "name": "",
         "group": "6cf5d89f.dd2348",
         "order": 3,
@@ -88,7 +71,7 @@
         "payloadType": "str",
         "topic": "",
         "x": 150,
-        "y": 540,
+        "y": 640,
         "wires": [
             [
                 "c795ad22.d738a"
@@ -98,7 +81,7 @@
     {
         "id": "bf3fc36f.c3ad2",
         "type": "ui_button",
-        "z": "d6719681.4aae68",
+        "z": "2f068a9b.c29d36",
         "name": "",
         "group": "6cf5d89f.dd2348",
         "order": 4,
@@ -114,7 +97,7 @@
         "payloadType": "str",
         "topic": "",
         "x": 150,
-        "y": 600,
+        "y": 680,
         "wires": [
             [
                 "c795ad22.d738a"
@@ -122,10 +105,78 @@
         ]
     },
     {
+        "id": "4aebd5b8.70976c",
+        "type": "ui_button",
+        "z": "2f068a9b.c29d36",
+        "name": "",
+        "group": "6cf5d89f.dd2348",
+        "order": 4,
+        "width": "2",
+        "height": "1",
+        "passthru": false,
+        "label": "Next",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "icon": "fa-fast-forward",
+        "payload": "nextVideo",
+        "payloadType": "str",
+        "topic": "",
+        "x": 150,
+        "y": 720,
+        "wires": [
+            [
+                "c795ad22.d738a"
+            ]
+        ]
+    },
+    {
+        "id": "bd72c2f1.42a0c",
+        "type": "ui_button",
+        "z": "2f068a9b.c29d36",
+        "name": "",
+        "group": "6cf5d89f.dd2348",
+        "order": 4,
+        "width": "2",
+        "height": "1",
+        "passthru": false,
+        "label": "Prev",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "icon": "fa-fast-backward",
+        "payload": "previousVideo",
+        "payloadType": "str",
+        "topic": "",
+        "x": 150,
+        "y": 760,
+        "wires": [
+            [
+                "c795ad22.d738a"
+            ]
+        ]
+    },
+    {
+        "id": "620fe37a.a0eb1c",
+        "type": "ui_iframe",
+        "z": "2f068a9b.c29d36",
+        "group": "6cf5d89f.dd2348",
+        "name": "",
+        "order": 2,
+        "width": "10",
+        "height": "6",
+        "url": "https://www.youtube.com/embed/videoseries?list=PLyNBB9VCLmo1hyO-4fIZ08gqFcXBkHy-6&enablejsapi=1",
+        "origin": "*",
+        "x": 590,
+        "y": 600,
+        "wires": [
+            []
+        ]
+    },
+    {
         "id": "6cf5d89f.dd2348",
         "type": "ui_group",
-        "z": "",
-        "name": "IFrame02",
+        "name": "Node-RED Essentials",
         "tab": "afdd7167.c773",
         "order": 1,
         "disp": true,
@@ -135,7 +186,6 @@
     {
         "id": "afdd7167.c773",
         "type": "ui_tab",
-        "z": "",
         "name": "IFrame02",
         "icon": "dashboard",
         "order": 3,
