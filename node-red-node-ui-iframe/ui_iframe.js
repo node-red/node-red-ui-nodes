@@ -25,7 +25,7 @@ module.exports = function(RED) {
         var html = String.raw`
 <style>.nr-dashboard-ui_iframe { padding:0; }</style>
 <div style="width:100%; height:100%; display:inline-block;">
-    <iframe id="${id}" src="${url}" allow="${allow}" style="width:100%; height:100%; overflow:hidden; border:0">
+    <iframe id="${id}" src="${url}" allow="${allow}" style="width:100%; height:100%; overflow:hidden; border:0; display:block">
         Failed to load Web page
     </iframe>
 </div>

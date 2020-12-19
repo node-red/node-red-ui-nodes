@@ -1,6 +1,6 @@
 {
     "name": "node-red-node-ui-iframe",
-    "version": "0.1.1",
+    "version": "0.1.2",
     "description": "Node-RED UI widget node for embedding web page",
     "author": "Hiroyasu Nishiyama",
     "contributors": [
