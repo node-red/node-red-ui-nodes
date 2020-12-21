@@ -33,7 +33,8 @@
             height: {value: 0},
             maxLength: { value: 5 },
             timeslice: { value: 0 },
-            press : { value: "click" }
+            press : { value: "click" },
+            mode: { value: "audio" }
         },
         inputs:0,
         outputs:1,
@@ -46,6 +47,26 @@
             return this.name?"node_label_italic":"";
         },
         oneditprepare: function() {
+            var speechRec = null;
+            try {
+                speechRec = webkitSpeechRecognition || SpeechRecognition;
+            }
+            catch (e) {
+            }
+            if (!speechRec) {
+                $("#div-mode").hide();
+            }
+            else {
+                $("#node-input-mode").change(function (e) {
+                    var mode = $("#node-input-mode").val();
+                    if (mode === "recog") {
+                        $("#div-audio").hide();
+                    }
+                    else {
+                        $("#div-audio").show();
+                    }
+                });
+            }
             if (this.press === undefined) {
                 $("#node-input-press").val("click");
             }
@@ -92,45 +113,37 @@
 
 <script type="text/html" data-template-name="ui_microphone">
     <div class="form-row" id="template-row-group">
-        <label for="node-input-group"><i class="fa fa-table"></i> Group</span></label>
+        <label for="node-input-group"><i class="fa fa-table"></i> <span data-i18n="ui_microphone.label.group"></span></label>
         <input type="text" id="node-input-group">
     </div>
     <div class="form-row" id="template-row-size">
-        <label><i class="fa fa-object-group"></i> Size</span></label>
+        <label><i class="fa fa-object-group"></i> <span data-i18n="ui_microphone.label.size"></span></label>
         <input type="hidden" id="node-input-width">
         <input type="hidden" id="node-input-height">
         <button class="editor-button" id="node-input-size"></button>
     </div>
-    <div class="form-row" style="min-width:470px">
-        <label><i class="fa fa-cog"></i> Record</label>
-        <select type="text" id="node-input-press" style="width:70%;">
-            <option value="click">Click to start, click to stop</option>
-            <option value="press">Press to start, release to stop</option>
+    <div class="form-row" id="div-mode">
+        <label><i class="fa fa-microphone"></i> <span data-i18n="ui_microphone.label.mode"></span></label>
+        <select type="text" id="node-input-mode" style="width:70%;">
+            <option value="audio" data-i18n="ui_microphone.mode.audio"></option>
+            <option value="recog" data-i18n="ui_microphone.mode.recog"></option>
         </select>
     </div>
-    <div class="form-row" id="node-rec-max-length">
-        <label></labeL>
-        Maximum length of recording: <input style="width:50px" type="text" id="node-input-maxLength"> seconds
+    <div id="div-audio">
+        <div class="form-row" style="min-width:470px">
+            <label><i class="fa fa-cog"></i> <span data-i18n="ui_microphone.label.record"></span></label>
+            <select type="text" id="node-input-press" style="width:70%;">
+                <option value="click" data-i18n="ui_microphone.record.click"></option>
+                <option value="press" data-i18n="ui_microphone.record.press"></option>
+            </select>
+        </div>
+        <div class="form-row" id="node-rec-max-length">
+            <label></labeL>
+            <span data-i18n="ui_microphone.record.max-len"></span>: <input style="width:50px" type="text" id="node-input-maxLength"> <span data-i18n="ui_microphone.record.sec"></span>
+       </div>
     </div>
     <div class="form-row">
-        <label for="node-input-name"><i class="icon-tag"></i> Name</label>
-        <input type="text" id="node-input-name" placeholder="Name">
+        <label for="node-input-name"><i class="icon-tag"></i> <span data-i18n="ui_microphone.label.name"></span></label>
+        <input type="text" id="node-input-name" data-i18n="[placeholder]ui_microphone.label.name">
     </div>
-</script>
-
-<script type="text/html" data-help-name="ui_microphone">
-    <p>A Node Red dashboard ui node to capture audio from the brower's microphone.</p>
-    <h3>Outputs</h3>
-    <dl class="message-properties">
-        <dt>payload<span class="property-type">Buffer</span></dt>
-        <dd>The captured audio in the required format.</dd>
-    </dl>
-    <h3>Details</h3>
-    <p>This node provides a single button widget in the dashboard.
-    The audio is captured in WAV format and published by the node as a Buffer object.</p>
-    <p>The button can be configured in two modes. Either click begin to capture audio, and then
-    continue to capture audio until the button is pressed again, or it reaches its configured
-    maximum duration. Or the button can be configured to record only while the button is pressed.</p>
-    <p></p>
-    <p></p>
 </script>

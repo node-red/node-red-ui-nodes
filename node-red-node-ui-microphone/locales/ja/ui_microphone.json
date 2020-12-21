@@ -1,0 +1,21 @@
+{
+    "ui_microphone" : {
+        "label" : {
+            "group" : "グループ",
+            "size" : "サイズ",
+            "name" : "名前",
+            "record" : "録音",
+            "mode": "モード"
+        },
+        "record" : {
+            "click": "クリックで開始・終了",
+            "press": "プレスで開始、リリースで終了",
+            "max-len": "録音最大長",
+            "sec": "秒"
+        },
+        "mode": {
+            "audio": "オーディオ入力",
+            "recog": "音声認識"
+        }
+    }
+}
