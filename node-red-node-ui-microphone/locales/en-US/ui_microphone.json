@@ -1,0 +1,21 @@
+{
+    "ui_microphone" : {
+        "label" : {
+            "group" : "Group",
+            "size" : "Size",
+            "name" : "Name",
+            "record" : "Record",
+            "mode": "Mode"
+        },
+        "record" : {
+            "click": "Click to start, click to stop",
+            "press": "Press to start, release to stop",
+            "max-len": "Maximum length of recording",
+            "sec": "seconds"
+        },
+        "mode": {
+            "audio": "Audio Input",
+            "recog": "Speech Recognition"
+        }
+    }
+}
