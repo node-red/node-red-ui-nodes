@@ -51,3 +51,7 @@ has given their permission.
 ## Notices
 
 This node uses `recorderWorker.js` Copyright © 2013 Matt Diamond, under the MIT License
+
+## Example
+
+See examples under Node-RED editor menu of *Import/Examples/node-red-node-ui-microphone*.

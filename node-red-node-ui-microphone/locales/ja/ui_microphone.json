@@ -5,13 +5,18 @@
             "size" : "サイズ",
             "name" : "名前",
             "record" : "録音",
-            "mode": "モード"
+            "recog": "認識",
+            "mode": "モード",
+            "interm": "中間結果"
         },
         "record" : {
             "click": "クリックで開始・終了",
             "press": "プレスで開始、リリースで終了",
             "max-len": "録音最大長",
             "sec": "秒"
+        },
+        "recog": {
+            "max-len": "認識最大長"
         },
         "mode": {
             "audio": "オーディオ入力",
