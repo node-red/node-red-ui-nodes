@@ -21,7 +21,7 @@ module.exports = function(RED) {
     function HTML(config) {
         var configAsJson = JSON.stringify(config);
         var html = String.raw`<style>.nr-dashboard-ui_microphone{padding:0;}</style><input type='hidden' ng-init='init(` + configAsJson + `)'>`;
-        if ((config.press && config.press === "press") && (config.mode !== "recog")){
+        if (config.press && config.press === "press"){
             html += String.raw`<md-button aria-label="capture audio" id="microphone_control_{{$id}}" class="nr-ui-microphone-button" style="height:100% !important;" ng-disabled="!enabled" ng-mousedown="toggleMicrophone(true)" ng-mouseup="toggleMicrophone()"><i class="fa fa-microphone"></i></md-button>`;
         }
         else {
@@ -149,6 +149,8 @@ module.exports = function(RED) {
                                 else {
                                     if (speechRecognition) {
                                         speechRecognition.stop();
+                                        active = false;
+                                        $("#microphone_control_"+$scope.$id+" i").addClass("fa-microphone").removeClass("fa-rotate-right fa-spin");
                                     }
                                 }
                             }
@@ -162,6 +164,8 @@ module.exports = function(RED) {
                                 else {
                                     if (speechRecognition) {
                                         speechRecognition.stop();
+                                        active = false;
+                                        $("#microphone_control_"+$scope.$id+" i").addClass("fa-microphone").removeClass("fa-rotate-right fa-spin");
                                     }
                                 }
                             }
@@ -217,17 +221,29 @@ module.exports = function(RED) {
                             }
                             else { // !isAudio
                                 var sr = webkitSpeechRecognition || SpeechRecognition;
+                                var interim = ($scope.config && $scope.config.interimResults);
+
                                 speechRecognition = new sr();
                                 speechRecognition.continuous = true;
-                                speechRecognition.interimResults = false;
+                                speechRecognition.interimResults = interim;
                                 speechRecognition.maxAlternatives = 1;
 
                                 speechRecognition.onresult = function (e) {
                                     var res = e.results;
                                     var len = res.length;
                                     if (len > 0) {
-                                        var text = res[len-1][0].transcript;
-                                        $scope.send({payload: text});
+                                        var r = res[len -1];
+                                        var text = r[0].transcript;
+                                        if (interim) {
+                                            var msg = {payload: text};
+                                            $scope.send([
+                                                (r.isFinal ? msg : null),
+                                                msg
+                                            ]);
+                                        }
+                                        else if (r.isFinal) {
+                                            $scope.send({payload: text});
+                                        }
                                     }
                                 };
 
@@ -243,6 +259,15 @@ module.exports = function(RED) {
                                 };
 
                                 speechRecognition.start();
+                                if ($scope.config && ($scope.config.maxRecogLength > 0) && ($scope.config.press !== "press")) {
+                                    stopTimeout = setTimeout(function() {
+                                        if (active) {
+                                            speechRecognition.stop();
+                                        }
+                                    }, $scope.config.maxRecogLength*1000)
+                                } else if (!$scope.config) {
+                                    console.warn("Microphone node not initialised with user configuration. Using defaults");
+                                }
                             }
                         };
 

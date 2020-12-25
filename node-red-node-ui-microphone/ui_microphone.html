@@ -32,9 +32,12 @@
                 }},
             height: {value: 0},
             maxLength: { value: 5 },
+            maxRecogLength: { value: 0 },
             timeslice: { value: 0 },
             press : { value: "click" },
-            mode: { value: "audio" }
+            mode: { value: "audio" },
+            interimResults: { value: false },
+            outputs: { value: 1 }
         },
         inputs:0,
         outputs:1,
@@ -48,6 +51,9 @@
         },
         oneditprepare: function() {
             var speechRec = null;
+            if (this.mode === undefined) {
+                $("#node-input-mode").val("audio");
+            }
             try {
                 speechRec = webkitSpeechRecognition || SpeechRecognition;
             }
@@ -56,32 +62,49 @@
             if (!speechRec) {
                 $("#div-mode").hide();
             }
-            else {
-                $("#node-input-mode").change(function (e) {
-                    var mode = $("#node-input-mode").val();
-                    if (mode === "recog") {
-                        $("#div-audio").hide();
-                    }
-                    else {
-                        $("#div-audio").show();
-                    }
-                });
-            }
+            $("#node-input-mode").change(function() {
+                var mode = $("#node-input-mode").val();
+                var label0 = null;
+                if (mode === "recog") {
+                    label0 = RED._("node-red-node-ui-microphone/ui_microphone:ui_microphone.label.recog");
+                    $("#div-audio").hide();
+                    $("#div-recog").show();
+                }
+                else {
+                    label0 = RED._("node-red-node-ui-microphone/ui_microphone:ui_microphone.label.record");
+                    $("#div-audio").show();
+                    $("#div-recog").hide();
+                }
+                $("#record-label").text(label0);
+            });
+            $("#node-input-mode").change();
             if (this.press === undefined) {
                 $("#node-input-press").val("click");
             }
             $("#node-input-press").change( function() {
                 if ($("#node-input-press").val() === "press") {
                     $("#node-rec-max-length").hide();
+                    $("#node-recog-max-length").hide();
                 }
                 else {
                     $("#node-rec-max-length").show();
+                    $("#node-recog-max-length").show();
                 }
             });
             $("#node-input-size").elementSizer({
                 width: "#node-input-width",
                 height: "#node-input-height",
                 group: "#node-input-group"
+            });
+
+            $("#node-input-interimResults").prop("checked", (this.outputs === 2));
+            $("#node-input-interimResults").change(function () {
+                if ($(this).prop("checked")) {
+                    $("#node-input-outputs").val(2);
+                }
+                else {
+                    $("#node-input-outputs").val(1);
+                }
             });
 
             // $("#node-input-select-timeslice").on("change", function() {
@@ -129,21 +152,33 @@
             <option value="recog" data-i18n="ui_microphone.mode.recog"></option>
         </select>
     </div>
+    <div class="form-row" style="min-width:470px">
+        <label><i class="fa fa-cog"></i> <span id="record-label"</span></label>
+        <select type="text" id="node-input-press" style="width:70%;">
+            <option value="click" data-i18n="ui_microphone.record.click"></option>
+            <option value="press" data-i18n="ui_microphone.record.press"></option>
+        </select>
+    </div>
     <div id="div-audio">
-        <div class="form-row" style="min-width:470px">
-            <label><i class="fa fa-cog"></i> <span data-i18n="ui_microphone.label.record"></span></label>
-            <select type="text" id="node-input-press" style="width:70%;">
-                <option value="click" data-i18n="ui_microphone.record.click"></option>
-                <option value="press" data-i18n="ui_microphone.record.press"></option>
-            </select>
-        </div>
         <div class="form-row" id="node-rec-max-length">
             <label></labeL>
             <span data-i18n="ui_microphone.record.max-len"></span>: <input style="width:50px" type="text" id="node-input-maxLength"> <span data-i18n="ui_microphone.record.sec"></span>
-       </div>
+        </div>
+    </div>
+    <div id="div-recog">
+        <div class="form-row" id="node-recog-max-length">
+            <label></labeL>
+            <span data-i18n="ui_microphone.recog.max-len"></span>: <input style="width:50px" type="text" id="node-input-maxRecogLength"> <span data-i18n="ui_microphone.record.sec"></span>
+        </div>
+        <div class="form-row">
+            <label>&nbsp;</label>
+            <input type="checkbox" id="node-input-interimResults" style="display: inline-block; width: auto; vertical-align: top;">
+            <label for="node-input-interimResults" style="width: 70%;"><span data-i18n="ui_microphone.label.interm"></span></label>
+        </div>
     </div>
     <div class="form-row">
         <label for="node-input-name"><i class="icon-tag"></i> <span data-i18n="ui_microphone.label.name"></span></label>
         <input type="text" id="node-input-name" data-i18n="[placeholder]ui_microphone.label.name">
+        <input type="hidden" id="node-input-outputs" value="1">
     </div>
 </script>

@@ -14,20 +14,21 @@
         <dt>Audio Input mode</dt>
         <dd>
             <p>The audio is captured in WAV format and published by the node as a Buffer object.</p>
-            <p>The button can be configured in two modes. Either click begin to capture audio, and then
-    continue to capture audio until the button is pressed again, or it reaches its configured
-    maximum duration. Or the button can be configured to record only while the button is pressed.</p>
         </dd>
         <dt>Speech Recognition mode</dt>
         <dd>
             <p>Speech recognition is performed and the recognized text
             is sent as payload value.<p>
-            <p>Recognition starts on button click and stops on next
-            click or completion of recognition.<p>
+            <p>If <b>Interim Results</b> is checked, interim
+            recognition results are send to second output port.</p>
             <p>Note: This mode needs internet access for operation and
             only works on browser that supports SpeechRecognition
-            feature of Web Speech API (e.g. Chrome).</p>
+            feature of Web Speech API (e.g. Chrome).  Mode selector is
+            not shown if SpeechRecognition feature is not supported. </p>
         </dd>
     </dl>
+    <p>The button can be configured in two modes. Either click begin
+    to capture audio/recognize speech, and then
+    continue to capture audio/recognize text until the button is pressed again, or it reaches its configured maximum duration. Or the button can be configured to record/recognize only while the button is pressed.</p>
     <p></p>
 </script>
