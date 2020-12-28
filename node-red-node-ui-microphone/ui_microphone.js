@@ -21,7 +21,7 @@ module.exports = function(RED) {
     function HTML(config) {
         var configAsJson = JSON.stringify(config);
         var html = String.raw`<style>.nr-dashboard-ui_microphone{padding:0;}</style><input type='hidden' ng-init='init(` + configAsJson + `)'>`;
-        if (config.press && config.press === "press") {
+        if (config.press && config.press === "press"){
             html += String.raw`<md-button aria-label="capture audio" id="microphone_control_{{$id}}" class="nr-ui-microphone-button" style="height:100% !important;" ng-disabled="!enabled" ng-mousedown="toggleMicrophone(true)" ng-mouseup="toggleMicrophone()"><i class="fa fa-microphone"></i></md-button>`;
         }
         else {
@@ -82,7 +82,8 @@ module.exports = function(RED) {
                      * The 'msg' object will be available here.
                      */
                     initController: function($scope) {
-
+                        var isAudio = true;
+                        
                         $scope.init = function (config) {
                             //console.log("ui_microphone: initialised config:",config);
                             $scope.config = config;
@@ -95,89 +96,176 @@ module.exports = function(RED) {
                             }
                             else if (parseInt(config.width || 0) === 1) { fac = "fa-lg"; } // shrink if it's 1x1
                             setTimeout(function() { $("#microphone_control_"+$scope.$id+" i").addClass(fac); }, 0);
-                        }
-
-                        $scope.enabled =  !!navigator.mediaDevices;
-
-                        if (!$scope.enabled) {
-                            setTimeout(function() {
-                                $("#microphone_control_"+$scope.$id+" i").removeClass("fa-microphone").addClass("fa-microphone-slash");
-                            },50);
-                        }
+                            isAudio = (config.mode !== "recog");
+                            if (isAudio) {
+                                $scope.enabled = !!navigator.mediaDevices;
+                            }
+                            else {
+                                $scope.enabled = false;
+                                try {
+                                    $scope.enabled = (!!webkitSpeechRecognition || !!SpeechRecognition);
+                                }
+                                catch (e) {
+                                }
+                            }
+                            if (!$scope.enabled) {
+                                setTimeout(function() {
+                                    $("#microphone_control_"+$scope.$id+" i").removeClass("fa-microphone").addClass("fa-microphone-slash");
+                                },50);
+                            }
+                        };
 
                         var worker;
                         var mediaRecorder;
                         var audioContext;
+                        var speechRecognition;
                         var stopTimeout;
                         var active = false;
 
                         //var button = $("#microphone_control_"+$scope.$id);
-
                         $scope.toggleMicrophone = function(e) {
                             if (e === true) { active = false; }
                             if (!$scope.enabled) return;
                             if (!active) {
                                 active = true;
                                 $("#microphone_control_"+$scope.$id+" i").removeClass("fa-microphone").addClass("fa-rotate-right fa-spin");
-                                navigator.mediaDevices.getUserMedia({ audio: true, video: false }).then(handleSuccess).catch(handleError);
+                                if (isAudio) {
+                                    navigator.mediaDevices.getUserMedia({ audio: true, video: false }).then(handleSuccess).catch(handleError);
+                                }
+                                else {
+                                    try {
+                                        handleSuccess();
+                                    }
+                                    catch (e) {
+                                        handleError(e);
+                                    }
+                                }
                             } else {
-                                if (mediaRecorder) {
-                                    mediaRecorder.stop();
+                                if (isAudio) {
+                                    if (mediaRecorder) {
+                                        mediaRecorder.stop();
+                                    }
+                                }
+                                else {
+                                    if (speechRecognition) {
+                                        speechRecognition.stop();
+                                        active = false;
+                                        $("#microphone_control_"+$scope.$id+" i").addClass("fa-microphone").removeClass("fa-rotate-right fa-spin");
+                                    }
                                 }
                             }
-                        }
+                        };
 
                         $scope.stop = function() {
                             if (active) {
-                                mediaRecorder.stop();
+                                if (isAudio) {
+                                    mediaRecorder.stop();
+                                }
+                                else {
+                                    if (speechRecognition) {
+                                        speechRecognition.stop();
+                                        active = false;
+                                        $("#microphone_control_"+$scope.$id+" i").addClass("fa-microphone").removeClass("fa-rotate-right fa-spin");
+                                    }
+                                }
                             }
-                        }
+                        };
 
                         var handleError = function(err) {
                             console.warn("Failed to access microphone:",err);
                             active = false;
                             $("#microphone_control_"+$scope.$id+" i").addClass("fa-microphone").removeClass("fa-rotate-right fa-spin");
-                        }
+                        };
 
                         var handleSuccess = function(stream) {
-                            mediaRecorder = new MediaRecorder(stream,  {mimeType: 'audio/webm'});
-                            mediaRecorder.ondataavailable = function(evt) {
-                                if (evt.data.size > 0) {
-                                    sendBlob(new Blob([evt.data]));
-                                }
-                            };
-
-                            mediaRecorder.onstop = function() {
-                                if (active) {
-                                    active = false;
-                                    $("#microphone_control_"+$scope.$id+" i").addClass("fa-microphone").removeClass("fa-rotate-right fa-spin");
-                                    if (stopTimeout) {
-                                        clearTimeout(stopTimeout);
-                                        stopTimeout = null;
+                            if (isAudio) {
+                                mediaRecorder = new MediaRecorder(stream,  {mimeType: 'audio/webm'});
+                                mediaRecorder.ondataavailable = function(evt) {
+                                    if (evt.data.size > 0) {
+                                        sendBlob(new Blob([evt.data]));
                                     }
+                                };
 
-                                    stream.getTracks().forEach( function(track) { track.stop() });
-                                }
-                            };
-                            // Timeslice is not current exposed.
-                            // var timeslice = 0;
-                            // if ($scope.config.timeslice) {
-                            //     timeslice = parseInt($scope.config.timeslice)*1000;
-                            // }
-                            // if (timeslice) {
-                            //     mediaRecorder.start(timeslice);
-                            // } else {
-                            mediaRecorder.start();
-                            // }
-
-                            if ($scope.config && $scope.config.maxLength && ($scope.config.press !== "press")) {
-                                stopTimeout = setTimeout(function() {
+                                mediaRecorder.onstop = function() {
                                     if (active) {
-                                        mediaRecorder.stop();
+                                        active = false;
+                                        $("#microphone_control_"+$scope.$id+" i").addClass("fa-microphone").removeClass("fa-rotate-right fa-spin");
+                                        if (stopTimeout) {
+                                            clearTimeout(stopTimeout);
+                                            stopTimeout = null;
+                                        }
+
+                                        stream.getTracks().forEach( function(track) { track.stop() });
                                     }
-                                },$scope.config.maxLength*1000)
-                            } else if (!$scope.config) {
-                                console.warn("Microphone node not initialised with user configuration. Using defaults")
+                                };
+                                // Timeslice is not current exposed.
+                                // var timeslice = 0;
+                                // if ($scope.config.timeslice) {
+                                //     timeslice = parseInt($scope.config.timeslice)*1000;
+                                // }
+                                // if (timeslice) {
+                                //     mediaRecorder.start(timeslice);
+                                // } else {
+                                mediaRecorder.start();
+                                // }
+
+                                if ($scope.config && $scope.config.maxLength && ($scope.config.press !== "press")) {
+                                    stopTimeout = setTimeout(function() {
+                                        if (active) {
+                                            mediaRecorder.stop();
+                                        }
+                                    }, $scope.config.maxLength*1000)
+                                } else if (!$scope.config) {
+                                    console.warn("Microphone node not initialised with user configuration. Using defaults");
+                                }
+                            }
+                            else { // !isAudio
+                                var sr = webkitSpeechRecognition || SpeechRecognition;
+                                var interim = ($scope.config && $scope.config.interimResults);
+
+                                speechRecognition = new sr();
+                                speechRecognition.continuous = true;
+                                speechRecognition.interimResults = interim;
+                                speechRecognition.maxAlternatives = 1;
+
+                                speechRecognition.onresult = function (e) {
+                                    var res = e.results;
+                                    var len = res.length;
+                                    if (len > 0) {
+                                        var r = res[len -1];
+                                        var text = r[0].transcript;
+                                        var msg = {payload: text};
+                                        if (interim) {
+                                            msg.done = r.isFinal;
+                                        }
+                                        else {
+                                            msg.done = true;
+                                        }
+                                        $scope.send(msg);
+                                    }
+                                };
+
+                                speechRecognition.onend = function () {
+                                    if (active) {
+                                        active = false;
+                                        $("#microphone_control_"+$scope.$id+" i").addClass("fa-microphone").removeClass("fa-rotate-right fa-spin");
+                                    }
+                                };
+
+                                speechRecognition.onerror = function (e) {
+                                    handleError(e);
+                                };
+
+                                speechRecognition.start();
+                                if ($scope.config && ($scope.config.maxRecogLength > 0) && ($scope.config.press !== "press")) {
+                                    stopTimeout = setTimeout(function() {
+                                        if (active) {
+                                            speechRecognition.stop();
+                                        }
+                                    }, $scope.config.maxRecogLength*1000)
+                                } else if (!$scope.config) {
+                                    console.warn("Microphone node not initialised with user configuration. Using defaults");
+                                }
                             }
                         };
 
@@ -193,7 +281,7 @@ module.exports = function(RED) {
                                 })
                             }
                             fileReader.readAsArrayBuffer(blob)
-                        }
+                        };
 
                         var convertToWav = function(buffer) {
                             if (!worker) {
@@ -212,7 +300,7 @@ module.exports = function(RED) {
                                 ]
                             });
                             worker.postMessage({ command: 'exportMonoWAV', type: 'audio/wav' });
-                        }
+                        };
                     }
                 });
             }
