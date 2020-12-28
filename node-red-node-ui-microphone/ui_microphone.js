@@ -234,16 +234,14 @@ module.exports = function(RED) {
                                     if (len > 0) {
                                         var r = res[len -1];
                                         var text = r[0].transcript;
+                                        var msg = {payload: text};
                                         if (interim) {
-                                            var msg = {payload: text};
-                                            $scope.send([
-                                                (r.isFinal ? msg : null),
-                                                msg
-                                            ]);
+                                            msg.done = r.isFinal;
                                         }
-                                        else if (r.isFinal) {
-                                            $scope.send({payload: text});
+                                        else {
+                                            msg.done = true;
                                         }
+                                        $scope.send(msg);
                                     }
                                 };
 

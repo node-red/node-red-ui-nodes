@@ -1,32 +1,8 @@
 [
     {
-        "id": "a3a2bc40.368e4",
-        "type": "ui_microphone",
-        "z": "701c5025.117cc",
-        "name": "",
-        "group": "1e632fb9.2b70d",
-        "order": 1,
-        "width": "3",
-        "height": "1",
-        "maxLength": 5,
-        "maxRecogLength": 0,
-        "timeslice": 0,
-        "press": "click",
-        "mode": "audio",
-        "interimResults": false,
-        "outputs": 1,
-        "x": 170,
-        "y": 340,
-        "wires": [
-            [
-                "662f129.53b5bec"
-            ]
-        ]
-    },
-    {
-        "id": "662f129.53b5bec",
+        "id": "5b5a51f.aaa1eb",
         "type": "change",
-        "z": "701c5025.117cc",
+        "z": "80638a41.e07d68",
         "name": "",
         "rules": [
             {
@@ -42,18 +18,18 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 340,
-        "y": 340,
+        "x": 560,
+        "y": 240,
         "wires": [
             []
         ]
     },
     {
-        "id": "a6775e73.60ce3",
+        "id": "98386b47.1f9578",
         "type": "ui_button",
-        "z": "701c5025.117cc",
+        "z": "80638a41.e07d68",
         "name": "",
-        "group": "1e632fb9.2b70d",
+        "group": "a9cf3f4b.a6172",
         "order": 2,
         "width": "3",
         "height": "1",
@@ -66,42 +42,137 @@
         "payload": "audio",
         "payloadType": "flow",
         "topic": "",
-        "x": 190,
-        "y": 400,
+        "x": 390,
+        "y": 360,
         "wires": [
             [
-                "b247cb0f.18fbc8"
+                "f03beedb.7ca0d"
             ]
         ]
     },
     {
-        "id": "b247cb0f.18fbc8",
+        "id": "f03beedb.7ca0d",
         "type": "ui_audio",
-        "z": "701c5025.117cc",
+        "z": "80638a41.e07d68",
         "name": "",
-        "group": "1e632fb9.2b70d",
-        "voice": "Alex",
+        "group": "a9cf3f4b.a6172",
+        "voice": "Google US English",
         "always": "",
-        "x": 320,
+        "x": 540,
+        "y": 360,
+        "wires": []
+    },
+    {
+        "id": "6a2eefef.95866",
+        "type": "ui_text",
+        "z": "80638a41.e07d68",
+        "group": "a9cf3f4b.a6172",
+        "order": 5,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "text→",
+        "format": "{{msg.payload}}",
+        "layout": "row-left",
+        "x": 530,
+        "y": 280,
+        "wires": []
+    },
+    {
+        "id": "b3eef9ed.456698",
+        "type": "switch",
+        "z": "80638a41.e07d68",
+        "name": "",
+        "property": "done",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "false"
+            },
+            {
+                "t": "else"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 390,
+        "y": 180,
+        "wires": [
+            [
+                "b65bff76.ccfaa"
+            ],
+            [
+                "5b5a51f.aaa1eb",
+                "6a2eefef.95866"
+            ]
+        ]
+    },
+    {
+        "id": "b65bff76.ccfaa",
+        "type": "ui_text",
+        "z": "80638a41.e07d68",
+        "group": "a9cf3f4b.a6172",
+        "order": 4,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "interim→",
+        "format": "{{msg.payload}}",
+        "layout": "row-left",
+        "x": 540,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "2340ced4.6f9712",
+        "type": "comment",
+        "z": "80638a41.e07d68",
+        "name": "↑select appropriate voice",
+        "info": "",
+        "x": 590,
         "y": 400,
         "wires": []
     },
     {
-        "id": "1e632fb9.2b70d",
+        "id": "9e9dd20a.deefa",
+        "type": "ui_microphone",
+        "z": "80638a41.e07d68",
+        "name": "",
+        "group": "a9cf3f4b.a6172",
+        "order": 4,
+        "width": 0,
+        "height": 0,
+        "maxLength": 5,
+        "maxRecogLength": 0,
+        "timeslice": 0,
+        "press": "click",
+        "mode": "recog",
+        "interimResults": true,
+        "x": 230,
+        "y": 180,
+        "wires": [
+            [
+                "b3eef9ed.456698"
+            ]
+        ]
+    },
+    {
+        "id": "a9cf3f4b.a6172",
         "type": "ui_group",
         "name": "Default",
-        "tab": "80605b7f.1d6cd8",
+        "tab": "a96b5d8e.0a5a3",
         "order": 1,
         "disp": true,
         "width": "6",
         "collapse": false
     },
     {
-        "id": "80605b7f.1d6cd8",
+        "id": "a96b5d8e.0a5a3",
         "type": "ui_tab",
-        "name": "Audio Example",
+        "name": "Speech Recognition Example",
         "icon": "dashboard",
-        "order": 2,
+        "order": 3,
         "disabled": false,
         "hidden": false
     }

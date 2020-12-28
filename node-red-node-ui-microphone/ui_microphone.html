@@ -36,8 +36,7 @@
             timeslice: { value: 0 },
             press : { value: "click" },
             mode: { value: "audio" },
-            interimResults: { value: false },
-            outputs: { value: 1 }
+            interimResults: { value: false }
         },
         inputs:0,
         outputs:1,
@@ -95,16 +94,6 @@
                 width: "#node-input-width",
                 height: "#node-input-height",
                 group: "#node-input-group"
-            });
-
-            $("#node-input-interimResults").prop("checked", (this.outputs === 2));
-            $("#node-input-interimResults").change(function () {
-                if ($(this).prop("checked")) {
-                    $("#node-input-outputs").val(2);
-                }
-                else {
-                    $("#node-input-outputs").val(1);
-                }
             });
 
             // $("#node-input-select-timeslice").on("change", function() {
@@ -179,6 +168,5 @@
     <div class="form-row">
         <label for="node-input-name"><i class="icon-tag"></i> <span data-i18n="ui_microphone.label.name"></span></label>
         <input type="text" id="node-input-name" data-i18n="[placeholder]ui_microphone.label.name">
-        <input type="hidden" id="node-input-outputs" value="1">
     </div>
 </script>

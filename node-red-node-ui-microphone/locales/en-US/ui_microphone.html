@@ -5,6 +5,8 @@
     <dl class="message-properties">
         <dt>payload<span class="property-type">Buffer or string</span></dt>
         <dd>The captured audio in the required format or recognized text.</dd>
+        <dt>done<span class="property-type">Bool</span></dt>
+        <dd>Result is final result(speech recognition mode only)</dd>
     </dl>
     <h3>Details</h3>
     <p>This node provides a single button widget in the dashboard.</p>
@@ -19,8 +21,10 @@
         <dd>
             <p>Speech recognition is performed and the recognized text
             is sent as payload value.<p>
-            <p>If <b>Interim Results</b> is checked, interim
-            recognition results are send to second output port.</p>
+            <p>If <b>Interim Results</b> is checked, the node sends 
+            interim results. In addition, <code>done</code> 
+            property is set to <code>true</code> if the result is interim,
+            otherwise <code>false</code>.</p>
             <p>Note: This mode needs internet access for operation and
             only works on browser that supports SpeechRecognition
             feature of Web Speech API (e.g. Chrome).  Mode selector is
