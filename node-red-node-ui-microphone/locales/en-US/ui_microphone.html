@@ -1,16 +1,16 @@
 <script type="text/html" data-help-name="ui_microphone">
-    <p>A Node-RED dashboard ui node to capture audio or to recognize
+    <p>A Node-RED dashboard ui node to capture audio, or to recognize
     spoken text from the brower's microphone.</p>
     <h3>Outputs</h3>
     <dl class="message-properties">
         <dt>payload<span class="property-type">Buffer or string</span></dt>
         <dd>The captured audio in the required format or recognized text.</dd>
-        <dt>done<span class="property-type">Bool</span></dt>
-        <dd>Result is final result(speech recognition mode only)</dd>
+        <dt>done<span class="property-type">boolean</span></dt>
+        <dd>The payload is the final result (speech recognition mode only)</dd>
     </dl>
     <h3>Details</h3>
     <p>This node provides a single button widget in the dashboard.</p>
-    <p><b>Audio Input</b> mode and <b>Speech Recognition</b> mode can
+    <p><b>Audio Input</b> mode or <b>Speech Recognition</b> mode can
     be selected.</p>
     <dl>
         <dt>Audio Input mode</dt>
@@ -21,20 +21,19 @@
         <dd>
             <p>Speech recognition is performed and the recognized text
             is sent as payload value.<p>
-            <p>If <b>Interim Results</b> is checked, the node sends 
-            interim results. In addition, <code>done</code> 
-            property is set to <code>true</code> if the result is interim,
-            otherwise <code>false</code>.</p>
+            <p>If <b>Interim Results</b> is checked, the node sends
+            interim results as words are recognised. Wehn complete, the <code>done</code>
+            property is set to <code>true</code>. If the result is interim it will be set to <code>false</code>.</p>
             <p>Note: This mode needs internet access for operation and
-            only works on browser that supports SpeechRecognition
+            only works on browsers that supports SpeechRecognition
             feature of Web Speech API (e.g. Chrome).  Mode selector is
             not shown if SpeechRecognition feature is not supported. </p>
         </dd>
     </dl>
-    <p>The button can be configured in two modes. Either click begin
-    to capture audio/recognize speech, and then
-    continue to capture audio/recognize text until the button is pressed again, or it reaches its configured maximum duration. Or the button can be configured to record/recognize only while the button is pressed.</p>
+    <p>The button can be configured in two modes. Either click to begin
+    to start audio capture or speech recognition, and continue until either the button is pressed again,
+    or it reaches its configured maximum duration. Or the button can be configured to
+    record/recognize only while the button is pressed.</p>
     <p>If value of the maximum duration is 0, no limit is applied for
     audio capture/speech recognition.</p>
-    <p></p>
 </script>

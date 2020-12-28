@@ -1,9 +1,10 @@
 {
     "name": "node-red-node-ui-microphone",
-    "version": "0.2.4",
+    "version": "0.3.0",
     "description": "A Node-RED ui node to record audio or to recognize spoken text on a dashboard.",
     "author": "Nick O'Leary",
     "contributors": [
+        "Dave Conway-Jones",
         "Hiroyasu Nishiyama"
     ],
     "license": "Apache-2.0",

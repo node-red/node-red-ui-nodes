@@ -7,7 +7,7 @@
             "record" : "Record",
             "recog": "Recognize",
             "mode": "Mode",
-            "interm": "Interim Results"
+            "interim": "Send Interim Results"
         },
         "record" : {
             "click": "Click to start, click to stop",

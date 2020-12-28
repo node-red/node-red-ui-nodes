@@ -7,7 +7,7 @@
             "record" : "録音",
             "recog": "認識",
             "mode": "モード",
-            "interm": "中間結果"
+            "interim": "中間結果"
         },
         "record" : {
             "click": "クリックで開始・終了",
