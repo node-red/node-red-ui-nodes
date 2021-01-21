@@ -21,6 +21,8 @@ module.exports = function(RED) {
 
     function HTML(config) {
         var configAsJson = JSON.stringify(config);
+        if (!config.hasOwnProperty("mirror")) { config.mirror = true; }
+        var mirror = config.mirror ? -1 : 1;
         var html = String.raw`
 <style>
     .nr-dashboard-ui_webcam {
@@ -45,8 +47,8 @@ module.exports = function(RED) {
         position: absolute;
         width: 100%;
         height: 100%;
-        -webkit-transform: scaleX(-1);
-        transform: scaleX(-1);
+        -webkit-transform: scaleX(`+mirror+`);
+        transform: scaleX(`+mirror+`);
     }
     .ui-webcam-playback-container {
         width: 100%;
@@ -329,8 +331,10 @@ module.exports = function(RED) {
                             canvas.width = playbackEl.videoWidth;
                             canvas.height = playbackEl.videoHeight;
                             var ctx = canvas.getContext('2d');
-                            ctx.translate(playbackEl.videoWidth, 0);
-                            ctx.scale(-1, 1);
+                            if ($scope.config.mirror === true) {
+                                ctx.translate(playbackEl.videoWidth, 0);
+                                ctx.scale(-1, 1);
+                            }
                             ctx.drawImage(playbackEl, 0, 0);
                             var img = document.querySelector("img#ui_webcam_image_"+$scope.$id);
                             img.src = canvas.toDataURL('image/'+($scope.config.format||'png'));
