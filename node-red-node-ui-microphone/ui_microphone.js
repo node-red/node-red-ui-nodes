@@ -128,6 +128,7 @@ module.exports = function(RED) {
                             if (!$scope.enabled) return;
                             if (!active) {
                                 active = true;
+				$scope.send([null, { payload: "started" }]);
                                 $("#microphone_control_"+$scope.$id+" i").removeClass("fa-microphone").addClass("fa-rotate-right fa-spin");
                                 if (isAudio) {
                                     navigator.mediaDevices.getUserMedia({ audio: true, video: false }).then(handleSuccess).catch(handleError);
@@ -241,13 +242,14 @@ module.exports = function(RED) {
                                         else {
                                             msg.done = true;
                                         }
-                                        $scope.send(msg);
+                                        $scope.send([msg, null])
                                     }
                                 };
 
                                 speechRecognition.onend = function () {
                                     if (active) {
                                         active = false;
+					$scope.send([null, {payload: "stopped"}]);
                                         $("#microphone_control_"+$scope.$id+" i").addClass("fa-microphone").removeClass("fa-rotate-right fa-spin");
                                     }
                                 };
