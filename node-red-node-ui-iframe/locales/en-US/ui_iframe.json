@@ -5,7 +5,8 @@
             "size" : "Size",
             "name" : "Name",
             "url" : "URL",
-            "origin": "Origin"
+            "origin": "Origin",
+            "scale": "Scale"
         }
     }
 }

@@ -1,0 +1,147 @@
+[
+    {
+        "id": "a8ba498b.33a468",
+        "type": "ui_iframe",
+        "z": "89becf3.5c6133",
+        "group": "6467854a.60785c",
+        "name": "",
+        "order": 1,
+        "width": 20,
+        "height": 12,
+        "url": "http://nodered.org",
+        "origin": "*",
+        "scale": "100",
+        "x": 610,
+        "y": 440,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "ade9c361.85d6c",
+        "type": "ui_slider",
+        "z": "89becf3.5c6133",
+        "name": "",
+        "label": "Scale",
+        "tooltip": "",
+        "group": "6467854a.60785c",
+        "order": 2,
+        "width": 6,
+        "height": 1,
+        "passthru": true,
+        "outs": "all",
+        "topic": "topic",
+        "topicType": "msg",
+        "min": 0,
+        "max": "100",
+        "step": 1,
+        "x": 270,
+        "y": 480,
+        "wires": [
+            [
+                "e3756b0b.2153a8",
+                "6197d43f.97de3c"
+            ]
+        ]
+    },
+    {
+        "id": "6197d43f.97de3c",
+        "type": "change",
+        "z": "89becf3.5c6133",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "scale",
+                "pt": "msg",
+                "to": "payload",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 440,
+        "y": 440,
+        "wires": [
+            [
+                "a8ba498b.33a468"
+            ]
+        ]
+    },
+    {
+        "id": "3d635006.bd029",
+        "type": "inject",
+        "z": "89becf3.5c6133",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": true,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "56",
+        "payloadType": "num",
+        "x": 130,
+        "y": 480,
+        "wires": [
+            [
+                "ade9c361.85d6c"
+            ]
+        ]
+    },
+    {
+        "id": "e3756b0b.2153a8",
+        "type": "ui_text",
+        "z": "89becf3.5c6133",
+        "group": "6467854a.60785c",
+        "order": 3,
+        "width": "1",
+        "height": 1,
+        "name": "",
+        "label": "",
+        "format": "{{msg.payload}}%",
+        "layout": "row-spread",
+        "x": 410,
+        "y": 480,
+        "wires": []
+    },
+    {
+        "id": "c20c12a5.5b655",
+        "type": "comment",
+        "z": "89becf3.5c6133",
+        "name": "Scale embedded web page by slider value",
+        "info": "",
+        "x": 220,
+        "y": 400,
+        "wires": []
+    },
+    {
+        "id": "6467854a.60785c",
+        "type": "ui_group",
+        "name": "Node-RED",
+        "tab": "d2d722c.92e12e",
+        "order": 1,
+        "disp": true,
+        "width": "20",
+        "collapse": false
+    },
+    {
+        "id": "d2d722c.92e12e",
+        "type": "ui_tab",
+        "name": "IFrame03",
+        "icon": "dashboard",
+        "disabled": false,
+        "hidden": false
+    }
+]
