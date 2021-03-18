@@ -30,6 +30,10 @@
         <input type="text" id="node-input-url">
     </div>
     <div class="form-row">
+        <label for="node-input-origin"><i class="fa fa-external-link"></i> <span data-i18n="ui_iframe.label.origin"></span></label>
+        <input type="text" id="node-input-origin">
+    </div>
+    <div class="form-row">
         <label><i class="fa fa-compress"></i> <span data-i18n="ui_iframe.label.scale"></span></label>
         <input id="node-input-scale" value="100" style="width: 50px;"></input>
         <span>%</span>
@@ -80,10 +84,7 @@
                     height: "#node-input-height",
                     group: "#node-input-group"
                 });
-                $("#node-input-scale").spinner({
-                    min:1,
-                    max:100
-                });
+                $("#node-input-scale").spinner();
                 var scale = $("#node-input-scale").val();
                 if (!scale || (scale === "")) {
                     $("#node-input-scale").val(100);

@@ -36,15 +36,17 @@ module.exports = function(RED) {
 <script>
 (function(scope) {
     function setScale(iframe, scale) {
-        var ifr = $(iframe);
-        var ratio = scale/100;
-        var rratio = Math.floor(100/ratio);
-        ifr.css({
-            "transform": "scale("+ratio+")",
-            "transform-origin": "0 0",
-            "width": rratio +"%",
-            "height": rratio +"%",
-        });
+        if (scale > 0) {
+            var ifr = $(iframe);
+            var ratio = scale/100;
+            var rratio = Math.floor(100/ratio);
+            ifr.css({
+                "transform": "scale("+ratio+")",
+                "transform-origin": "0 0",
+                "width": rratio +"%",
+                "height": rratio +"%",
+            });
+        }
     }
 
     var iframe = document.getElementById("${id}");
