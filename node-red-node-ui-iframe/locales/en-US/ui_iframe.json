@@ -7,6 +7,9 @@
             "url" : "URL",
             "origin": "Origin",
             "scale": "Scale"
+        },
+        "error": {
+            "scale": "scale property shoud be positive number"
         }
     }
 }

@@ -84,7 +84,10 @@
                     height: "#node-input-height",
                     group: "#node-input-group"
                 });
-                $("#node-input-scale").spinner();
+                $("#node-input-scale").spinner({
+                    min:20,
+                    max:200
+                });
                 var scale = $("#node-input-scale").val();
                 if (!scale || (scale === "")) {
                     $("#node-input-scale").val(100);

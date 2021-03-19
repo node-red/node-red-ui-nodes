@@ -36,7 +36,7 @@ module.exports = function(RED) {
 <script>
 (function(scope) {
     function setScale(iframe, scale) {
-        if (scale > 0) {
+        if ((scale !== true) && (scale > 0)) {
             var ifr = $(iframe);
             var ratio = scale/100;
             var rratio = Math.floor(100/ratio);
@@ -110,11 +110,19 @@ module.exports = function(RED) {
                 initController: function($scope, events) {
                 }
             });
+            node.on("input", function (msg) {
+                if (msg.hasOwnProperty("scale")) {
+                    var scale = msg.scale;
+                    if (!((scale !== true) && (scale > 0))) {
+                        node.error(RED._("ui_iframe.error.scale"));
+                    }
+                }
+            });
+            node.on("close", done);
         }
         catch (e) {
             console.log(e);
         }
-        node.on("close", done);
     }
     RED.nodes.registerType('ui_iframe', IFrameNode);
 };
