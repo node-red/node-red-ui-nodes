@@ -22,17 +22,36 @@ module.exports = function(RED) {
         var url = config.url ? config.url : "";
         var allow = "autoplay";
         var origin = config.origin ? config.origin : "*";
+        var scale = config.scale;
+        if (!scale || (scale === "")) {
+            scale = 100;
+        }
         var html = String.raw`
 <style>.nr-dashboard-ui_iframe { padding:0; }</style>
-<div style="width:100%; height:100%; display:inline-block;">
+<div id="${id}-div" style="width:100%; height:100%; display:inline-block;">
     <iframe id="${id}" src="${url}" allow="${allow}" style="width:100%; height:100%; overflow:hidden; border:0; display:block">
         Failed to load Web page
     </iframe>
 </div>
 <script>
 (function(scope) {
+    function setScale(iframe, scale) {
+        if ((scale !== true) && (scale > 0)) {
+            var ifr = $(iframe);
+            var ratio = scale/100;
+            var rratio = Math.floor(100/ratio);
+            ifr.css({
+                "transform": "scale("+ratio+")",
+                "transform-origin": "0 0",
+                "width": rratio +"%",
+                "height": rratio +"%",
+            });
+        }
+    }
+
     var iframe = document.getElementById("${id}");
 
+    setScale(iframe, ${scale});
     if (iframe && iframe.contentWindow) {
         iframe.contentWindow.addEventListener("message", function(e) {
             scope.send({payload: e.data});
@@ -43,6 +62,9 @@ module.exports = function(RED) {
         if (iframe && msg) {
            if (msg.url) {
                iframe.setAttribute("src", msg.url);
+           }
+           if (msg.scale) {
+               setScale(iframe, msg.scale);
            }
            if (iframe.contentWindow && msg.payload) {
                 var data = JSON.stringify(msg.payload);
@@ -88,11 +110,19 @@ module.exports = function(RED) {
                 initController: function($scope, events) {
                 }
             });
+            node.on("input", function (msg) {
+                if (msg.hasOwnProperty("scale")) {
+                    var scale = msg.scale;
+                    if (!((scale !== true) && (scale > 0))) {
+                        node.error(RED._("ui_iframe.error.scale"));
+                    }
+                }
+            });
+            node.on("close", done);
         }
         catch (e) {
             console.log(e);
         }
-        node.on("close", done);
     }
     RED.nodes.registerType('ui_iframe', IFrameNode);
 };

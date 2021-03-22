@@ -34,6 +34,11 @@
         <input type="text" id="node-input-origin">
     </div>
     <div class="form-row">
+        <label><i class="fa fa-compress"></i> <span data-i18n="ui_iframe.label.scale"></span></label>
+        <input id="node-input-scale" value="100" style="width: 50px;"></input>
+        <span>%</span>
+    </div>
+    <div class="form-row">
         <label for="node-input-name"><i class="fa fa-tag"></i> <span data-i18n="ui_iframe.label.name"></span></label>
         <input type="text" id="node-input-name">
     </div>
@@ -64,7 +69,8 @@
                     }},
                 height: {value: 0},
                 url: {valuie: ""},
-                origin: {value: "*"}
+                origin: {value: "*"},
+                scale: {value: 100}
             },
             inputs:1,
             outputs:1,
@@ -78,6 +84,14 @@
                     height: "#node-input-height",
                     group: "#node-input-group"
                 });
+                $("#node-input-scale").spinner({
+                    min:20,
+                    max:200
+                });
+                var scale = $("#node-input-scale").val();
+                if (!scale || (scale === "")) {
+                    $("#node-input-scale").val(100);
+                }
             },
             oneditsave: function() {
             },

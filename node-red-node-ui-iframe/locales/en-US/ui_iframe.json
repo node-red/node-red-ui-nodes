@@ -5,7 +5,11 @@
             "size" : "Size",
             "name" : "Name",
             "url" : "URL",
-            "origin": "Origin"
+            "origin": "Origin",
+            "scale": "Scale"
+        },
+        "error": {
+            "scale": "scale property shoud be positive number"
         }
     }
 }

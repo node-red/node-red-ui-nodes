@@ -4,7 +4,11 @@
             "group" : "グループ",
             "size" : "サイズ",
             "name" : "名前",
-            "origin": "オリジン"
+            "origin": "オリジン",
+            "scale": "拡大縮小"
+        },
+        "error": {
+            "scale": "scale属性は正数でなければいけません"
         }
     }
 }
