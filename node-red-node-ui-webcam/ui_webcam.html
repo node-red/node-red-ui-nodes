@@ -35,6 +35,7 @@
             autoStart: { value: false },
             hideCaptureButton: { value: false },
             showImage: { value: 2 },
+            mirror: { value: true },
             format: { value:"png" }
         },
         inputs:1,
@@ -53,6 +54,10 @@
                 height: "#node-input-height",
                 group: "#node-input-group"
             });
+            if (this.mirror === undefined) {
+                this.mirror = true;
+                $("#node-input-mirror").attr("checked",true)
+            }
 
             var showImage = this.showImage === undefined ? 2 : this.showImage;
             if (showImage === 0) {
@@ -118,30 +123,35 @@
     <br />
     <div class="form-row" style="min-width: 470px">
         <label style="vertical-align: top"><i class="fa fa-cog"></i> Options</label>
-        <div style="display: inline-block; min-width: 350px; width: calc(100% - 120px);">
+        <div style="display:inline-block; min-width:350px; width:calc(100% - 120px);">
             <div class="form-row">
                 <label style="width: auto" for="node-input-autoStart">
-                    <input style="width:auto; margin: 0" type="checkbox" id="node-input-autoStart"> Start webcam automatically
+                    <input style="width:auto; margin:0" type="checkbox" id="node-input-autoStart"> Start webcam automatically
                 </label>
             </div>
             <div class="form-row">
                 <label style="width: auto" for="node-input-showImage-enable">
-                    <input style="width:auto; margin: 0" type="checkbox" id="node-input-showImage-enable"> Show image after capture
+                    <input style="width:auto; margin:0" type="checkbox" id="node-input-showImage-enable"> Show image after capture
                 </label>
                 <div class="node-row-ui-webcam-showImage-timeout">
-                    <label style="margin-bottom: 0; margin-left: 20px; width: auto" for="node-input-showImage-timeout">
-                        <input style="width:auto; margin: 0" type="checkbox" id="node-input-showImage-timeout"> Clear image after <input style="width:60px; margin: 0" type="text" id="node-input-showImage-time"> seconds
+                    <label style="margin-bottom:0; margin-left:20px; width:auto" for="node-input-showImage-timeout">
+                        <input style="width:auto; margin:0" type="checkbox" id="node-input-showImage-timeout"> Clear image after <input style="width:60px; margin: 0" type="text" id="node-input-showImage-time"> seconds
                     </label>
                 </div>
             </div>
             <div class="form-row">
                 <label style="width: auto" for="node-input-hideCaptureButton">
-                    <input style="width:auto; margin: 0" type="checkbox" id="node-input-hideCaptureButton"> Hide capture button
+                    <input style="width:auto; margin:0" type="checkbox" id="node-input-hideCaptureButton"> Hide capture button
                 </label>
             </div>
             <div class="form-row">
                 <label style="width: auto" for="node-input-countdown">
-                    <input style="width:auto; margin: 0" type="checkbox" id="node-input-countdown"> Use 5 second countdown when triggered
+                    <input style="width:auto; margin:0" type="checkbox" id="node-input-countdown"> Use 5 second countdown when triggered
+                </label>
+            </div>
+            <div class="form-row">
+                <label style="width: auto" for="node-input-mirror">
+                    <input style="width:auto; margin:0" type="checkbox" id="node-input-mirror"> Mirror image from webcam
                 </label>
             </div>
             <div class="form-row">
@@ -157,6 +167,7 @@
         <label for="node-input-name"><i class="icon-tag"></i> Name</label>
         <input type="text" id="node-input-name" placeholder="Name">
     </div>
+    <div class="form-tips"><b>Tip</b>: most image processing nodes prefer jpeg formatted images.</b>
 </script>
 
 <script type="text/html" data-help-name="ui_webcam">
