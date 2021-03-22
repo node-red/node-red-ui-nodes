@@ -2,17 +2,17 @@
     {
         "id": "a8ba498b.33a468",
         "type": "ui_iframe",
-        "z": "89becf3.5c6133",
+        "z": "e264831f.61b8d",
         "group": "6467854a.60785c",
         "name": "",
         "order": 1,
-        "width": 20,
-        "height": 12,
+        "width": "16",
+        "height": "9",
         "url": "http://nodered.org",
         "origin": "*",
         "scale": "100",
-        "x": 610,
-        "y": 440,
+        "x": 590,
+        "y": 140,
         "wires": [
             []
         ]
@@ -20,7 +20,7 @@
     {
         "id": "ade9c361.85d6c",
         "type": "ui_slider",
-        "z": "89becf3.5c6133",
+        "z": "e264831f.61b8d",
         "name": "",
         "label": "Scale",
         "tooltip": "",
@@ -32,11 +32,11 @@
         "outs": "all",
         "topic": "topic",
         "topicType": "msg",
-        "min": 0,
-        "max": "100",
+        "min": "25",
+        "max": "125",
         "step": 1,
-        "x": 270,
-        "y": 480,
+        "x": 250,
+        "y": 180,
         "wires": [
             [
                 "e3756b0b.2153a8",
@@ -47,7 +47,7 @@
     {
         "id": "6197d43f.97de3c",
         "type": "change",
-        "z": "89becf3.5c6133",
+        "z": "e264831f.61b8d",
         "name": "",
         "rules": [
             {
@@ -63,8 +63,8 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 440,
-        "y": 440,
+        "x": 420,
+        "y": 140,
         "wires": [
             [
                 "a8ba498b.33a468"
@@ -74,7 +74,7 @@
     {
         "id": "3d635006.bd029",
         "type": "inject",
-        "z": "89becf3.5c6133",
+        "z": "e264831f.61b8d",
         "name": "",
         "props": [
             {
@@ -92,8 +92,8 @@
         "topic": "",
         "payload": "56",
         "payloadType": "num",
-        "x": 130,
-        "y": 480,
+        "x": 110,
+        "y": 180,
         "wires": [
             [
                 "ade9c361.85d6c"
@@ -103,7 +103,7 @@
     {
         "id": "e3756b0b.2153a8",
         "type": "ui_text",
-        "z": "89becf3.5c6133",
+        "z": "e264831f.61b8d",
         "group": "6467854a.60785c",
         "order": 3,
         "width": "1",
@@ -112,18 +112,18 @@
         "label": "",
         "format": "{{msg.payload}}%",
         "layout": "row-spread",
-        "x": 410,
-        "y": 480,
+        "x": 390,
+        "y": 180,
         "wires": []
     },
     {
         "id": "c20c12a5.5b655",
         "type": "comment",
-        "z": "89becf3.5c6133",
+        "z": "e264831f.61b8d",
         "name": "Scale embedded web page by slider value",
         "info": "",
-        "x": 220,
-        "y": 400,
+        "x": 200,
+        "y": 100,
         "wires": []
     },
     {
@@ -133,7 +133,7 @@
         "tab": "d2d722c.92e12e",
         "order": 1,
         "disp": true,
-        "width": "20",
+        "width": "16",
         "collapse": false
     },
     {

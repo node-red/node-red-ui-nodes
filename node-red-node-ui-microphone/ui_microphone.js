@@ -83,7 +83,7 @@ module.exports = function(RED) {
                      */
                     initController: function($scope) {
                         var isAudio = true;
-                        
+
                         $scope.init = function (config) {
                             //console.log("ui_microphone: initialised config:",config);
                             $scope.config = config;
