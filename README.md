@@ -8,4 +8,4 @@ Most widgets will be published as their own standalone npm packages called node-
 
 A basic knowledge of Javascript is required, and the UI itself uses Angular version 1 and jQuery, so a knowledge of, or a willingness to learn, some of these would be an advantage.
 
-Pull requests to help add documentation and to add clarity are most welcome - but please read the [Contribution guidelines](../CONTRIBUTING.md)
+Pull requests to help add documentation and to add clarity are most welcome - but please read the [Contribution guidelines](./CONTRIBUTING.md)
