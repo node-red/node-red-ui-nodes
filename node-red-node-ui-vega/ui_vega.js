@@ -69,9 +69,9 @@ function showVega(spec) {
               });
 }
 
-loadScripts(["https://cdn.jsdelivr.net/npm/vega@5.4.0",
-             "https://cdn.jsdelivr.net/npm/vega-lite@4.0.0-beta.0",
-             "https://cdn.jsdelivr.net/npm/vega-embed@4.2.1"],
+loadScripts(["https://cdn.jsdelivr.net/npm/vega@5.20.2",
+             "https://cdn.jsdelivr.net/npm/vega-lite@5.1.0",
+             "https://cdn.jsdelivr.net/npm/vega-embed@6.18.2"],
     function() {
 `+
             "var vegaSpec = " +vegaSpec +";" +
