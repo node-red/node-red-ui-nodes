@@ -59,7 +59,22 @@ module.exports = function (RED) {
     }
 
     function HTML(config,dark) {
-        var configAsJson = JSON.stringify(config);
+        var configAsJson = JSON.stringify(config, (key, value) => {
+            // exclude the node description
+            if (key === "info") {
+                return undefined;
+            }
+
+            // replace single quotation mark (apostrophe) by html code in strings
+            if (typeof (value) === "string") {
+                return value.replace(/'/g, "&apos;");
+            }
+
+            // all others leave unchanged
+            return value;
+            }
+        );
+        
         var mid = (dark) ? "_midnight" : "";
         var html = String.raw`
                 <style>.nr-dashboard-ui_table { padding:0; }</style>
