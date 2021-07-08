@@ -1,0 +1,482 @@
+[
+    {
+        "id": "b4d448ed.fc828",
+        "type": "tab",
+        "label": "Flow 1",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "bcfb993d.8c84a",
+        "type": "ui_tab",
+        "name": "TableTest",
+        "icon": "dashboard",
+        "order": 0,
+        "disabled": false,
+        "hidden": false
+    },
+    {
+        "id": "fd38a9dc.02ac5",
+        "type": "ui_base",
+        "theme": {
+            "name": "theme-light",
+            "lightTheme": {
+                "default": "#0094CE",
+                "baseColor": "#0094CE",
+                "baseFont": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif",
+                "edited": true,
+                "reset": false
+            },
+            "darkTheme": {
+                "default": "#097479",
+                "baseColor": "#097479",
+                "baseFont": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif",
+                "edited": false
+            },
+            "customTheme": {
+                "name": "Untitled Theme 1",
+                "default": "#4B7930",
+                "baseColor": "#4B7930",
+                "baseFont": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif"
+            },
+            "themeState": {
+                "base-color": {
+                    "default": "#0094CE",
+                    "value": "#0094CE",
+                    "edited": false
+                },
+                "page-titlebar-backgroundColor": {
+                    "value": "#0094CE",
+                    "edited": false
+                },
+                "page-backgroundColor": {
+                    "value": "#fafafa",
+                    "edited": false
+                },
+                "page-sidebar-backgroundColor": {
+                    "value": "#ffffff",
+                    "edited": false
+                },
+                "group-textColor": {
+                    "value": "#1bbfff",
+                    "edited": false
+                },
+                "group-borderColor": {
+                    "value": "#ffffff",
+                    "edited": false
+                },
+                "group-backgroundColor": {
+                    "value": "#ffffff",
+                    "edited": false
+                },
+                "widget-textColor": {
+                    "value": "#111111",
+                    "edited": false
+                },
+                "widget-backgroundColor": {
+                    "value": "#0094ce",
+                    "edited": false
+                },
+                "widget-borderColor": {
+                    "value": "#ffffff",
+                    "edited": false
+                },
+                "base-font": {
+                    "value": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif"
+                }
+            },
+            "angularTheme": {
+                "primary": "indigo",
+                "accents": "blue",
+                "warn": "red",
+                "background": "grey"
+            }
+        },
+        "site": {
+            "name": "Node-RED Dashboard",
+            "hideToolbar": "false",
+            "allowSwipe": "false",
+            "lockMenu": "false",
+            "allowTempTheme": "true",
+            "dateFormat": "DD.MM.YYYY",
+            "sizes": {
+                "sx": 48,
+                "sy": 48,
+                "gx": 6,
+                "gy": 6,
+                "cx": 6,
+                "cy": 6,
+                "px": 0,
+                "py": 0
+            }
+        }
+    },
+    {
+        "id": "a005132f.6196e8",
+        "type": "ui_group",
+        "name": "Without Quotation",
+        "tab": "bcfb993d.8c84a",
+        "order": 1,
+        "disp": true,
+        "width": "6",
+        "collapse": false
+    },
+    {
+        "id": "1885673b.2145c1",
+        "type": "ui_group",
+        "name": "Quotes in TableName",
+        "tab": "bcfb993d.8c84a",
+        "order": 2,
+        "disp": true,
+        "width": "6",
+        "collapse": false
+    },
+    {
+        "id": "9971c312.3702d8",
+        "type": "ui_group",
+        "name": "Quotes in Column Title",
+        "tab": "bcfb993d.8c84a",
+        "order": 3,
+        "disp": true,
+        "width": "6",
+        "collapse": false
+    },
+    {
+        "id": "47f6a8.a2c36158",
+        "type": "ui_group",
+        "name": "Quotes in Description",
+        "tab": "bcfb993d.8c84a",
+        "order": 4,
+        "disp": true,
+        "width": "6",
+        "collapse": false
+    },
+    {
+        "id": "f69452b1.447158",
+        "type": "ui_table",
+        "z": "b4d448ed.fc828",
+        "group": "a005132f.6196e8",
+        "name": "Without quotation",
+        "order": 0,
+        "width": "6",
+        "height": "4",
+        "columns": [
+            {
+                "field": "name",
+                "title": "Col 1",
+                "width": "",
+                "align": "left",
+                "formatter": "plaintext",
+                "formatterParams": {
+                    "target": "_blank"
+                }
+            },
+            {
+                "field": "city",
+                "title": "Col 2",
+                "width": "",
+                "align": "left",
+                "formatter": "plaintext",
+                "formatterParams": {
+                    "target": "_blank"
+                }
+            }
+        ],
+        "outputs": 0,
+        "cts": false,
+        "x": 570,
+        "y": 160,
+        "wires": [],
+        "info": "\n\nA really simple table without quotation marks"
+    },
+    {
+        "id": "a8e19fb2.35c11",
+        "type": "inject",
+        "z": "b4d448ed.fc828",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 130,
+        "y": 160,
+        "wires": [
+            [
+                "69b33eaf.57d248"
+            ]
+        ]
+    },
+    {
+        "id": "69b33eaf.57d248",
+        "type": "change",
+        "z": "b4d448ed.fc828",
+        "name": "Set Data",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "[\t   {\t       \"name\": \"Will\",\t       \"city\": \"Paris\"\t    },\t   {\t       \"name\": \"Jean-Claude\",\t       \"city\": \"London\"\t    },\t   {\t       \"name\": \"O'Hara\",\t       \"city\": \"Beirut\"\t    },\t    {\t    \"name\": '\"The Nail\"',\t    \"city\": \"Hammersmith\"\t    }\t]",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 300,
+        "y": 160,
+        "wires": [
+            [
+                "f69452b1.447158",
+                "cb212221.fc40d8",
+                "3e460172.857ed6",
+                "ade38373.01654",
+                "9216fb01.47f52",
+                "e9c07312.e0e7c",
+                "d80cc268.700478"
+            ]
+        ]
+    },
+    {
+        "id": "cb212221.fc40d8",
+        "type": "ui_table",
+        "z": "b4d448ed.fc828",
+        "group": "1885673b.2145c1",
+        "name": "Single quote in 'TableName'",
+        "order": 0,
+        "width": "6",
+        "height": "4",
+        "columns": [
+            {
+                "field": "name",
+                "title": "Col 1",
+                "width": "",
+                "align": "left",
+                "formatter": "plaintext",
+                "formatterParams": {
+                    "target": "_blank"
+                }
+            },
+            {
+                "field": "city",
+                "title": "Col 2",
+                "width": "",
+                "align": "left",
+                "formatter": "plaintext",
+                "formatterParams": {
+                    "target": "_blank"
+                }
+            }
+        ],
+        "outputs": 0,
+        "cts": false,
+        "x": 600,
+        "y": 220,
+        "wires": [],
+        "info": "\n\nA really simple table with single quotation marks in Table Name"
+    },
+    {
+        "id": "3e460172.857ed6",
+        "type": "ui_table",
+        "z": "b4d448ed.fc828",
+        "group": "9971c312.3702d8",
+        "name": "Single quote in Column Title",
+        "order": 1,
+        "width": "6",
+        "height": "4",
+        "columns": [
+            {
+                "field": "name",
+                "title": "&#39;Col 1&#39;",
+                "width": "",
+                "align": "left",
+                "formatter": "plaintext",
+                "formatterParams": {
+                    "target": "_blank"
+                }
+            },
+            {
+                "field": "city",
+                "title": "Col 2",
+                "width": "",
+                "align": "left",
+                "formatter": "plaintext",
+                "formatterParams": {
+                    "target": "_blank"
+                }
+            }
+        ],
+        "outputs": 0,
+        "cts": false,
+        "x": 600,
+        "y": 280,
+        "wires": [],
+        "info": "\n\nA really simple table with single quotation mark in Column Title"
+    },
+    {
+        "id": "ade38373.01654",
+        "type": "ui_table",
+        "z": "b4d448ed.fc828",
+        "group": "47f6a8.a2c36158",
+        "name": "Single quote in Description",
+        "order": 1,
+        "width": "6",
+        "height": "4",
+        "columns": [
+            {
+                "field": "name",
+                "title": "Col 1",
+                "width": "",
+                "align": "left",
+                "formatter": "plaintext",
+                "formatterParams": {
+                    "target": "_blank"
+                }
+            },
+            {
+                "field": "city",
+                "title": "Col 2",
+                "width": "",
+                "align": "left",
+                "formatter": "plaintext",
+                "formatterParams": {
+                    "target": "_blank"
+                }
+            }
+        ],
+        "outputs": 0,
+        "cts": false,
+        "x": 600,
+        "y": 340,
+        "wires": [],
+        "info": "\n\nA really simple table with 'single quotation' marks in description."
+    },
+    {
+        "id": "9216fb01.47f52",
+        "type": "ui_table",
+        "z": "b4d448ed.fc828",
+        "group": "1885673b.2145c1",
+        "name": "Double quote in \"TableName\"",
+        "order": 0,
+        "width": "6",
+        "height": "4",
+        "columns": [
+            {
+                "field": "name",
+                "title": "Col 1",
+                "width": "",
+                "align": "left",
+                "formatter": "plaintext",
+                "formatterParams": {
+                    "target": "_blank"
+                }
+            },
+            {
+                "field": "city",
+                "title": "Col 2",
+                "width": "",
+                "align": "left",
+                "formatter": "plaintext",
+                "formatterParams": {
+                    "target": "_blank"
+                }
+            }
+        ],
+        "outputs": 0,
+        "cts": false,
+        "x": 600,
+        "y": 400,
+        "wires": [],
+        "info": "\n\nA really simple table with double quotation marks in Table Name"
+    },
+    {
+        "id": "e9c07312.e0e7c",
+        "type": "ui_table",
+        "z": "b4d448ed.fc828",
+        "group": "9971c312.3702d8",
+        "name": "Double quote in Column Title",
+        "order": 1,
+        "width": "6",
+        "height": "4",
+        "columns": [
+            {
+                "field": "name",
+                "title": "\"Col 1\"",
+                "width": "",
+                "align": "left",
+                "formatter": "plaintext",
+                "formatterParams": {
+                    "target": "_blank"
+                }
+            },
+            {
+                "field": "city",
+                "title": "Col 2",
+                "width": "",
+                "align": "left",
+                "formatter": "plaintext",
+                "formatterParams": {
+                    "target": "_blank"
+                }
+            }
+        ],
+        "outputs": 0,
+        "cts": false,
+        "x": 600,
+        "y": 460,
+        "wires": [],
+        "info": "\n\nA really simple table with double quotation mark in Column Title"
+    },
+    {
+        "id": "d80cc268.700478",
+        "type": "ui_table",
+        "z": "b4d448ed.fc828",
+        "group": "47f6a8.a2c36158",
+        "name": "Double quote in Description",
+        "order": 1,
+        "width": "6",
+        "height": "4",
+        "columns": [
+            {
+                "field": "name",
+                "title": "Col 1",
+                "width": "",
+                "align": "left",
+                "formatter": "plaintext",
+                "formatterParams": {
+                    "target": "_blank"
+                }
+            },
+            {
+                "field": "city",
+                "title": "Col 2",
+                "width": "",
+                "align": "left",
+                "formatter": "plaintext",
+                "formatterParams": {
+                    "target": "_blank"
+                }
+            }
+        ],
+        "outputs": 0,
+        "cts": false,
+        "x": 600,
+        "y": 520,
+        "wires": [],
+        "info": "\n\nA really simple table with \"double quotation\" marks in description."
+    }
+]
