@@ -36,7 +36,7 @@
             hideCaptureButton: { value: false },
             showImage: { value: 2 },
             mirror: { value: true },
-            format: { value:"png" }
+            format: { value: "png" }
         },
         inputs:1,
         outputs:1,
@@ -121,36 +121,36 @@
         <button class="editor-button" id="node-input-size"></button>
     </div>
     <br />
-    <div class="form-row" style="min-width: 470px">
-        <label style="vertical-align: top"><i class="fa fa-cog"></i> Options</label>
+    <div class="form-row" style="min-width:470px">
+        <label style="vertical-align:top"><i class="fa fa-cog"></i> Options</label>
         <div style="display:inline-block; min-width:350px; width:calc(100% - 120px);">
             <div class="form-row">
-                <label style="width: auto" for="node-input-autoStart">
+                <label style="width:auto" for="node-input-autoStart">
                     <input style="width:auto; margin:0" type="checkbox" id="node-input-autoStart"> Start webcam automatically
                 </label>
             </div>
             <div class="form-row">
-                <label style="width: auto" for="node-input-showImage-enable">
+                <label style="width:auto" for="node-input-showImage-enable">
                     <input style="width:auto; margin:0" type="checkbox" id="node-input-showImage-enable"> Show image after capture
                 </label>
                 <div class="node-row-ui-webcam-showImage-timeout">
                     <label style="margin-bottom:0; margin-left:20px; width:auto" for="node-input-showImage-timeout">
-                        <input style="width:auto; margin:0" type="checkbox" id="node-input-showImage-timeout"> Clear image after <input style="width:60px; margin: 0" type="text" id="node-input-showImage-time"> seconds
+                        <input style="width:auto; margin:0" type="checkbox" id="node-input-showImage-timeout"> Clear image after <input style="width:60px; margin:0" type="text" id="node-input-showImage-time"> seconds
                     </label>
                 </div>
             </div>
             <div class="form-row">
-                <label style="width: auto" for="node-input-hideCaptureButton">
+                <label style="width:auto" for="node-input-hideCaptureButton">
                     <input style="width:auto; margin:0" type="checkbox" id="node-input-hideCaptureButton"> Hide capture button
                 </label>
             </div>
             <div class="form-row">
-                <label style="width: auto" for="node-input-countdown">
+                <label style="width:auto" for="node-input-countdown">
                     <input style="width:auto; margin:0" type="checkbox" id="node-input-countdown"> Use 5 second countdown when triggered
                 </label>
             </div>
             <div class="form-row">
-                <label style="width: auto" for="node-input-mirror">
+                <label style="width:auto" for="node-input-mirror">
                     <input style="width:auto; margin:0" type="checkbox" id="node-input-mirror"> Mirror image from webcam
                 </label>
             </div>
@@ -181,12 +181,16 @@
         <dt>capture</dt>
         <dd>If set, this will trigger the webcam to capture an image. The webcam must
             have been activated on the dashboard first.</dd>
+        <dt>camera<span class="property-type">Number</span></dt>
+        <dd>If set to a number that is the index of an available camera, the stream will switch to that camera.</dd>
     </dl>
     <h3>Outputs</h3>
     <dl class="message-properties">
         <dt>payload<span class="property-type">Buffer</span></dt>
-        <dd>The captured image as a png or jpeg.</dd>
+        <dd>The captured image as a png or jpeg. Most image recognition processes prefer jpeg.</dd>
     </dl>
     <h3>Details</h3>
+    The user may set the preferred camera from a dropdown in the on-screen widget.
+    This will be used by default for future sessions.
     <p></p>
 </script>
