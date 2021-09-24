@@ -389,7 +389,7 @@ module.exports = function(RED) {
                                         oldActiveCamera = activeCamera;
                                         $scope.disableCamera();
                                         activeCamera = null;
-                                        window.localStorage.setItem("activeCam",c);
+                                        window.localStorage.setItem("node-red-node-ui-webcam-activeCam",c);
                                         if (active !== false) {
                                             $scope.enableCamera();
                                         }
