@@ -276,7 +276,7 @@ module.exports = function(RED) {
                                     $scope.data.stream = stream;
                                     $("#ui_webcam_toolbar_"+$scope.$id).show();
                                     if (activeCamera === null) {
-                                        var cam = parseInt(window.localStorage.getItem("activeCam") || 0);
+                                        var cam = parseInt(window.localStorage.getItem("node-red-node-ui-webcam-activeCam") || 0);
                                         if (cam < stream.getTracks().length) {
                                             activeCamera = stream.getTracks()[cam].getSettings().deviceId;
                                         }
