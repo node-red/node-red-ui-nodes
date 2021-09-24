@@ -221,7 +221,7 @@ module.exports = function(RED) {
                         $scope.changeCamera = function(deviceId) {
                             oldActiveCamera = activeCamera;
                             activeCamera = $scope.data.cameras[deviceId].deviceId;
-                            window.localStorage.setItem("activeCam",deviceId);
+                            window.localStorage.setItem("node-red-node-ui-webcam-activeCam",deviceId);
                             $scope.disableCamera();
                             $scope.enableCamera();
                         }
