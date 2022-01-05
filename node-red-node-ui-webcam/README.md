@@ -1,5 +1,5 @@
 node-red-node-ui-webcam
-============================
+=======================
 
 A Node-RED UI widget node that allows images to be captured from the dashboard.
 
@@ -20,6 +20,9 @@ as a Buffer object contain the image in png or jpeg format.
 If a message is passed to the `ui_webcam` node with the `capture` property set,
 and if the webcam has been activated on the dashboard, it will capture an image
 without the user having to click on the button.
+
+The user can select the default camera to use in the on-screen widget dropdown.
+This will be used for future sessions with that browser until changed.
 
 ## Browser Support
 

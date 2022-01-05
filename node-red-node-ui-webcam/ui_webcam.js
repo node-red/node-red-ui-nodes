@@ -221,6 +221,7 @@ module.exports = function(RED) {
                         $scope.changeCamera = function(deviceId) {
                             oldActiveCamera = activeCamera;
                             activeCamera = $scope.data.cameras[deviceId].deviceId;
+                            window.localStorage.setItem("node-red-node-ui-webcam-activeCam",deviceId);
                             $scope.disableCamera();
                             $scope.enableCamera();
                         }
@@ -275,7 +276,10 @@ module.exports = function(RED) {
                                     $scope.data.stream = stream;
                                     $("#ui_webcam_toolbar_"+$scope.$id).show();
                                     if (activeCamera === null) {
-                                        activeCamera = stream.getTracks()[0].getSettings().deviceId;
+                                        var cam = parseInt(window.localStorage.getItem("node-red-node-ui-webcam-activeCam") || 0);
+                                        if (cam < stream.getTracks().length) {
+                                            activeCamera = stream.getTracks()[cam].getSettings().deviceId;
+                                        }
                                     }
                                 }).catch(handleError);
                             }
@@ -377,12 +381,22 @@ module.exports = function(RED) {
                         };
 
                         $scope.$watch('msg', function(msg) {
-                            if (!msg) {
-                                return;
+                            if (!msg) { return; }
+                            if (msg.camera !== undefined) {
+                                if (!isNaN(parseInt(msg.camera))) {
+                                    var c = parseInt(msg.camera);
+                                    if (c >= 0 || c < 16) {
+                                        oldActiveCamera = activeCamera;
+                                        $scope.disableCamera();
+                                        activeCamera = null;
+                                        window.localStorage.setItem("node-red-node-ui-webcam-activeCam",c);
+                                        if (active !== false) {
+                                            $scope.enableCamera();
+                                        }
+                                    }
+                                }
                             }
-                            if (!active) {
-                                return;
-                            }
+                            if (!active) { return; }
                             var img = document.querySelector("img#ui_webcam_image_"+$scope.$id);
                             if (msg.capture) {
                                 msg.payload = takePhoto();
