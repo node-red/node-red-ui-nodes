@@ -74,7 +74,7 @@ module.exports = function (RED) {
             return value;
             }
         );
-        
+
         var mid = (dark) ? "_midnight" : "";
         var html = String.raw`
                 <style>.nr-dashboard-ui_table { padding:0; }</style>
@@ -107,7 +107,7 @@ module.exports = function (RED) {
                     height: (config.height > 2) ? config.height : 2,  // min height to 2 so auto will show something
                     format: html,
                     templateScope: 'local',
-                    order: config.order,
+                    order: config.order || 0,
                     group: config.group,
                     forwardInputMessages: false,
                     storeFrontEndInputAsState: false,
