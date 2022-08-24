@@ -206,11 +206,7 @@ module.exports = function (RED) {
                                 }
                             } // end of configuration via ui_control
 
-                            if ((outputs > 0) && !opts.hasOwnProperty('cellClick')) { // default cellClick if not already defined by ui_control
-                                opts.cellClick = function(e, cell) {
-                                    $scope.send({topic:cell.getField(), payload:cell.getData(), row:(cell.getRow()).getPosition()});
-                                };
-                            }
+
                             //turn autoColumns off if opts.columns is array with length > 0
                             if (opts.columns && Array.isArray(opts.columns) && opts.columns.length>0) {
                                 opts.autoColumns = false;
@@ -220,6 +216,12 @@ module.exports = function (RED) {
                                 $scope.table.destroy();
                             }
                             $scope.table = new Tabulator(basediv, opts);
+
+                            if ((outputs > 0) && !opts.hasOwnProperty('cellClick')) { // default cellClick if not already defined by ui_control
+                                $scope.table.on("cellClick", function(e, cell) {
+                                    $scope.send({topic:cell.getField(), payload:cell.getData(), row:(cell.getRow()).getPosition()});
+                                });
+                            }
                         };
                         $scope.init = function (config) {
                             $scope.config = config;

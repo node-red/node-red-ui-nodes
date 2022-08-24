@@ -131,6 +131,9 @@
                     if (data.align) {
                         align.val(data.align);
                     }
+                    if (data.hozAlign) {
+                        align.val(data.hozAlign);
+                    }
                     // $('<br>').appendTo(row);
                     $('<div><span>Width</span></div>')
                     .css('display','inline-block').css('width','35px').css('padding-left','19%').appendTo(row);
@@ -178,7 +181,7 @@
                 c.field = colum.find(".node-input-column-field").val();
                 c.title = colum.find(".node-input-column-title").val().replace(/'/g, "&#39;");
                 c.width = colum.find(".node-input-column-width").val();
-                c.align = colum.find(".node-input-column-align").val();
+                c.hozAlign = colum.find(".node-input-column-align").val();
                 c.formatter = colum.find(".node-input-column-formatter").val();
                 c.formatterParams = { target:"_blank" };
                 node.columns.push(c);
