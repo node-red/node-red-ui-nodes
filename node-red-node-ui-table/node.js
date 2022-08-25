@@ -69,11 +69,15 @@ module.exports = function (RED) {
             if (typeof (value) === "string") {
                 return value.replace(/'/g, "&apos;");
             }
+            // fixup any old deprecated align -> hozAlign
+            else if (value.hasOwnProperty("align")) {
+                value.hozAlign = value.align;
+                delete value.align;
+            }
 
             // all others leave unchanged
             return value;
-            }
-        );
+        });
 
         var mid = (dark) ? "_midnight" : "";
         var html = String.raw`
@@ -84,7 +88,7 @@ module.exports = function (RED) {
                 <input type='hidden' ng-init='init(` + configAsJson + `)'>
             `;
         return html;
-    };
+    }
 
     function TableNode(config) {
         var done = null;
@@ -211,8 +215,7 @@ module.exports = function (RED) {
                             if (opts.columns && Array.isArray(opts.columns) && opts.columns.length>0) {
                                 opts.autoColumns = false;
                             }
-                            // console.log("createTabulator",opts);
-                            if($scope.table !== undefined) {
+                            if ($scope.table !== undefined) {
                                 $scope.table.destroy();
                             }
                             $scope.table = new Tabulator(basediv, opts);
@@ -236,9 +239,7 @@ module.exports = function (RED) {
                             }, 200); // lowest setting on my side ... still fails sometimes ;)
                         };
                         $scope.$watch('msg', function (msg) {
-                            //console.log("ui-table message arrived:",msg);
                             if (msg && msg.hasOwnProperty("ui_control") && msg.ui_control.hasOwnProperty("callback")) return msg; // to avoid loopback from callbacks. No better solution jet. Help needed.
-                            //console.log("ui-table msg: ", msg);
 
                             // configuration via ui_control
                             if (msg && msg.hasOwnProperty("ui_control")) {
@@ -248,7 +249,7 @@ module.exports = function (RED) {
                                         String.prototype.parseFunction = function () {
                                             var funcReg = /function *\(([^()]*)\)[ \n\t]*{(.*)}/gmi;
                                             var match = funcReg.exec(this.replace(/\n/g, ' '));
-                                            if(match) {
+                                            if (match) {
                                                 return new Function(match[1].split(','), match[2]);
                                             }
                                             return null;
