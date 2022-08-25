@@ -69,11 +69,6 @@ module.exports = function (RED) {
             if (typeof (value) === "string") {
                 return value.replace(/'/g, "&apos;");
             }
-            // fixup any old deprecated align -> hozAlign
-            else if (value.hasOwnProperty("align")) {
-                value.hozAlign = value.align;
-                delete value.align;
-            }
 
             // all others leave unchanged
             return value;
@@ -210,21 +205,20 @@ module.exports = function (RED) {
                                 }
                             } // end of configuration via ui_control
 
-
+                            if ((outputs > 0) && !opts.hasOwnProperty('cellClick')) { // default cellClick if not already defined by ui_control
+                                opts.cellClick = function(e, cell) {
+                                    $scope.send({topic:cell.getField(), payload:cell.getData(), row:(cell.getRow()).getPosition()});
+                                };
+                            }
                             //turn autoColumns off if opts.columns is array with length > 0
                             if (opts.columns && Array.isArray(opts.columns) && opts.columns.length>0) {
                                 opts.autoColumns = false;
                             }
+                            // console.log("createTabulator",opts);
                             if ($scope.table !== undefined) {
                                 $scope.table.destroy();
                             }
                             $scope.table = new Tabulator(basediv, opts);
-
-                            if ((outputs > 0) && !opts.hasOwnProperty('cellClick')) { // default cellClick if not already defined by ui_control
-                                $scope.table.on("cellClick", function(e, cell) {
-                                    $scope.send({topic:cell.getField(), payload:cell.getData(), row:(cell.getRow()).getPosition()});
-                                });
-                            }
                         };
                         $scope.init = function (config) {
                             $scope.config = config;
@@ -239,7 +233,9 @@ module.exports = function (RED) {
                             }, 200); // lowest setting on my side ... still fails sometimes ;)
                         };
                         $scope.$watch('msg', function (msg) {
+                            //console.log("ui-table message arrived:",msg);
                             if (msg && msg.hasOwnProperty("ui_control") && msg.ui_control.hasOwnProperty("callback")) return msg; // to avoid loopback from callbacks. No better solution jet. Help needed.
+                            //console.log("ui-table msg: ", msg);
 
                             // configuration via ui_control
                             if (msg && msg.hasOwnProperty("ui_control")) {
