@@ -160,9 +160,9 @@ module.exports = function(RED) {
                             }
 
                             var payload = msg.payload;
-                            var highLimit = msg.highlimit || 80;
-                            var lowLimit=  msg.lowlimit || 20;
-                            var setpoint =  msg.setpoint || 50;
+                            var highLimit = msg.highlimit === 0 ? 0 : msg.highlimit || 80;
+                            var lowLimit  = msg.lowlimit  === 0 ? 0 : msg.lowlimit  || 20;
+                            var setpoint  = msg.setpoint  === 0 ? 0 : msg.setpoint  || 50;
                             var gaugeStart = 0										// this is the gauge starting position, should be left at zero
                             var gaugeEnd = 188                                      // this is the length of the gauge, if the gauge is to be longer, this value should be the sum of the heights of the scale areas
 
