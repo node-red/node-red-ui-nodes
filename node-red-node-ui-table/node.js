@@ -287,13 +287,20 @@ module.exports = function (RED) {
                                             msg.payload.arguments=[];
                                         }
                                         if (msg.payload.returnPromise) {
-                                            $scope.table[msg.payload.command].apply($scope.table,msg.payload.arguments).then(function(...args){
-                                                $scope.send({topic:"success", ui_control: {callback:$scope.msg.payload.command}, return:$scope.msg.payload});
-                                            }).catch(function(error){
-                                                if (Object.keys(error).length>0) {
-                                                    $scope.send({topic:"error", ui_control: {callback:$scope.msg.payload.command}, return:$scope.msg.payload, error: error});
+                                            let commandReturn = $scope.table[msg.payload.command].apply($scope.table,msg.payload.arguments);
+                                            if (commandReturn) {
+                                                if (typeof commandReturn.then === "function") {
+                                                    commandReturn.then(function(...args){
+                                                        $scope.send({topic:"success", ui_control: {callback:$scope.msg.payload.command}, return:$scope.msg.payload});
+                                                    }).catch(function(error){
+                                                        if (Object.keys(error).length>0) {
+                                                            $scope.send({topic:"error", ui_control: {callback:$scope.msg.payload.command}, return:$scope.msg.payload, error: error});
+                                                        }
+                                                    });
+                                                } else {
+                                                    $scope.send({topic:"success", ui_control: {callback:$scope.msg.payload.command}, return:$scope.msg.payload, payload:commandReturn});
                                                 }
-                                            });
+                                            }
                                         } else {
                                             $scope.table[msg.payload.command].apply($scope.table,msg.payload.arguments);
                                         }
