@@ -1,6 +1,6 @@
 {
   "name": "node-red-node-ui-lineargauge",
-  "version": "0.3.6",
+  "version": "0.3.7",
   "description": "A Node-RED ui node to display a linear gauge on the dashboard.",
   "peerDependencies": {
       "node-red-dashboard": ">2.13.0"
