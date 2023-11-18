@@ -39,7 +39,6 @@ module.exports = function(RED) {
     }
 
     var ui = undefined; // instantiate a ui variable to link to the dashboard
-
     function MicrophoneNode(config) {
         try {
             var node = this;
@@ -155,7 +154,16 @@ module.exports = function(RED) {
                                 }
                             }
                         };
-
+                        $scope.$watch('msg', function (msg) {
+                            if (!msg) {								
+                                return;
+                            }else{
+                                console.log(msg);
+                                $scope.toggleMicrophone();
+                            }
+                            // msg with all it's properties available here							
+                                                        
+                        });
                         $scope.stop = function() {
                             if (active) {
                                 if (isAudio) {
@@ -249,6 +257,8 @@ module.exports = function(RED) {
                                     if (active) {
                                         active = false;
                                         $("#microphone_control_"+$scope.$id+" i").addClass("fa-microphone").removeClass("fa-rotate-right fa-spin");
+                                        ///console.log("no se reconocio nada");
+                                        $scope.send({payload:"vacio"});
                                     }
                                 };
 
@@ -282,7 +292,6 @@ module.exports = function(RED) {
                             }
                             fileReader.readAsArrayBuffer(blob)
                         };
-
                         var convertToWav = function(buffer) {
                             if (!worker) {
                                 worker = new Worker('ui_microphone/recorderWorker.js');
@@ -304,6 +313,8 @@ module.exports = function(RED) {
                     }
                 });
             }
+
+
         }
         catch (e) {
             // eslint-disable-next-line no-console
