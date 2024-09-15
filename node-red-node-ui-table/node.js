@@ -324,7 +324,7 @@ module.exports = function (RED) {
     RED.nodes.registerType('ui_table', TableNode);
 
     var uipath = 'ui';
-    if (RED.settings.ui) { uipath = RED.settings.ui.path; }
+    if (RED?.settings?.ui?.path) { uipath = RED.settings.ui.path; }
     var fullPath = path.join('/', uipath, '/ui-table/*').replace(/\\/g, '/');
     RED.httpNode.get(fullPath, function (req, res) {
         var options = {
