@@ -1,11 +1,12 @@
 {
   "name": "node-red-node-ui-table",
-  "version": "0.4.3",
+  "version": "0.4.4",
   "description": "Table UI widget node for Node-RED Dashboard",
   "author": "Kazuhito Yokoi",
   "contributors": ["Dave Conway-Jones","@hotNipi","@Christian-Me"],
   "license": "Apache-2.0",
   "node-red": {
+    "version": ">=3.0.0",
     "nodes": {
       "ui_table": "node.js"
     }
@@ -25,5 +26,8 @@
     "node-red",
     "node-red-dashboard",
     "table"
-  ]
+  ],
+  "engines": {
+    "node": ">=16"
+  }
 }
