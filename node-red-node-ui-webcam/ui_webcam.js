@@ -383,16 +383,25 @@ module.exports = function(RED) {
                         $scope.$watch('msg', function(msg) {
                             if (!msg) { return; }
                             if (msg.camera !== undefined) {
-                                if (!isNaN(parseInt(msg.camera))) {
-                                    var c = parseInt(msg.camera);
-                                    if (c >= 0 || c < 16) {
-                                        oldActiveCamera = activeCamera;
-                                        $scope.disableCamera();
-                                        activeCamera = null;
-                                        window.localStorage.setItem("node-red-node-ui-webcam-activeCam",c);
-                                        if (active !== false) {
-                                            $scope.enableCamera();
-                                        }
+                                let c = parseInt(msg.camera);
+                                if (!isNaN(c)) {
+                                    // Check if cameras array is populated
+                                    if ($scope.data.cameras && $scope.data.cameras.length > c) {
+                                        $scope.changeCamera(c);
+                                    } else {
+                                        // Enumerate devices first, then change camera
+                                        navigator.mediaDevices.enumerateDevices().then(function(devices) {
+                                            $scope.data.cameras = devices.filter(function(device) {
+                                                return device.kind === "videoinput";
+                                            });
+                                            if (c >= 0 && c < $scope.data.cameras.length) {
+                                                $scope.changeCamera(c);
+                                            } else {
+                                                console.warn("Camera index out of range:", c);
+                                            }
+                                        }).catch(function(err) {
+                                            console.error("Error enumerating devices:", err);
+                                        });
                                     }
                                 }
                             }
