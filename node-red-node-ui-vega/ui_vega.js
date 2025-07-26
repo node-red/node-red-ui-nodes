@@ -35,6 +35,8 @@ module.exports = function(RED) {
     <script>
 (function(scope, val) {
 
+scope.view = null;
+
 function loadScripts(list, callback) {
     if (list.length > 0) {
         var done = false;
@@ -66,16 +68,24 @@ function showVega(spec) {
     vegaEmbed('#${vid}', spec,
               {
                   actions: false
+              }).then(result => {
+                  scope.view = result.view;
               });
+}
+
+function updateData(target, data) {
+    var changeset = vega.changeset().insert(data);
+    if (!scope.view) {
+        return;
+    }
+    scope.view.change(target, changeset).runAsync();
 }
 
 loadScripts(["https://cdn.jsdelivr.net/npm/vega@5.20.2",
              "https://cdn.jsdelivr.net/npm/vega-lite@5.1.0",
              "https://cdn.jsdelivr.net/npm/vega-embed@6.18.2"],
     function() {
-`+
-            "var vegaSpec = " +vegaSpec +";" +
-            String.raw`
+        var vegaSpec = ${vegaSpec};
         if (vegaSpec) {
             showVega(vegaSpec);
         }
@@ -84,7 +94,11 @@ loadScripts(["https://cdn.jsdelivr.net/npm/vega@5.20.2",
                 if (!vegaEmbed) {
                     return;
                 }
-                showVega(msg.payload);
+                if (msg.payload && msg.payload.$schema) {
+                    showVega(msg.payload);
+                } else {
+                    updateData(msg.payload.target, msg.payload.data);
+                }
             }
         });
     }
